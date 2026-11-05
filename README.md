@@ -1,111 +1,111 @@
-# 大模型排行榜
+# 大規模言語モデルランキング
 
-一个纯静态的大模型对比站点：数据驱动、可公开访问、可由 Agent 定期更新。
+データ駆動の完全な静的 LLM 比較サイト。公開可能で、Agent による定期更新に対応。
 
-## 快速开始
+## クイックスタート
 
 ```bash
 npm install
-npm run check     # 校验 + 测试 + 构建
-npm run serve     # 本地预览 http://localhost:4173/
+npm run check     # 検証 + テスト + ビルド
+npm run serve     # ローカルプレビュー http://localhost:4173/
 ```
 
-打开 `http://localhost:4173/` 即可查看站点。
+`http://localhost:4173/` を開くとサイトが表示される。
 
-## 功能
+## 機能
 
-- **排行榜总表**：按综合分、单项基准、价格、上下文长度、发布日期、名称排序；按厂商与开源/闭源筛选；关键词搜索。
-- **可视化**：基准分数横向条形图（可切换基准）、价格与性能散点图（悬停显示模型名）、开源/闭源占比图。
-- **详情视图**：点击「查看详情」或按 Enter 打开弹窗，展示全部字段与来源链接。
-- **可访问性**：移动端适配、WCAG AA 对比度、图表提供文字替代表格、全部交互支持键盘（Tab / Enter / Escape）。
-- **空值处理**：未核实字段一律显示「暂无数据」，不显示 0 或 NaN。
+- **ランキング一覧表**：総合スコア、個別ベンチマーク、価格、コンテキスト長、リリース日、名前で並べ替え。ベンダーとオープン／クローズドで絞り込み。キーワード検索。
+- **可視化**：ベンチマークスコアの横棒グラフ（ベンチマーク切替可能）、価格と性能の散布図（ホバーでモデル名表示）、オープン／クローズド比率の円グラフ。
+- **詳細表示**：「詳細を見る」をクリックするか Enter でモーダルを開き、全項目と出典リンクを表示。
+- **アクセシビリティ**：モバイル対応、WCAG AA のコントラスト比、グラフのテキスト代替表、すべての操作をキーボードで実行可能（Tab / Enter / Escape）。
+- **空値の扱い**：未確認項目はすべて「データなし」と表示。0 や NaN は表示しない。
 
-## 项目结构
+## プロジェクト構成
 
 ```
 data/
-  models.json        模型记录（唯一数据源）
-  benchmarks.json    基准定义（单位与方向）
+  models.json        モデルレコード（唯一のデータソース）
+  benchmarks.json    ベンチマーク定義（単位と方向）
   schema.json        JSON Schema
 src/
-  index.html         页面结构
-  styles.css         样式（高对比配色）
-  app.js             页面逻辑
-  core.js            排序/筛选/空值显示（浏览器与测试共用）
+  index.html         ページ構造
+  styles.css         スタイル（高コントラスト配色）
+  app.js             ページロジック
+  core.js            ソート／フィルター／空値表示（ブラウザとテストで共用）
   vendor/echarts.min.js
 scripts/
-  validate.js        数据校验
-  build.js           构建 dist/
-  serve.js           本地预览服务器
-  add-model.js       新增模型模板
-test/                核心逻辑与校验脚本测试
-dist/                构建产物（不提交）
+  validate.js        データ検証
+  build.js           dist/ をビルド
+  serve.js           ローカルプレビューサーバー
+  add-model.js       新規モデルテンプレート生成
+test/                コアロジックと検証スクリプトのテスト
+dist/                ビルド成果物（コミットしない）
 ```
 
-## 技术栈与版本
+## 技術スタックとバージョン
 
-| 依赖 | 版本 | 说明 |
+| 依存 | バージョン | 説明 |
 | --- | --- | --- |
-| Node.js | ≥ 20 | 校验、测试与构建脚本运行环境 |
-| Apache ECharts | 6.1.0 | 图表库，本地 vendored，精确版本 |
-| ajv | 8.20.0 | JSON Schema 校验 |
-| ajv-formats | 3.0.1 | 日期与 URI 格式校验 |
-| eslint | 10.14.0 | 代码检查 |
+| Node.js | ≥ 20 | 検証・テスト・ビルドスクリプトの実行環境 |
+| Apache ECharts | 6.1.0 | グラフライブラリ。ローカルに vendored、正確なバージョン指定 |
+| ajv | 8.20.0 | JSON Schema 検証 |
+| ajv-formats | 3.0.1 | 日付・URI 形式の検証 |
+| eslint | 10.14.0 | コードチェック |
 
-所有依赖均锁定精确版本，不使用开放区间。构建期无需网络：ECharts 已 vendored 到 `src/vendor/`。
+すべての依存は正確なバージョンで固定し、開放区間は使わない。ビルド時はネットワーク不要：ECharts は `src/vendor/` に vendored 済み。
 
-## 更新数据
+## データの更新
 
-**新增模型只需在 `data/models.json` 的 `models` 数组中追加一条记录，不需要改动任何页面代码。**
+**新規モデルの追加は `data/models.json` の `models` 配列にレコードを 1 件追加するだけでよく、ページのコードは一切変更不要。**
 
-快速生成模板：
+テンプレートの自動生成：
 
 ```bash
 node scripts/add-model.js --id my-model --name "My Model" \
   --vendor "MyVendor" --release-date 2026-01-01 --license proprietary --context 1000000
 ```
 
-模板会把未核实的字段留为 `null`，随后需要打开官方页面填写真实值与来源。
+テンプレートは未確認の項目を `null` のまま残す。その後、公式ページを開いて実際の値と出典を記入する。
 
-更新流程与来源要求详见 `AGENTS.md`，要点：
+更新フローと出典の要件は `AGENTS.md` に詳述。要点：
 
-1. 数据只能来自厂商官方页面或公开榜单原始页面，必须先打开页面核实；
-2. 找不到可靠来源的字段填 `null` 并在 `notes` 说明，不得估算；
-3. 刷新 `retrieved_at` 与 `last_updated`；
-4. 数值变化记录到 `CHANGELOG.md`；
-5. 运行 `npm run check` 通过后，在新分支提交并开 Pull Request。
+1. データはベンダー公式ページまたは公開ランキングの原ページのみ。必ずページを開いて確認すること。
+2. 信頼できる出典が見つからない項目は `null` とし、`notes` に理由を記載。推定は禁止。
+3. `retrieved_at` と `last_updated` を更新する。
+4. 数値の変更は `CHANGELOG.md` に記録する。
+5. `npm run check` を通過したら、新規ブランチでコミットし、Pull Request を出す。
 
-## 部署
+## デプロイ
 
 ### GitHub Pages
 
-仓库已包含 `.github/workflows/deploy.yml`，配置完成后推送即自动部署。工作流在 `main` 分支推送时依次执行 `npm run validate`、`npm test`、`npm run build`，任一步失败则终止发布，随后把 `dist/` 作为 Pages 产物发布。
+リポジトリには `.github/workflows/deploy.yml` が含まれており、設定後は push で自動デプロイされる。ワークフローは `main` ブランチへの push 時に `npm run validate`、`npm test`、`npm run build` を順に実行し、いずれかが失敗すれば公開を中止し、成功時は `dist/` を Pages の成果物として公開する。
 
-#### 步骤
+#### 手順
 
-1. **创建仓库并推送**
+1. **リポジトリを作成して push**
 
    ```bash
    cd /home/agentuser/.hermes/my_project/model_ranking
-   git remote add origin git@github.com:<你的用户名>/<仓库名>.git
+   git remote add origin git@github.com:<ユーザー名>/<リポジトリ名>.git
    git push -u origin main
    ```
 
-2. **开启 Pages 来源为 GitHub Actions**
+2. **Pages のソースを GitHub Actions に設定**
 
-   仓库页面 → **Settings** → **Pages** → **Build and deployment** → **Source** 选择 `GitHub Actions`（不是 Deploy from branch）。
+   リポジトリページ → **Settings** → **Pages** → **Build and deployment** → **Source** で `GitHub Actions` を選択（Deploy from branch ではない）。
 
-3. **触发首次部署**
+3. **初回デプロイを実行**
 
-   Source 选好后，Actions 页签会出现 `Deploy to GitHub Pages` 工作流运行记录。也可以在 Actions 页手动点 **Run workflow** 触发。
+   Source を選択すると、Actions タブに `GitHub Pages へのデプロイ` の実行記録が現れる。Actions ページで **Run workflow** を手動で押してもよい。
 
-4. **查看站点**
+4. **サイトを確認**
 
-   部署完成后地址为 `https://<你的用户名>.github.io/<仓库名>/`。Actions 运行详情页顶部也会显示 `page_url`。
+   デプロイ完了後、`https://<ユーザー名>.github.io/<リポジトリ名>/` で公開される。Actions の実行詳細ページ上部にも `page_url` が表示される。
 
-#### 自定义域名（可选）
+#### カスタムドメイン（任意）
 
-在 workflow 的 `actions/configure-pages@v5` 步骤中加一行：
+ワークフローの `actions/configure-pages@v5` ステップに 1 行追加する：
 
 ```yaml
       - uses: actions/configure-pages@v5
@@ -113,64 +113,64 @@ node scripts/add-model.js --id my-model --name "My Model" \
           domain: example.com
 ```
 
-然后在仓库 Settings → Pages → Custom domain 填入域名，并在 DNS 服务商处为 Pages 添加 CNAME 记录。
+その後、リポジトリ Settings → Pages → Custom domain にドメインを入力し、DNS プロバイダーで Pages 向けの CNAME レコードを追加する。
 
-#### 验证部署
+#### デプロイの検証
 
 ```bash
-curl -sI https://<你的用户名>.github.io/<仓库名>/data/models.json
+curl -sI https://<ユーザー名>.github.io/<リポジトリ名>/data/models.json
 ```
 
-应返回 `200` 与 `application/json`。页面所有资源均使用相对路径（`./data/...`、`./app.js`），因此部署在 `/<仓库名>/` 子路径下也能正常工作，无需改动任何代码。
+`200` と `application/json` が返れば正常。ページのすべてのリソースは相対パス（`./data/...`、`./app.js`）を使っているため、`/<リポジトリ名>/` のサブパスにデプロイしてもコード変更なしで動作する。
 
-### 手动部署
+### 手動デプロイ
 
 ```bash
 npm run build
-# 将 dist/ 目录上传到任意静态托管（Netlify / Vercel / Nginx / 对象存储）
+# dist/ ディレクトリを任意の静的ホスティングにアップロード（Netlify / Vercel / Nginx / オブジェクトストレージ）
 ```
 
-`dist/` 是纯静态产物，不依赖任何服务端运行时。
+`dist/` は完全な静的成果物で、サーバー側の実行時は一切不要。
 
-### 本地静态服务
+### ローカル静的サーバー
 
 ```bash
 npm run build && npm run serve
 ```
 
-## 数据来源
+## データ出典
 
-所有数据的来源链接都记录在每条模型记录的 `sources` 字段中，可在页面详情弹窗查看。主要来源包括：
+すべてのデータの出典リンクは各モデルレコードの `sources` フィールドに記録され、ページの詳細モーダルで確認できる。主な出典：
 
-- 各厂商官方模型页与 API 定价页（OpenAI、Anthropic、Google、Meta、Mistral AI、DeepSeek、Alibaba Cloud、xAI、Z AI）；
-- Artificial Analysis 的 Intelligence Index 与模型页面；
-- LMArena 公开榜单；
-- 开源权重模型的官方 Hugging Face 模型卡。
+- 各ベンダーの公式モデルページと API 価格ページ（OpenAI、Anthropic、Google、Meta、Mistral AI、DeepSeek、Alibaba Cloud、xAI、Z AI）
+- Artificial Analysis の Intelligence Index とモデルページ
+- LMArena の公開ランキング
+- オープンウェイトモデルの公式 Hugging Face モデルカード
 
-页面底部「数据来源说明」与每条记录的详情弹窗都列出来源 URL 与采集日期。数据可能存在延迟，以采集时页面显示为准。
+ページ下部の「データ出典について」と各レコードの詳細モーダルに出典 URL と取得日を記載。データは遅延している場合があり、取得時点のページ表示を基準とする。
 
-## 环境变量
+## 環境変数
 
-本项目的更新流程不需要任何 API Key。`serve.js` 支持以下可选变量：
+本プロジェクトの更新フローに API Key は不要。`serve.js` は次の任意変数に対応：
 
-| 变量 | 默认值 | 说明 |
+| 変数 | 既定値 | 説明 |
 | --- | --- | --- |
-| `PORT` | `4173` | 本地预览端口 |
-| `RETRIEVED_AT` | 运行时系统日期 | 覆盖 `build-data.js` 写入的采集日期 |
+| `PORT` | `4173` | ローカルプレビューのポート |
+| `RETRIEVED_AT` | 実行時のシステム日付 | `build-data.js` が書き込む取得日を上書き |
 
-如未来引入需要凭据的抓取脚本，只允许从环境变量读取，不得写入仓库。
+将来的に認証が必要な収集スクリプトを導入する場合は、環境変数からのみ読み取り、リポジトリには書き込まない。
 
-## 脚本
+## スクリプト
 
-| 命令 | 作用 |
+| コマンド | 役割 |
 | --- | --- |
-| `npm run validate` | 校验 schema、id 唯一性、URL、日期、数值范围与密钥 |
-| `npm test` | 运行核心逻辑与校验脚本测试 |
-| `npm run build` | 校验后生成 `dist/` |
-| `npm run serve` | 本地预览（端口 4173） |
-| `npm run add-model` | 生成符合 schema 的新模型模板 |
+| `npm run validate` | schema、id の一意性、URL、日付、数値範囲、シークレットを検証 |
+| `npm test` | コアロジックと検証スクリプトのテストを実行 |
+| `npm run build` | 検証後に `dist/` を生成 |
+| `npm run serve` | ローカルプレビュー（ポート 4173） |
+| `npm run add-model` | schema に適合する新規モデルテンプレートを生成 |
 | `npm run check` | validate + test + build |
 
-## 许可与限制
+## ライセンスと制限
 
-页面数据按各来源的公开条款使用。本站为纯静态站点，不收集访问者信息，不设置 Cookie。
+ページのデータは各出典の公開条件に従って利用する。本サイトは完全な静的サイトであり、訪問者の情報を収集せず、Cookie を設定しない。
