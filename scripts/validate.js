@@ -81,7 +81,7 @@ if (schema && modelsDoc && benchmarksDoc) {
       fail(`benchmarks のキーが重複しています：${[...new Set(dupBench)].join(', ')}`);
     }
     for (const b of benchList) {
-      if (!/^[a-z0-9_]+$/.test(b.key ?? '')) fail(`benchmarks のキー形式が不正です：${b.key}`);
+      if (!/^[a-z0-9][a-z0-9_-]*$/.test(b.key ?? '')) fail(`benchmarks のキー形式が不正です：${b.key}`);
       if (!b.name || !b.unit || !b.direction) fail(`benchmarks の ${b.key} に name/unit/direction が不足しています`);
       if (!['higher', 'lower'].includes(b.direction)) fail(`benchmarks の ${b.key} の direction は higher か lower でなければなりません：${b.direction}`);
       if (typeof b.higher_is_better !== 'boolean') fail(`benchmarks の ${b.key} の higher_is_better は boolean でなければなりません`);

@@ -305,7 +305,7 @@ function renderScatterChart() {
     // モデル名は label に持たせ、キーボードフォーカス時にもツールチップで読めるようにする
     label: { show: false },
     emphasis: {
-      label: { show: true, formatter: (p) => p.data.name, position: 'top', color: '#1a1a1a' },
+      label: { show: true, formatter: (p) => escapeHtml(p.data.name), position: 'top', color: '#1a1a1a' },
       itemStyle: { opacity: 1 },
     },
     data: points.filter((p) => p.vendor === v),

@@ -8,6 +8,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   displayValue,
+  escapeHtml,
   formatContextWindow,
   formatPrice,
   sortModels,
@@ -74,6 +75,37 @@ test('displayValue：null / undefined / NaN / 空文字列はすべて「デー�
   assert.equal(displayValue(NaN), EMPTY);
   assert.equal(displayValue(''), EMPTY);
   assert.equal(displayValue('   '), EMPTY);
+});
+
+/* ---------------- HTML エスケープ ---------------- */
+test('escapeHtml：特殊文字を実体参照に変換する', () => {
+  assert.equal(escapeHtml('<script>'), '&lt;script&gt;');
+  assert.equal(escapeHtml('"'), '&quot;');
+  assert.equal(escapeHtml("'"), '&#39;');
+  assert.equal(escapeHtml('&'), '&amp;');
+  assert.equal(escapeHtml('>'), '&gt;');
+});
+
+test('escapeHtml：XSS ペイロードを無害化する', () => {
+  const payload = '<img src=x onerror="alert(1)">';
+  const out = escapeHtml(payload);
+  assert.equal(out, '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;');
+  // ブラウザがタグとして解釈しないこと：山括弧が実体参照になっている
+  assert.ok(!out.includes('<img'));
+  assert.ok(!out.includes('alert(1)">'));
+});
+
+test('escapeHtml：数値・null・undefined を文字列化してエスケープする', () => {
+  assert.equal(escapeHtml(42), '42');
+  assert.equal(escapeHtml(null), 'null');
+  assert.equal(escapeHtml(undefined), 'undefined');
+  assert.equal(escapeHtml(0), '0');
+});
+
+test('escapeHtml：日本語・アルファベット・数字はそのまま保持する', () => {
+  assert.equal(escapeHtml('Llama 4 Maverick'), 'Llama 4 Maverick');
+  assert.equal(escapeHtml('大規模言語モデル'), '大規模言語モデル');
+  assert.equal(escapeHtml('GPT-6'), 'GPT-6');
 });
 
 test('displayValue：通常の値はそのまま返し、フォーマッタが適用される', () => {
