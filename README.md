@@ -79,7 +79,49 @@ node scripts/add-model.js --id my-model --name "My Model" \
 
 ### GitHub Pages
 
-仓库已包含 `.github/workflows/deploy.yml`，推送后在 GitHub 仓库 Settings → Pages 中选择 **GitHub Actions** 作为来源即可自动部署。工作流会在 `main` 分支推送时执行 `npm run check` 并发布 `dist/`。
+仓库已包含 `.github/workflows/deploy.yml`，配置完成后推送即自动部署。工作流在 `main` 分支推送时依次执行 `npm run validate`、`npm test`、`npm run build`，任一步失败则终止发布，随后把 `dist/` 作为 Pages 产物发布。
+
+#### 步骤
+
+1. **创建仓库并推送**
+
+   ```bash
+   cd /home/agentuser/.hermes/my_project/model_ranking
+   git remote add origin git@github.com:<你的用户名>/<仓库名>.git
+   git push -u origin main
+   ```
+
+2. **开启 Pages 来源为 GitHub Actions**
+
+   仓库页面 → **Settings** → **Pages** → **Build and deployment** → **Source** 选择 `GitHub Actions`（不是 Deploy from branch）。
+
+3. **触发首次部署**
+
+   Source 选好后，Actions 页签会出现 `Deploy to GitHub Pages` 工作流运行记录。也可以在 Actions 页手动点 **Run workflow** 触发。
+
+4. **查看站点**
+
+   部署完成后地址为 `https://<你的用户名>.github.io/<仓库名>/`。Actions 运行详情页顶部也会显示 `page_url`。
+
+#### 自定义域名（可选）
+
+在 workflow 的 `actions/configure-pages@v5` 步骤中加一行：
+
+```yaml
+      - uses: actions/configure-pages@v5
+        with:
+          domain: example.com
+```
+
+然后在仓库 Settings → Pages → Custom domain 填入域名，并在 DNS 服务商处为 Pages 添加 CNAME 记录。
+
+#### 验证部署
+
+```bash
+curl -sI https://<你的用户名>.github.io/<仓库名>/data/models.json
+```
+
+应返回 `200` 与 `application/json`。页面所有资源均使用相对路径（`./data/...`、`./app.js`），因此部署在 `/<仓库名>/` 子路径下也能正常工作，无需改动任何代码。
 
 ### 手动部署
 
