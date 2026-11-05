@@ -12,14 +12,21 @@
   <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
 
   <header class="site-header">
-    <div class="wrap">
+    <div class="hero-decor" aria-hidden="true"></div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>公開データに基づく LLM 比較</p>
       <h1>大規模言語モデルランキング</h1>
       <p class="tagline">総合インテリジェンス指数、個別ベンチマーク、価格、コンテキスト長で主要な LLM を比較</p>
-      <p class="meta-line">
-        <span>データ最終更新日：<strong id="last-updated">読み込み中…</strong></span>
-        <span class="sep" aria-hidden="true">·</span>
-        <span id="model-count">読み込み中…</span>
-      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-label">データ最終更新日</span>
+          <strong class="stat-value" id="last-updated">読み込み中…</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">収録モデル</span>
+          <strong class="stat-value" id="model-count">読み込み中…</strong>
+        </div>
+      </div>
       <p class="disclaimer">
         データ出典は各ベンダーの公式ページおよび公開ランキング（詳細はページ下部の「データ出典について」を参照）。
         データは遅延している場合があり、各項目は取得時点の表示に基づく。確認できなかった項目は

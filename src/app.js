@@ -105,7 +105,7 @@ function benchmarkName(key) {
 function renderHeader() {
   const last = dataLastUpdated(state.models);
   setText(els.lastUpdated, last ? `${last}（取得日）` : null);
-  els.modelCount.textContent = `全 ${state.models.length} モデル`;
+  els.modelCount.textContent = `${state.models.length} モデル`;
 }
 
 /* ---------------- 一覧テーブル ---------------- */
@@ -129,7 +129,9 @@ function renderTable() {
     tr.tabIndex = 0;
     tr.dataset.modelId = m.id;
 
-    const rank = el('td', 'num', String(idx + 1));
+    const rankCell = el('td', 'num rank-cell');
+    const rankBadge = el('span', `rank-badge${idx < 3 ? ' top' : ''}`, String(idx + 1));
+    rankCell.append(rankBadge);
 
     const nameCell = el('td');
     nameCell.append(el('span', 'model-name', m.name));
@@ -169,7 +171,7 @@ function renderTable() {
     btn.addEventListener('click', () => openDetail(m.id));
     detailCell.append(btn);
 
-    tr.append(rank, nameCell, vendor, licenseCell, composite, intel, inPrice, outPrice, ctx, detailCell);
+    tr.append(rankCell, nameCell, vendor, licenseCell, composite, intel, inPrice, outPrice, ctx, detailCell);
     tr.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -221,10 +223,14 @@ function renderBenchmarkOptions() {
 
 /* ---------------- グラフ ---------------- */
 const CHART_COLORS = {
-  open: '#0b5cad',
-  closed: '#6a3d9a',
-  other: '#5c4319',
+  open: '#4f46e5',
+  closed: '#7c3aed',
+  other: '#b45309',
 };
+const CHART_FG = '#334155';
+const CHART_GRID = '#e8ecf3';
+const CHART_AXIS = '#cbd5e1';
+const CHART_BAR = '#4f46e5';
 
 function renderBarChart() {
   const key = els.barBenchmark.value;
@@ -247,27 +253,27 @@ function renderBarChart() {
       type: 'value',
       name: def?.unit ?? '',
       nameLocation: 'end',
-      axisLabel: { color: '#4a4a4a' },
-      splitLine: { lineStyle: { color: '#e3e6ea' } },
+      axisLabel: { color: CHART_FG },
+      splitLine: { lineStyle: { color: CHART_GRID } },
     },
     yAxis: {
       type: 'category',
       data: rows.map((r) => r.name),
-      axisLabel: { color: '#1a1a1a', width: 130, overflow: 'truncate' },
-      axisLine: { lineStyle: { color: '#6b6b6b' } },
+      axisLabel: { color: CHART_FG, width: 130, overflow: 'truncate' },
+      axisLine: { lineStyle: { color: CHART_AXIS } },
     },
     series: [{
       type: 'bar',
       data: rows.map((r) => ({
         value: r.value,
-        itemStyle: { color: '#0b5cad' },
+        itemStyle: { color: CHART_BAR },
       })),
-      label: { show: true, position: 'right', color: '#1a1a1a' },
+      label: { show: true, position: 'right', color: CHART_FG },
       barMaxWidth: 22,
     }],
     graphic: hasData ? [] : [{
       type: 'text', left: 'center', top: 'middle',
-      style: { text: 'データなし', fill: '#4a4a4a', fontSize: 14 },
+      style: { text: 'データなし', fill: CHART_FG, fontSize: 14 },
     }],
   }, true);
 
@@ -296,7 +302,7 @@ function renderScatterChart() {
     }));
 
   const vendors = [...new Set(points.map((p) => p.vendor))].sort((a, b) => a.localeCompare(b, 'ja'));
-  const palette = ['#0b5cad', '#6a3d9a', '#1a7f5a', '#b45309', '#a21caf', '#0e7490', '#9f1239', '#3f6212', '#7c2d12'];
+  const palette = ['#4f46e5', '#7c3aed', '#0d9488', '#b45309', '#db2777', '#0284c7', '#dc2626', '#4d7c0f', '#9d174d'];
   const series = vendors.map((v, i) => ({
     name: v,
     type: 'scatter',
@@ -305,7 +311,7 @@ function renderScatterChart() {
     // モデル名は label に持たせ、キーボードフォーカス時にもツールチップで読めるようにする
     label: { show: false },
     emphasis: {
-      label: { show: true, formatter: (p) => escapeHtml(p.data.name), position: 'top', color: '#1a1a1a' },
+      label: { show: true, formatter: (p) => escapeHtml(p.data.name), position: 'top', color: CHART_FG },
       itemStyle: { opacity: 1 },
     },
     data: points.filter((p) => p.vendor === v),
@@ -313,7 +319,7 @@ function renderScatterChart() {
 
   state.chartScatter.setOption({
     animationDuration: 400,
-    legend: { type: 'scroll', bottom: 0, textStyle: { color: '#1a1a1a' } },
+    legend: { type: 'scroll', bottom: 0, textStyle: { color: CHART_FG } },
     grid: { left: 8, right: 24, top: 20, bottom: 60, containLabel: true },
     tooltip: {
       trigger: 'item',
@@ -325,21 +331,21 @@ function renderScatterChart() {
       nameLocation: 'middle',
       nameGap: 28,
       min: 0.01,
-      axisLabel: { color: '#4a4a4a' },
-      splitLine: { lineStyle: { color: '#e3e6ea' } },
+      axisLabel: { color: CHART_FG },
+      splitLine: { lineStyle: { color: CHART_GRID } },
     },
     yAxis: {
       type: 'value',
       name: 'インテリジェンス指数',
       nameLocation: 'middle',
       nameGap: 40,
-      axisLabel: { color: '#4a4a4a' },
-      splitLine: { lineStyle: { color: '#e3e6ea' } },
+      axisLabel: { color: CHART_FG },
+      splitLine: { lineStyle: { color: CHART_GRID } },
     },
     series,
     graphic: points.length ? [] : [{
       type: 'text', left: 'center', top: 'middle',
-      style: { text: 'データなし', fill: '#4a4a4a', fontSize: 14 },
+      style: { text: 'データなし', fill: CHART_FG, fontSize: 14 },
     }],
   }, true);
 
@@ -378,18 +384,18 @@ function renderPieChart() {
       trigger: 'item',
       formatter: (p) => `${escapeHtml(p.name)}：${escapeHtml(String(p.value))} 件（${escapeHtml(String(p.percent))}%）`,
     },
-    legend: { bottom: 0, textStyle: { color: '#1a1a1a' } },
+    legend: { bottom: 0, textStyle: { color: CHART_FG } },
     series: [{
       type: 'pie',
       radius: ['40%', '68%'],
       center: ['50%', '46%'],
       avoidLabelOverlap: true,
-      label: { formatter: '{b}\n{c} 件', color: '#1a1a1a' },
+      label: { formatter: '{b}\n{c} 件', color: CHART_FG },
       data,
     }],
     graphic: data.length ? [] : [{
       type: 'text', left: 'center', top: 'middle',
-      style: { text: 'データなし', fill: '#4a4a4a', fontSize: 14 },
+      style: { text: 'データなし', fill: CHART_FG, fontSize: 14 },
     }],
   }, true);
 
