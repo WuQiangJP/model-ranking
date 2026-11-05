@@ -2,7 +2,7 @@
   "name": "model-ranking",
   "version": "1.0.0",
   "private": true,
-  "description": "大模型排行榜静态站点：数据驱动、可公开访问、可由 Agent 定期更新。",
+  "description": "大規模言語モデルランキングの静的サイト。データ駆動で、公開可能、Agent による定期更新に対応。",
   "type": "module",
   "scripts": {
     "build-data": "node scripts/build-data.js",

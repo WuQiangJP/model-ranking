@@ -7,7 +7,7 @@
       "unit": "index",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "Artificial Analysis 综合智能指数 v5.0.1，由 AA-Briefcase v1.1、AutomationBench-AA、Terminal-Bench 4.0、FrontierCode 2.0、AA-Omniscience v1.1、GDP.pdf、HLE-Diamond、CritPt v2 (Hard Subset)、Terminal-Bench-Science 0.1 共 9 项评测加权得到。分数为指数化分值，非百分比。",
+      "description": "Artificial Analysis インテリジェンス指数 v5.0.1。AA-Briefcase v1.1、AutomationBench-AA、Terminal-Bench 4.0、FrontierCode 2.0、AA-Omniscience v1.1、GDP.pdf、HLE-Diamond、CritPt v2（Hard Subset）、Terminal-Bench-Science 0.1 の 9 項目の評価を加重平均して算出。スコアは指数化された値で、パーセンテージではない。",
       "source_name": "Artificial Analysis",
       "source_url": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"
     },
@@ -17,7 +17,7 @@
       "unit": "elo",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "Artificial Analysis 的 agentic 知识工作基准，聚合 rubric 通过率、分析质量 Elo 与呈现质量 Elo。为私有评测，仅公开聚合 Elo。",
+      "description": "Artificial Analysis が提供するエージェント型ナレッジワークのベンチマーク。ルーブリックの通過率、分析品質 Elo、成果物品質 Elo を統合した値。非公開の評価であり、集計された Elo のみ公開されている。",
       "source_name": "Artificial Analysis",
       "source_url": "https://artificialanalysis.ai/evaluations/aa-briefcase"
     },
@@ -27,8 +27,8 @@
       "unit": "percent",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "多任务语言理解基准的高难度版本，值为准确率百分比。仅采用模型厂商官方发布的结果。",
-      "source_name": "厂商官方技术报告",
+      "description": "多肢選択式の言語理解ベンチマークの高難易度版。値は正解率（パーセンテージ）。ベンダーが公式に公表した結果のみを採用する。",
+      "source_name": "ベンダー公式技術レポート",
       "source_url": "https://www.llama.com/models/llama-4/"
     },
     {
@@ -37,8 +37,8 @@
       "unit": "percent",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "代码生成基准，取该时间窗内的题目集。值为准确率百分比。",
-      "source_name": "厂商官方技术报告",
+      "description": "コード生成のベンチマーク。この期間の問題セットを採用。値は正解率（パーセンテージ）。",
+      "source_name": "ベンダー公式技術レポート",
       "source_url": "https://www.llama.com/models/llama-4/"
     }
   ],
@@ -49,14 +49,14 @@
       "vendor": "OpenAI",
       "release_date": "2026-09-15",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 10,
         "output_per_million": 50,
         "currency": "USD",
         "cached_input_per_million": 1,
-        "notes": "短上下文（≤272K）标准价；超过 272K 的长上下文价格为输入 $20 / 输出 $75。来源为 OpenAI 官方定价页。"
+        "notes": "短いコンテキスト（272K 以下）の標準価格。272K を超えるロングコンテキストでは入力 $20 / 出力 $75。出典は OpenAI の公式価格ページ。"
       },
       "benchmarks": {
         "aa_intelligence": 57,
@@ -65,19 +65,19 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 14.7,
         "collected_at": "2026-11-05",
-        "notes": "Arena 页面显示的为「胜率/份额百分比」而非 Elo，口径与 Artificial Analysis 指数不同，不可直接比较。"
+        "notes": "Arena のページに表示されるのは Elo ではなく「勝率／シェアのパーセンテージ」であり、Artificial Analysis の指数とは測定方法が異なるため、直接比較はできない。"
       },
       "sources": [
         {
-          "name": "OpenAI API 文档 - Models",
+          "name": "OpenAI API ドキュメント - Models",
           "url": "https://developers.openai.com/api/docs/models",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "OpenAI API 文档 - Pricing",
+          "name": "OpenAI API ドキュメント - Pricing",
           "url": "https://developers.openai.com/api/docs/pricing",
           "retrieved_at": "2026-11-05"
         },
@@ -87,12 +87,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "发布日期为 Artificial Analysis 标注的 2026 年 9 月；OpenAI 官方文档未给出精确到日的发布日期，故采用榜单标注的月份首日。benchmarks 中仅 aa_intelligence 有公开数值。",
+      "notes": "リリース日は Artificial Analysis が表示する 2026 年 9 月。OpenAI の公式ドキュメントには日単位のリリース日が記載されていないため、ランキング側の表示に基づき月の初日を採用した。benchmarks で公開されている数値は aa_intelligence のみ。",
       "last_updated": "2026-11-05"
     },
     {
@@ -101,14 +101,14 @@
       "vendor": "OpenAI",
       "release_date": "2026-09-29",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 2,
         "output_per_million": 10,
         "currency": "USD",
         "cached_input_per_million": 0.1,
-        "notes": "短上下文标准价；长上下文输入 $4 / 输出 $15。"
+        "notes": "短いコンテキストの標準価格。ロングコンテキストでは入力 $4 / 出力 $15。"
       },
       "benchmarks": {
         "aa_intelligence": 55,
@@ -117,19 +117,19 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 12.51,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径，非 Elo。"
+        "notes": "Arena のパーセンテージ表示であり、Elo ではない。"
       },
       "sources": [
         {
-          "name": "OpenAI API 文档 - Models",
+          "name": "OpenAI API ドキュメント - Models",
           "url": "https://developers.openai.com/api/docs/models",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "OpenAI API 文档 - Pricing",
+          "name": "OpenAI API ドキュメント - Pricing",
           "url": "https://developers.openai.com/api/docs/pricing",
           "retrieved_at": "2026-11-05"
         },
@@ -139,12 +139,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "aa_briefcase_elo 未在该模型公开页面给出可读数值，填 null。",
+      "notes": "aa_briefcase_elo は当モデルの公開ページに読み取り可能な数値が記載されていないため、null とした。",
       "last_updated": "2026-11-05"
     },
     {
@@ -153,14 +153,14 @@
       "vendor": "OpenAI",
       "release_date": "2026-09-22",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 0.1,
         "output_per_million": 0.5,
         "currency": "USD",
         "cached_input_per_million": 0.01,
-        "notes": "短上下文标准价；长上下文输入 $0.2 / 输出 $0.75。"
+        "notes": "短いコンテキストの標準価格。ロングコンテキストでは入力 $0.2 / 出力 $0.75。"
       },
       "benchmarks": {
         "aa_intelligence": 28,
@@ -169,19 +169,19 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 1.89,
         "collected_at": "2026-11-05",
-        "notes": "取自 Arena「Max」档位；Arena 百分比口径。"
+        "notes": "Arena の「Max」推論設定から取得。Arena のパーセンテージ表示である。"
       },
       "sources": [
         {
-          "name": "OpenAI API 文档 - Models",
+          "name": "OpenAI API ドキュメント - Models",
           "url": "https://developers.openai.com/api/docs/models",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "OpenAI API 文档 - Pricing",
+          "name": "OpenAI API ドキュメント - Pricing",
           "url": "https://developers.openai.com/api/docs/pricing",
           "retrieved_at": "2026-11-05"
         },
@@ -191,12 +191,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "Arena 页面存在多个推理档位（Low/Medium/Max），此处统一记录 Max 档并在 arena_score.notes 说明。",
+      "notes": "Arena のページには複数の推論設定（Low / Medium / Max）が存在する。ここでは Max 設定に統一して記録し、arena_score.notes に明記した。",
       "last_updated": "2026-11-05"
     },
     {
@@ -205,14 +205,14 @@
       "vendor": "Anthropic",
       "release_date": "2026-09-29",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 4,
         "output_per_million": 20,
         "currency": "USD",
         "cached_input_per_million": 0.4,
-        "notes": "Anthropic 官方模型页列出的标准价；缓存输入价格未在该页给出，此处不填。"
+        "notes": "Anthropic の公式モデルページに記載された標準価格。キャッシュ入力価格は当該ページに記載がないため、ここでは設定しない。"
       },
       "benchmarks": {
         "aa_intelligence": 59,
@@ -221,19 +221,19 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 20.14,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+        "notes": "Arena のパーセンテージ表示。Max 推論設定に対応。"
       },
       "sources": [
         {
-          "name": "Anthropic 文档 - Models overview",
+          "name": "Anthropic ドキュメント - Models overview",
           "url": "https://platform.claude.com/docs/en/models/overview",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Anthropic 文档 - Pricing",
+          "name": "Anthropic ドキュメント - Pricing",
           "url": "https://platform.claude.com/docs/en/about-claude/pricing",
           "retrieved_at": "2026-11-05"
         },
@@ -243,12 +243,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "缓存输入价格未在 Anthropic 官方模型总览页明确列出，按规则填 null 而不是估算。",
+      "notes": "キャッシュ入力価格は Anthropic の公式モデル概要ページに明示的に記載されていないため、ルールに従い null とし、推定しなかった。",
       "last_updated": "2026-11-05"
     },
     {
@@ -257,14 +257,14 @@
       "vendor": "Anthropic",
       "release_date": "2026-09-29",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 2,
         "output_per_million": 10,
         "currency": "USD",
         "cached_input_per_million": 0.2,
-        "notes": "Anthropic 官方模型页标准价；缓存输入价格取自同页 pricing 表。"
+        "notes": "Anthropic の公式モデルページの標準価格。キャッシュ入力価格は同ページの pricing テーブルから取得した。"
       },
       "benchmarks": {
         "aa_intelligence": 55,
@@ -273,19 +273,19 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 15.42,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+        "notes": "Arena のパーセンテージ表示。Max 推論設定に対応。"
       },
       "sources": [
         {
-          "name": "Anthropic 文档 - Models overview",
+          "name": "Anthropic ドキュメント - Models overview",
           "url": "https://platform.claude.com/docs/en/models/overview",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Anthropic 文档 - Pricing",
+          "name": "Anthropic ドキュメント - Pricing",
           "url": "https://platform.claude.com/docs/en/about-claude/pricing",
           "retrieved_at": "2026-11-05"
         },
@@ -295,12 +295,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "部分缓存价格以「From」表述，此处取官方表格中列出的下限值，并在 pricing.notes 记录。",
+      "notes": "一部のキャッシュ価格が「From」という形式で示されているため、公式テーブルに記載された下限値を採用した。pricing.notes に記録済み。",
       "last_updated": "2026-11-05"
     },
     {
@@ -309,14 +309,14 @@
       "vendor": "Anthropic",
       "release_date": "2026-09-01",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 10,
         "output_per_million": 50,
         "currency": "USD",
         "cached_input_per_million": 1,
-        "notes": "Anthropic 官方模型页标准价；缓存输入按官方 pricing 表。"
+        "notes": "Anthropic の公式モデルページの標準価格。キャッシュ入力は公式の pricing テーブルによる。"
       },
       "benchmarks": {
         "aa_intelligence": 49,
@@ -325,19 +325,19 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 13.86,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+        "notes": "Arena のパーセンテージ表示。Max 推論設定に対応。"
       },
       "sources": [
         {
-          "name": "Anthropic 文档 - Models overview",
+          "name": "Anthropic ドキュメント - Models overview",
           "url": "https://platform.claude.com/docs/en/models/overview",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Anthropic 文档 - Pricing",
+          "name": "Anthropic ドキュメント - Pricing",
           "url": "https://platform.claude.com/docs/en/about-claude/pricing",
           "retrieved_at": "2026-11-05"
         },
@@ -347,12 +347,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "定位为高推理成本档；Arena 分数低于同代 Opus，属口径差异而非质量结论。",
+      "notes": "高めの推論コストの位置付け。Arena スコアは同世代の Opus より低いが、これは評価の測定方法の差異であり、品質の優劣を示すものではない。",
       "last_updated": "2026-11-05"
     },
     {
@@ -361,14 +361,14 @@
       "vendor": "Anthropic",
       "release_date": "2026-09-29",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 0.1,
         "output_per_million": 0.5,
         "currency": "USD",
         "cached_input_per_million": null,
-        "notes": "官方页以「From $0.10 / input MTok, From $0.50 / output MTok」表述，此处取下限量级；缓存价未列出。"
+        "notes": "公式ページは「From $0.10 / input MTok, From $0.50 / output MTok」と表示しており、ここでは下限を採用した。キャッシュ価格は記載がない。"
       },
       "benchmarks": {
         "aa_intelligence": null,
@@ -377,19 +377,19 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 0.62,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径；对应 High 档位。"
+        "notes": "Arena のパーセンテージ表示。High 推論設定に対応。"
       },
       "sources": [
         {
-          "name": "Anthropic 文档 - Models overview",
+          "name": "Anthropic ドキュメント - Models overview",
           "url": "https://platform.claude.com/docs/en/models/overview",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Anthropic 文档 - Pricing",
+          "name": "Anthropic ドキュメント - Pricing",
           "url": "https://platform.claude.com/docs/en/about-claude/pricing",
           "retrieved_at": "2026-11-05"
         },
@@ -399,12 +399,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "该模型在 Artificial Analysis 公开榜单上暂无可读的 Intelligence Index 数值，按规则填 null 而非估算。",
+      "notes": "このモデルの Intelligence Index の数値は Artificial Analysis の公開ランキングに読み取り可能な値として存在しないため、ルールに従い null とし、推定しなかった。",
       "last_updated": "2026-11-05"
     },
     {
@@ -413,14 +413,14 @@
       "vendor": "Google",
       "release_date": "2026-10-01",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 4,
         "output_per_million": 20,
         "currency": "USD",
         "cached_input_per_million": 0.2,
-        "notes": "Google 官方定价页：输入 $4 / 输出 $20（2026-12-01 起调整为输入 $2 / 输出 $10，见 pricing.notes 之外的备注）。缓存输入 $0.2。"
+        "notes": "Google の公式価格ページ：入力 $4 / 出力 $20（2026-12-01 以降は入力 $2 / 出力 $10 に変更。詳細は pricing.notes 以外の備考を参照）。キャッシュ入力 $0.2。"
       },
       "benchmarks": {
         "aa_intelligence": 60,
@@ -429,10 +429,10 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 16.72,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径；对应 High 档位。"
+        "notes": "Arena のパーセンテージ表示。High 推論設定に対応。"
       },
       "sources": [
         {
@@ -451,12 +451,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "Google 官方定价页注明 2026-12-01 起输入降至 $2、输出降至 $10；本记录按采集日有效的 $4 / $20 填写。发布日期按 Artificial Analysis 标注的 2026 年 10 月首日。",
+      "notes": "Google の公式価格ページでは 2026-12-01 以降に入力 $2 / 出力 $10 へ引き下げられることが明記されている。本レコードは取得日の時点で有効な $4 / $20 で記載した。リリース日は Artificial Analysis が表示する 2026 年 10 月の初日を採用した。",
       "last_updated": "2026-11-05"
     },
     {
@@ -465,14 +465,14 @@
       "vendor": "Google",
       "release_date": "2026-09-30",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 2,
         "output_per_million": 10,
         "currency": "USD",
         "cached_input_per_million": 0.1,
-        "notes": "Google 官方定价页：2026-11-30 前输入 $2 / 输出 $10，之后调整为输入 $4 / 输出 $20。缓存输入 $0.1。"
+        "notes": "Google の公式価格ページ：2026-11-30 までは入力 $2 / 出力 $10、以降は入力 $4 / 出力 $20 に変更。キャッシュ入力 $0.1。"
       },
       "benchmarks": {
         "aa_intelligence": 50,
@@ -481,10 +481,10 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 10.53,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径；对应 High 档位。"
+        "notes": "Arena のパーセンテージ表示。High 推論設定に対応。"
       },
       "sources": [
         {
@@ -503,12 +503,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "价格按采集日有效的促销价填写，官方页明确标注了后续调价日期。",
+      "notes": "価格は取得日時点で有効なプロモーション価格を適用した。公式ページには今後の価格改定日が明記されている。",
       "last_updated": "2026-11-05"
     },
     {
@@ -517,14 +517,14 @@
       "vendor": "Google",
       "release_date": "2026-09-15",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 0.75,
         "output_per_million": 3.75,
         "currency": "USD",
         "cached_input_per_million": 0.075,
-        "notes": "Google 官方定价页：2026-12-31 前输入 $0.75 / 输出 $3.75，之后调整为输入 $1.5 / 输出 $7.5。缓存输入 $0.075。"
+        "notes": "Google の公式価格ページ：2026-12-31 までは入力 $0.75 / 出力 $3.75、以降は入力 $1.5 / 出力 $7.5 に変更。キャッシュ入力 $0.075。"
       },
       "benchmarks": {
         "aa_intelligence": 31,
@@ -550,12 +550,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "Arena 榜单上未见该模型的独立条目，arena_score 填 null。",
+      "notes": "Arena のランキングにこのモデルの独立した項目が存在しないため、arena_score は null とした。",
       "last_updated": "2026-11-05"
     },
     {
@@ -564,14 +564,14 @@
       "vendor": "Meta",
       "release_date": "2025-04-05",
       "license": "open-weights-commercial-restricted",
-      "license_label": "Llama 4 Community License（开放权重，商用受限）",
+      "license_label": "Llama 4 Community License（オープンウェイト、商用利用に制限あり）",
       "context_window": 10000000,
       "pricing": {
         "input_per_million": 0.18,
         "output_per_million": 0.66,
         "currency": "USD",
         "cached_input_per_million": null,
-        "notes": "该价格为 Artificial Analysis 汇总的第三方托管均价（USD/1M tokens），非 Meta 官方 API 报价；Meta 未公布 Llama 4 的官方 API 单价，故不填官方价。"
+        "notes": "この価格は Artificial Analysis が集計した第三者ホスティングの平均価格（USD / 1M トークン）であり、Meta の公式 API 料金ではない。Meta は Llama 4 の公式 API 単価を公表していないため、公式価格は設定しない。"
       },
       "benchmarks": {
         "aa_intelligence": null,
@@ -587,7 +587,7 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Hugging Face - Llama 4 Scout 模型卡",
+          "name": "Hugging Face - Llama 4 Scout モデルカード",
           "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
           "retrieved_at": "2026-11-05"
         },
@@ -597,7 +597,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "官方模型卡未给出 Intelligence Index 分数，故 aa_intelligence 为 null；MMLU-Pro 与 LiveCodeBench 取自 Meta 官方 Llama 4 页面。",
+      "notes": "公式モデルカードに Intelligence Index のスコアが記載されていないため、aa_intelligence は null。MMLU-Pro と LiveCodeBench は Meta の公式 Llama 4 ページから取得した。",
       "last_updated": "2026-11-05"
     },
     {
@@ -606,14 +606,14 @@
       "vendor": "Meta",
       "release_date": "2025-04-05",
       "license": "open-weights-commercial-restricted",
-      "license_label": "Llama 4 Community License（开放权重，商用受限）",
+      "license_label": "Llama 4 Community License（オープンウェイト、商用利用に制限あり）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 0.25,
         "output_per_million": 0.92,
         "currency": "USD",
         "cached_input_per_million": null,
-        "notes": "第三方托管均价，非 Meta 官方 API 报价；缓存价格未披露。"
+        "notes": "第三者ホスティングの平均価格であり、Meta の公式 API 料金ではない。キャッシュ価格は開示されていない。"
       },
       "benchmarks": {
         "aa_intelligence": null,
@@ -629,7 +629,7 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Hugging Face - Llama 4 Maverick 模型卡",
+          "name": "Hugging Face - Llama 4 Maverick モデルカード",
           "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
           "retrieved_at": "2026-11-05"
         },
@@ -639,7 +639,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "Artificial Analysis 页面标注该模型 Intelligence Index 为 N/A（未评测），故填 null。",
+      "notes": "Artificial Analysis のページではこのモデルの Intelligence Index が N/A（未評価）と表示されているため、null とした。",
       "last_updated": "2026-11-05"
     },
     {
@@ -648,14 +648,14 @@
       "vendor": "Meta",
       "release_date": "2026-10-01",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 4,
         "output_per_million": 20,
         "currency": "USD",
         "cached_input_per_million": null,
-        "notes": "Artificial Analysis 汇总的托管均价；Meta 未公布该模型的官方 API 单价，缓存价未知。"
+        "notes": "Artificial Analysis が集計したホスティング平均価格。Meta はこのモデルの公式 API 単価を公表しておらず、キャッシュ価格も不明。"
       },
       "benchmarks": {
         "aa_intelligence": 44,
@@ -664,10 +664,10 @@
         "livecodebench": null
       },
       "arena_score": {
-        "board_name": "LMArena Arena（Agent 榜）",
+        "board_name": "LMArena Arena（エージェント部門）",
         "score": 9.42,
         "collected_at": "2026-11-05",
-        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+        "notes": "Arena のパーセンテージ表示。Max 推論設定に対応。"
       },
       "sources": [
         {
@@ -676,12 +676,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "该模型缺少官方定价页与官方技术报告，价格仅来自 Artificial Analysis 汇总，缓存价与官方许可证文本均未核实。",
+      "notes": "このモデルには公式の価格ページと公式技術レポートが存在しない。価格は Artificial Analysis の集計値のみに基づく。キャッシュ価格と公式ライセンスの本文は未確認。",
       "last_updated": "2026-11-05"
     },
     {
@@ -690,14 +690,14 @@
       "vendor": "Mistral AI",
       "release_date": "2026-10-29",
       "license": "open-weights-commercial-restricted",
-      "license_label": "Mistral Ecosystem Open-Weight License（开放权重，商用受限）",
+      "license_label": "Mistral Ecosystem Open-Weight License（オープンウェイト、商用利用に制限あり）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 0.7,
         "output_per_million": 2.1,
         "currency": "USD",
         "cached_input_per_million": 0.07,
-        "notes": "Mistral 官方 API 定价页标准价；Batch 价为标准价 5 折。"
+        "notes": "Mistral の公式 API 価格ページの標準価格。Batch 価格は標準価格の 50% 割引。"
       },
       "benchmarks": {
         "aa_intelligence": 26,
@@ -708,12 +708,12 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "Mistral 文档 - API pricing",
+          "name": "Mistral ドキュメント - API pricing",
           "url": "https://docs.mistral.ai/inference/pricing",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Mistral 文档 - Models Overview",
+          "name": "Mistral ドキュメント - Models Overview",
           "url": "https://docs.mistral.ai/models/overview/",
           "retrieved_at": "2026-11-05"
         },
@@ -723,7 +723,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "许可证为带商用限制的开放权重许可，Artificial Analysis 明确标注 Commercial use is allowed with restrictions。",
+      "notes": "ライセンスは商用利用に制限のあるオープンウェイトライセンス。Artificial Analysis は「Commercial use is allowed with restrictions」と明記している。",
       "last_updated": "2026-11-05"
     },
     {
@@ -739,7 +739,7 @@
         "output_per_million": 1.5,
         "currency": "USD",
         "cached_input_per_million": 0.05,
-        "notes": "Mistral 官方 API 定价页标准价；Batch 价为标准价 5 折。"
+        "notes": "Mistral の公式 API 価格ページの標準価格。Batch 価格は標準価格の 50% 割引。"
       },
       "benchmarks": {
         "aa_intelligence": null,
@@ -750,12 +750,12 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "Mistral 文档 - API pricing",
+          "name": "Mistral ドキュメント - API pricing",
           "url": "https://docs.mistral.ai/inference/pricing",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Hugging Face - Mistral Large 3 模型卡",
+          "name": "Hugging Face - Mistral Large 3 モデルカード",
           "url": "https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512",
           "retrieved_at": "2026-11-05"
         },
@@ -765,7 +765,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "Artificial Analysis 页面未公开该模型的 Intelligence Index 数值，填 null。上下文 256K 由 Artificial Analysis 与第三方汇总确认，官方 API 文档仅写 256k。",
+      "notes": "Artificial Analysis のページにはこのモデルの Intelligence Index の数値が公開されていないため、null とした。コンテキスト長 256K は Artificial Analysis と第三者の集計で確認したもので、公式 API ドキュメントは 256k とのみ記載している。",
       "last_updated": "2026-11-05"
     },
     {
@@ -781,7 +781,7 @@
         "output_per_million": 0.6,
         "currency": "USD",
         "cached_input_per_million": 0.015,
-        "notes": "Mistral 官方 API 定价页标准价。"
+        "notes": "Mistral の公式 API 価格ページの標準価格。"
       },
       "benchmarks": {
         "aa_intelligence": 4,
@@ -792,12 +792,12 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "Mistral 文档 - API pricing",
+          "name": "Mistral ドキュメント - API pricing",
           "url": "https://docs.mistral.ai/inference/pricing",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Mistral 文档 - Models Overview",
+          "name": "Mistral ドキュメント - Models Overview",
           "url": "https://docs.mistral.ai/models/overview/",
           "retrieved_at": "2026-11-05"
         },
@@ -807,7 +807,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "该模型在 Artificial Analysis 开放权重同类中评测样本极少（仅 3 个模型），分数偏低但可比性有限，阅读时需结合 notes 判断。",
+      "notes": "このモデルの Artificial Analysis におけるオープンウェイト同カテゴリの評価サンプルはごく少数（3 モデルのみ）である。スコアは低いものの比較可能性は限定的であり、notes を参照して判断する必要がある。",
       "last_updated": "2026-11-05"
     },
     {
@@ -823,7 +823,7 @@
         "output_per_million": 1.2,
         "currency": "USD",
         "cached_input_per_million": 0.006,
-        "notes": "DeepSeek 官方定价页：非高峰时段输入 $0.15 / 输出 $0.6，高峰时段输入 $0.3 / 输出 $1.2；缓存命中非高峰 $0.003、高峰 $0.006。此处取高峰价（更保守）。"
+        "notes": "DeepSeek の公式価格ページ：オフピーク時間帯は入力 $0.15 / 出力 $0.6、ピーク時間帯は入力 $0.3 / 出力 $1.2。キャッシュ命中はオフピーク $0.003、ピーク $0.006。ここではピーク価格（より保守的）を採用した。"
       },
       "benchmarks": {
         "aa_intelligence": 33,
@@ -834,12 +834,12 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "DeepSeek 官方文档 - Models & Pricing",
+          "name": "DeepSeek 公式ドキュメント - Models & Pricing",
           "url": "https://api-docs.deepseek.com/quick_start/pricing/",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Hugging Face - DeepSeek V4.1 Flash 模型卡",
+          "name": "Hugging Face - DeepSeek V4.1 Flash モデルカード",
           "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
           "retrieved_at": "2026-11-05"
         },
@@ -849,12 +849,12 @@
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Artificial Analysis 模型榜",
+          "name": "Artificial Analysis モデルランキング",
           "url": "https://artificialanalysis.ai/leaderboards/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "发布日期取自模型名中的 1017 日期戳与官方文档的 MODEL VERSION 字段。价格按高峰时段填写，非高峰时段更低，已在 pricing.notes 说明。",
+      "notes": "リリース日はモデル名の日付表記 1017 と公式ドキュメントの MODEL VERSION フィールドから取得した。価格はピーク時間帯のものを採用し、オフピーク時間帯はより低い。pricing.notes に明記済み。",
       "last_updated": "2026-11-05"
     },
     {
@@ -870,7 +870,7 @@
         "output_per_million": 3.96,
         "currency": "USD",
         "cached_input_per_million": 0.044,
-        "notes": "DeepSeek 官方定价页：高峰时段输入 $1.32 / 输出 $3.96；非高峰输入 $0.66 / 输出 $1.98。缓存命中高峰 $0.044。"
+        "notes": "DeepSeek の公式価格ページ：ピーク時間帯は入力 $1.32 / 出力 $3.96、オフピークは入力 $0.66 / 出力 $1.98。キャッシュ命中はピーク $0.044。"
       },
       "benchmarks": {
         "aa_intelligence": 23,
@@ -881,7 +881,7 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "DeepSeek 官方文档 - Models & Pricing",
+          "name": "DeepSeek 公式ドキュメント - Models & Pricing",
           "url": "https://api-docs.deepseek.com/quick_start/pricing/",
           "retrieved_at": "2026-11-05"
         },
@@ -891,7 +891,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "Artificial Analysis 页面以 DeepSeek V4 Pro 0813 标识该版本；价格取高峰时段。",
+      "notes": "Artificial Analysis のページでは「DeepSeek V4 Pro 0813」という表記でこのバージョンを識別している。価格はピーク時間帯のものを採用した。",
       "last_updated": "2026-11-05"
     },
     {
@@ -900,14 +900,14 @@
       "vendor": "Z AI",
       "release_date": "2026-08-18",
       "license": "open-weights-commercial-restricted",
-      "license_label": "GLM-5.3 License（开放权重，商用受限）",
+      "license_label": "GLM-5.3 License（オープンウェイト、商用利用に制限あり）",
       "context_window": 1048576,
       "pricing": {
         "input_per_million": 1.4,
         "output_per_million": 4.4,
         "currency": "USD",
         "cached_input_per_million": 0.14,
-        "notes": "Mistral 平台代售 Z.ai GLM 5.3 的标准价；Z.ai 自有渠道价格未在本次核实范围内。"
+        "notes": "Mistral プラットフォームで Z.ai の GLM 5.3 を取り扱う際の標準価格。Z.ai 独自のチャネルでの価格は今回の確認範囲外。"
       },
       "benchmarks": {
         "aa_intelligence": 32,
@@ -918,12 +918,12 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "Mistral 文档 - API pricing（Z.ai GLM 5.3）",
+          "name": "Mistral ドキュメント - API pricing（Z.ai GLM 5.3）",
           "url": "https://docs.mistral.ai/inference/pricing",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "Hugging Face - GLM-5.3 模型卡",
+          "name": "Hugging Face - GLM-5.3 モデルカード",
           "url": "https://huggingface.co/zai-org/GLM-5.3",
           "retrieved_at": "2026-11-05"
         },
@@ -933,7 +933,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "价格来自 Mistral 平台代售报价，非 Z.ai 官方直营定价；许可证为带商用限制的开放权重许可。",
+      "notes": "価格は Mistral プラットフォームでの販売価格であり、Z.ai の直営価格ではない。ライセンスは商用利用に制限のあるオープンウェイトライセンス。",
       "last_updated": "2026-11-05"
     },
     {
@@ -942,14 +942,14 @@
       "vendor": "xAI",
       "release_date": "2026-09-21",
       "license": "proprietary",
-      "license_label": "专有（闭源）",
+      "license_label": "プロプライエタリ（クローズドソース）",
       "context_window": 500000,
       "pricing": {
         "input_per_million": 2,
         "output_per_million": 6,
         "currency": "USD",
         "cached_input_per_million": 0.5,
-        "notes": "官方文档页标准价；超过 200K 上下文的部分按更高费率计费，未计入此处。"
+        "notes": "公式ドキュメントページの標準価格。200K を超えるコンテキストの部分はより高い料金が適用されるため、ここには含めていない。"
       },
       "benchmarks": {
         "aa_intelligence": 35,
@@ -960,12 +960,12 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "xAI 文档 - Grok Models & Pricing",
+          "name": "xAI ドキュメント - Grok Models & Pricing",
           "url": "https://docs.x.ai/developers/models",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "xAI 文档 - Grok 4.7",
+          "name": "xAI ドキュメント - Grok 4.7",
           "url": "https://docs.x.ai/developers/models/grok-4.7",
           "retrieved_at": "2026-11-05"
         },
@@ -975,7 +975,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "官方文档页 Last updated 为 2026-09-21，据此作为发布日期；知识截止 2026 年 5 月。",
+      "notes": "公式ドキュメントページの最終更新日が 2026-09-21 であるため、これをリリース日とした。ナレッジのカットオフは 2026 年 5 月。",
       "last_updated": "2026-11-05"
     },
     {
@@ -991,7 +991,7 @@
         "output_per_million": null,
         "currency": "USD",
         "cached_input_per_million": null,
-        "notes": "阿里云 Model Studio 官方页面未在本次核实中给出该模型的可读单价；第三方托管价格不采用。按规则填 null，禁止估算。"
+        "notes": "Alibaba Cloud Model Studio の公式ページには今回の確認で当モデルの読み取り可能な単価がなかった。第三者ホスティングの価格は採用しない。ルールに従い null とし、推定は禁止する。"
       },
       "benchmarks": {
         "aa_intelligence": null,
@@ -1002,22 +1002,22 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "Qwen 官方博客 - Qwen3: Think Deeper, Act Faster",
+          "name": "Qwen 公式ブログ - Qwen3: Think Deeper, Act Faster",
           "url": "https://qwenlm.github.io/blog/qwen3/",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "QwenLM/Qwen3 GitHub 仓库",
+          "name": "QwenLM/Qwen3 GitHub リポジトリ",
           "url": "https://github.com/QwenLM/Qwen3",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "阿里云 Model Studio - Recommended models",
+          "name": "Alibaba Cloud Model Studio - Recommended models",
           "url": "https://www.alibabacloud.com/help/en/model-studio/models",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "官方博客给出 128K 上下文与 Apache 2.0；Qwen3-2507 更新版将长上下文扩展到 1M，但本记录对应初始 Qwen3 发布版本。价格与基准分未找到官方可读来源，填 null。",
+      "notes": "公式ブログでは 128K のコンテキスト長と Apache 2.0 が示されている。Qwen3-2507 の更新版ではロングコンテキストが 1M に拡張されているが、本レコードは初期の Qwen3 リリース版に対応する。価格とベンチマークスコアは信頼できる公開ソースが見つからなかったため、null とした。",
       "last_updated": "2026-11-05"
     },
     {
@@ -1033,7 +1033,7 @@
         "output_per_million": null,
         "currency": "USD",
         "cached_input_per_million": null,
-        "notes": "官方未在本次核实中给出可读单价，填 null。"
+        "notes": "公式には今回の確認で読み取り可能な単価がなく、null とした。"
       },
       "benchmarks": {
         "aa_intelligence": null,
@@ -1044,17 +1044,17 @@
       "arena_score": null,
       "sources": [
         {
-          "name": "Qwen 官方博客 - Qwen3: Think Deeper, Act Faster",
+          "name": "Qwen 公式ブログ - Qwen3: Think Deeper, Act Faster",
           "url": "https://qwenlm.github.io/blog/qwen3/",
           "retrieved_at": "2026-11-05"
         },
         {
-          "name": "QwenLM/Qwen3 GitHub 仓库",
+          "name": "QwenLM/Qwen3 GitHub リポジトリ",
           "url": "https://github.com/QwenLM/Qwen3",
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "官方博客列出 128K 上下文与 Apache 2.0；无公开 Intelligence Index 数值。",
+      "notes": "公式ブログでは 128K のコンテキスト長と Apache 2.0 が示されている。Intelligence Index の公開数値は存在しない。",
       "last_updated": "2026-11-05"
     }
   ]

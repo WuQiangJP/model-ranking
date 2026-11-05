@@ -1,6 +1,6 @@
 /**
- * 本地预览服务器（仅用于开发与验收，不用于生产）。
- * 生产环境直接用任意静态托管（GitHub Pages / Netlify / Vercel）。
+ * ローカルプレビューサーバー（開発と検証用。本番では使用しない）。
+ * 本番環境は任意の静的ホスティングを利用する（GitHub Pages / Netlify / Vercel）。
  */
 'use strict';
 
@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => {
   let pathname = decodeURIComponent(url.pathname);
   if (pathname === '/') pathname = '/index.html';
 
-  // 防路径穿越
+  // パストラバーサルを防ぐ
   const filePath = path.normalize(path.join(DIST, pathname));
   if (!filePath.startsWith(DIST)) {
     res.writeHead(403);
@@ -53,7 +53,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`预览服务已启动：http://localhost:${PORT}/`);
-  console.log(`服务目录：${DIST}`);
-  console.log('按 Ctrl+C 停止');
+  console.log(`プレビューサービスを開始しました：http://localhost:${PORT}/`);
+  console.log(`配信ディレクトリ：${DIST}`);
+  console.log('Ctrl+C で停止します');
 });

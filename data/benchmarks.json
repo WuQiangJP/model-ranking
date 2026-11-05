@@ -7,7 +7,7 @@
       "unit": "index",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "Artificial Analysis 综合智能指数 v5.0.1，由 AA-Briefcase v1.1、AutomationBench-AA、Terminal-Bench 4.0、FrontierCode 2.0、AA-Omniscience v1.1、GDP.pdf、HLE-Diamond、CritPt v2 (Hard Subset)、Terminal-Bench-Science 0.1 共 9 项评测加权得到。分数为指数化分值，非百分比。",
+      "description": "Artificial Analysis インテリジェンス指数 v5.0.1。AA-Briefcase v1.1、AutomationBench-AA、Terminal-Bench 4.0、FrontierCode 2.0、AA-Omniscience v1.1、GDP.pdf、HLE-Diamond、CritPt v2（Hard Subset）、Terminal-Bench-Science 0.1 の 9 項目の評価を加重平均して算出。スコアは指数化された値で、パーセンテージではない。",
       "source_name": "Artificial Analysis",
       "source_url": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"
     },
@@ -17,7 +17,7 @@
       "unit": "elo",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "Artificial Analysis 的 agentic 知识工作基准，聚合 rubric 通过率、分析质量 Elo 与呈现质量 Elo。为私有评测，仅公开聚合 Elo。",
+      "description": "Artificial Analysis が提供するエージェント型ナレッジワークのベンチマーク。ルーブリックの通過率、分析品質 Elo、成果物品質 Elo を統合した値。非公開の評価であり、集計された Elo のみ公開されている。",
       "source_name": "Artificial Analysis",
       "source_url": "https://artificialanalysis.ai/evaluations/aa-briefcase"
     },
@@ -27,8 +27,8 @@
       "unit": "percent",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "多任务语言理解基准的高难度版本，值为准确率百分比。仅采用模型厂商官方发布的结果。",
-      "source_name": "厂商官方技术报告",
+      "description": "多肢選択式の言語理解ベンチマークの高難易度版。値は正解率（パーセンテージ）。ベンダーが公式に公表した結果のみを採用する。",
+      "source_name": "ベンダー公式技術レポート",
       "source_url": "https://www.llama.com/models/llama-4/"
     },
     {
@@ -37,8 +37,8 @@
       "unit": "percent",
       "direction": "higher",
       "higher_is_better": true,
-      "description": "代码生成基准，取该时间窗内的题目集。值为准确率百分比。",
-      "source_name": "厂商官方技术报告",
+      "description": "コード生成のベンチマーク。この期間の問題セットを採用。値は正解率（パーセンテージ）。",
+      "source_name": "ベンダー公式技術レポート",
       "source_url": "https://www.llama.com/models/llama-4/"
     }
   ],

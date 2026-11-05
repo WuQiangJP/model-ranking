@@ -1,6 +1,6 @@
 /**
- * 核心逻辑测试：校验、排序、筛选、空值显示。
- * 运行：node --test test/
+ * コアロジックのテスト：検証、ソート、フィルター、空値の表示。
+ * 実行：node --test test/
  */
 'use strict';
 
@@ -67,8 +67,8 @@ const sample = [
   },
 ];
 
-/* ---------------- 空值显示 ---------------- */
-test('displayValue：null/undefined/NaN/空串均显示「暂无数据」', () => {
+/* ---------------- 空値の表示 ---------------- */
+test('displayValue：null / undefined / NaN / 空文字列はすべて「データなし」', () => {
   assert.equal(displayValue(null), EMPTY);
   assert.equal(displayValue(undefined), EMPTY);
   assert.equal(displayValue(NaN), EMPTY);
@@ -76,18 +76,18 @@ test('displayValue：null/undefined/NaN/空串均显示「暂无数据」', () =
   assert.equal(displayValue('   '), EMPTY);
 });
 
-test('displayValue：正常值原样返回，格式化器生效', () => {
+test('displayValue：通常の値はそのまま返し、フォーマッタが適用される', () => {
   assert.equal(displayValue(42), '42');
   assert.equal(displayValue(0), '0');
   assert.equal(displayValue(false), 'false');
   assert.equal(displayValue(42, (v) => `$${v}`), '$42');
 });
 
-test('displayValue：格式化器返回空串时降级为「暂无数据」', () => {
+test('displayValue：フォーマッタが空文字列を返した場合は「データなし」に切り替わる', () => {
   assert.equal(displayValue(5, () => ''), EMPTY);
 });
 
-test('formatContextWindow：按数量级缩写', () => {
+test('formatContextWindow：桁数に応じて省略表記', () => {
   assert.equal(formatContextWindow(1048576), '1M');
   assert.equal(formatContextWindow(256000), '256K');
   assert.equal(formatContextWindow(10000000), '10M');
@@ -97,13 +97,13 @@ test('formatContextWindow：按数量级缩写', () => {
   assert.equal(formatContextWindow(undefined), EMPTY);
 });
 
-test('formatContextWindow：整数结果不带小数点', () => {
+test('formatContextWindow：整数の結果には小数点を付けない', () => {
   assert.equal(formatContextWindow(2000000), '2M');
   assert.equal(formatContextWindow(1000), '1K');
   assert.equal(formatContextWindow(2500000), '2.5M');
 });
 
-test('formatPrice：保留两位小数，null 显示暂无数据', () => {
+test('formatPrice：小数第 2 位まで表示し、null は「データなし」', () => {
   assert.equal(formatPrice(2), '$2.00');
   assert.equal(formatPrice(0.1), '$0.10');
   assert.equal(formatPrice(0.003), '$0.00');
@@ -111,102 +111,102 @@ test('formatPrice：保留两位小数，null 显示暂无数据', () => {
   assert.equal(formatPrice(undefined), EMPTY);
 });
 
-/* ---------------- 排序 ---------------- */
-test('sortModels：按综合分降序，缺值排最后', () => {
+/* ---------------- ソート ---------------- */
+test('sortModels：総合スコアの降順。欠損値は末尾', () => {
   const sorted = sortModels(sample, 'composite', 'desc');
   assert.deepEqual(sorted.map((m) => m.id), ['alpha', 'beta', 'delta', 'gamma']);
 });
 
-test('sortModels：按单项基准排序，null 排最后（降序）', () => {
+test('sortModels：個別ベンチマークでソートし、null を末尾に（降順）', () => {
   const sorted = sortModels(sample, 'benchmark:aa_intelligence', 'desc');
   assert.deepEqual(sorted.map((m) => m.id), ['alpha', 'beta', 'delta', 'gamma']);
 });
 
-test('sortModels：升序排列，缺失值排最前', () => {
+test('sortModels：昇順では欠損値を先頭に', () => {
   const sorted = sortModels(sample, 'benchmark:aa_intelligence', 'asc');
   assert.deepEqual(sorted.map((m) => m.id), ['gamma', 'delta', 'beta', 'alpha']);
 });
 
-test('sortModels：按价格升序，缺失值排最前', () => {
+test('sortModels：価格の昇順では欠損値を先頭に', () => {
   const sorted = sortModels(sample, 'price:input', 'asc');
   assert.deepEqual(sorted.map((m) => m.id), ['gamma', 'delta', 'beta', 'alpha']);
 });
 
-test('sortModels：可用 missingLast 覆盖默认缺失值位置', () => {
+test('sortModels：missingLast で欠損値の既定位置を上書きできる', () => {
   const sorted = sortModels(sample, 'price:input', 'asc', { missingLast: true });
   assert.deepEqual(sorted.map((m) => m.id), ['delta', 'beta', 'alpha', 'gamma']);
 });
 
-test('sortModels：按上下文长度降序', () => {
+test('sortModels：コンテキスト長の降順', () => {
   const sorted = sortModels(sample, 'context_window', 'desc');
   assert.deepEqual(sorted.map((m) => m.id), ['beta', 'alpha', 'delta', 'gamma']);
 });
 
-test('sortModels：按名称使用中文区域排序且不修改原数组', () => {
+test('sortModels：名前は日本語ロケールでソートし、元の配列は変更しない', () => {
   const original = [...sample];
   const sorted = sortModels(sample, 'name', 'asc');
   assert.deepEqual(sample.map((m) => m.id), original.map((m) => m.id));
   assert.deepEqual(sorted.map((m) => m.id), ['alpha', 'beta', 'delta', 'gamma']);
 });
 
-test('sortModels：非法 direction 降级为 desc', () => {
+test('sortModels：不正な direction は desc に切り替わる', () => {
   const sorted = sortModels(sample, 'benchmark:aa_intelligence', 'bogus');
   assert.deepEqual(sorted.map((m) => m.id), ['alpha', 'beta', 'delta', 'gamma']);
 });
 
-test('compositeScore：全空时返回 null，不返回 0 或 NaN', () => {
+test('compositeScore：すべて空の場合は null を返す（0 や NaN ではない）', () => {
   assert.equal(compositeScore({ benchmarks: {} }), null);
   assert.equal(compositeScore({ benchmarks: { a: null, b: undefined } }), null);
   assert.equal(compositeScore({}), null);
 });
 
-test('compositeScore：忽略 null 后取均值', () => {
+test('compositeScore：null を除外して平均を取る', () => {
   assert.equal(compositeScore({ benchmarks: { a: 40, b: 60, c: null } }), 50);
 });
 
-/* ---------------- 筛选 ---------------- */
-test('filterModels：按厂商筛选', () => {
+/* ---------------- フィルター ---------------- */
+test('filterModels：ベンダーで絞り込む', () => {
   const out = filterModels(sample, { vendor: 'OpenAI' });
   assert.deepEqual(out.map((m) => m.id), ['alpha', 'delta']);
 });
 
-test('filterModels：vendor=all 视为不筛选', () => {
+test('filterModels：vendor=all は絞り込みなしとみなす', () => {
   const out = filterModels(sample, { vendor: 'all' });
   assert.equal(out.length, sample.length);
 });
 
-test('filterModels：按开源/闭源筛选', () => {
+test('filterModels：オープン／クローズドで絞り込む', () => {
   const open = filterModels(sample, { license: 'open' });
   assert.deepEqual(open.map((m) => m.id), ['beta', 'gamma']);
   const closed = filterModels(sample, { license: 'closed' });
   assert.deepEqual(closed.map((m) => m.id), ['alpha', 'delta']);
 });
 
-test('filterModels：关键词搜索命中名称与厂商', () => {
+test('filterModels：キーワード検索は名前とベンダーに一致する', () => {
   const out = filterModels(sample, { query: 'openai' });
   assert.deepEqual(out.map((m) => m.id), ['alpha', 'delta']);
 });
 
-test('filterModels：关键词忽略首尾空白且不区分大小写', () => {
+test('filterModels：キーワードは前後の空白を無視し、大文字小文字を区別しない', () => {
   const out = filterModels(sample, { query: '  OPENAI  ' });
   assert.deepEqual(out.map((m) => m.id), ['alpha', 'delta']);
 });
 
-test('filterModels：搜索无命中返回空数组', () => {
-  assert.deepEqual(filterModels(sample, { query: '不存在的模型' }), []);
+test('filterModels：検索が一致しない場合は空配列を返す', () => {
+  assert.deepEqual(filterModels(sample, { query: '存在しないモデル' }), []);
 });
 
-test('filterModels：多条件取交集', () => {
+test('filterModels：複数条件は積集合を取る', () => {
   const out = filterModels(sample, { vendor: 'OpenAI', license: 'closed', query: 'delta' });
   assert.deepEqual(out.map((m) => m.id), ['delta']);
 });
 
-test('filterModels：无参数返回全部', () => {
+test('filterModels：引数なしはすべて返す', () => {
   assert.equal(filterModels(sample).length, sample.length);
 });
 
-/* ---------------- 许可证分桶 ---------------- */
-test('licenseBucket：正确分类', () => {
+/* ---------------- ライセンスの分類 ---------------- */
+test('licenseBucket：正しく分類される', () => {
   assert.equal(licenseBucket('proprietary'), 'closed');
   assert.equal(licenseBucket('apache-2.0'), 'open');
   assert.equal(licenseBucket('mit'), 'open');
@@ -215,21 +215,21 @@ test('licenseBucket：正确分类', () => {
   assert.equal(licenseBucket('something-else'), 'other');
 });
 
-test('licenseBucketLabel：返回中文标签', () => {
-  assert.equal(licenseBucketLabel('open'), '开放权重');
-  assert.equal(licenseBucketLabel('closed'), '专有闭源');
-  assert.equal(licenseBucketLabel('other'), '其他');
+test('licenseBucketLabel：日本語ラベルを返す', () => {
+  assert.equal(licenseBucketLabel('open'), 'オープンウェイト');
+  assert.equal(licenseBucketLabel('closed'), 'プロプライエタリ');
+  assert.equal(licenseBucketLabel('other'), 'その他');
 });
 
-/* ---------------- 汇总工具 ---------------- */
-test('availableBenchmarks：返回并集且排除全空键', () => {
+/* ---------------- 集計ユーティリティ ---------------- */
+test('availableBenchmarks：和集合を返し、すべて空のキーを除外する', () => {
   assert.deepEqual(availableBenchmarks(sample).sort(), ['aa_intelligence', 'mmlu_pro']);
 });
 
-test('dataLastUpdated：取最大日期', () => {
+test('dataLastUpdated：最大の日付を取る', () => {
   assert.equal(dataLastUpdated(sample), '2026-11-05');
 });
 
-test('dataLastUpdated：空列表返回 null', () => {
+test('dataLastUpdated：空のリストは null を返す', () => {
   assert.equal(dataLastUpdated([]), null);
 });

@@ -1,13 +1,13 @@
 /*
- * 视觉规范：高对比配色（WCAG AA），移动端优先。
- * 颜色对比度（实测，on --bg #f5f6f8）：
- *   --fg #1a1a1a     16.1:1  (正文)
- *   --muted #4a4a4a   8.2:1  (次要文字)
- *   --accent #0b5cad  6.2:1  (链接、强调)
- *   --border #6b6b6b  4.9:1  (边框、分隔)
- *   --other #5c4319   8.1:1  (on #f5efe0 徽章底)
- *   white on --accent 6.7:1  (按钮文字)
- *   全部满足 WCAG AA 小字 4.5:1 要求。
+ * ビジュアル仕様：高コントラスト配色（WCAG AA）、モバイルファースト。
+ * 色のコントラスト比（実測、--bg #f5f6f8 に対して）：
+ *   --fg #1a1a1a     16.1:1  （本文）
+ *   --muted #4a4a4a   8.2:1  （補足テキスト）
+ *   --accent #0b5cad  6.2:1  （リンク、強調）
+ *   --border #6b6b6b  4.9:1  （罫線、区切り）
+ *   --other #5c4319   8.1:1  （#f5efe0 のバッジ背景に対して）
+ *   white on --accent 6.7:1  （ボタンの文字）
+ *   すべて WCAG AA の本文 4.5:1 を満たす。
  */
 :root {
   --fg: #1a1a1a;
@@ -31,7 +31,8 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Yu Gothic",
+    Meiryo, "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
   color: var(--fg);
   background: var(--bg);
   line-height: 1.6;
@@ -68,7 +69,7 @@ body {
   color: #fff;
 }
 
-/* ---------- 头部 ---------- */
+/* ---------- ヘッダー ---------- */
 .site-header {
   background: var(--card);
   border-bottom: 1px solid var(--border);
@@ -94,7 +95,7 @@ body {
   max-width: 70ch;
 }
 
-/* ---------- 控制区 ---------- */
+/* ---------- コントロール ---------- */
 .controls {
   background: var(--card);
   border: 1px solid var(--border);
@@ -147,7 +148,7 @@ select:focus-visible, input:focus-visible, button:focus-visible, a:focus-visible
 }
 .btn-secondary:hover { background: #eef1f5; }
 
-/* ---------- 总表 ---------- */
+/* ---------- 一覧表 ---------- */
 h2 {
   font-size: 1.3rem;
   margin: 28px 0 10px;
@@ -228,7 +229,7 @@ table {
 .btn-detail:hover { background: #e3eefb; }
 .empty-val { color: var(--muted); font-style: italic; }
 
-/* ---------- 图表 ---------- */
+/* ---------- グラフ ---------- */
 .chart-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -272,7 +273,7 @@ table {
 }
 .alt-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
 
-/* ---------- 弹窗 ---------- */
+/* ---------- モーダル ---------- */
 .overlay {
   position: fixed;
   inset: 0;
@@ -351,7 +352,7 @@ table {
   margin-top: 8px;
 }
 
-/* ---------- 页脚 ---------- */
+/* ---------- フッター ---------- */
 .site-footer {
   background: var(--card);
   border-top: 1px solid var(--border);
@@ -368,7 +369,7 @@ table {
 }
 .fine { font-size: 0.8125rem; }
 
-/* ---------- 响应式 ---------- */
+/* ---------- レスポンシブ ---------- */
 @media (max-width: 720px) {
   .site-header h1 { font-size: 1.4rem; }
   .control-row { flex-direction: column; align-items: stretch; }
@@ -380,7 +381,7 @@ table {
   .overlay { padding: 12px 8px; }
 }
 
-/* ---------- 减少动效 ---------- */
+/* ---------- モーションの削減 ---------- */
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }

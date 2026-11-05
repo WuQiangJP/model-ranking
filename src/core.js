@@ -1,12 +1,12 @@
 /**
- * 纯函数工具库：排序、筛选、搜索、空值显示。
- * 浏览器与 Node 测试共用同一份实现，避免两套逻辑漂移。
+ * 純粋関数ユーティリティ：ソート、フィルター、検索、空値の表示。
+ * ブラウザと Node テストで同じ実装を共有し、両者のロジックがずれないようにする。
  */
 'use strict';
 
-export const EMPTY = '暂无数据';
+export const EMPTY = 'データなし';
 
-/** 把任意值渲染为可读文本；null/undefined/空串/NaN 一律显示「暂无数据」。 */
+/** 任意の値を表示用テキストに変換する。null / undefined / 空文字列 / NaN はすべて「データなし」を返す。 */
 export function displayValue(value, formatter = (v) => String(v)) {
   if (value === null || value === undefined) return EMPTY;
   if (typeof value === 'number' && Number.isNaN(value)) return EMPTY;
@@ -15,7 +15,7 @@ export function displayValue(value, formatter = (v) => String(v)) {
   return formatted === '' ? EMPTY : formatted;
 }
 
-/** 上下文长度友好显示：1000000 -> 1M，256000 -> 256K。 */
+/** コンテキスト長の表示を整形する：1000000 -> 1M、256000 -> 256K。 */
 export function formatContextWindow(tokens) {
   if (tokens === null || tokens === undefined) return EMPTY;
   const trim = (n) => (Number.isInteger(n) ? String(n) : String(Number(n.toFixed(1))));
@@ -24,46 +24,46 @@ export function formatContextWindow(tokens) {
   return String(tokens);
 }
 
-/** 价格显示：保留 2 位小数；null -> 暂无数据。 */
+/** 価格の表示：小数第 2 位まで。null は「データなし」。 */
 export function formatPrice(value) {
   if (value === null || value === undefined) return EMPTY;
   return `$${Number(value).toFixed(2)}`;
 }
 
 /**
- * 排序键。数值与缺失值分别处理：
- * - 数值之间按大小比较；
- * - 数值与 null/undefined/NaN 之间按「指定顺序」排列，不写死「缺失永远最后」；
- * - 同为缺失值时保持原始顺序（稳定排序）。
+ * ソート比較。数値と欠損値を個別に扱う：
+ * - 数値同士は大小で比較する。
+ * - 数値と null / undefined / NaN の間は「指定された順序」に並べる。欠損値を常に末尾に置くとは限らない。
+ * - 双方が欠損値のときは元の順序を保つ（安定ソート）。
  */
 function compareValues(a, b, direction, missingLast = true) {
   const aMissing = a === null || a === undefined || (typeof a === 'number' && Number.isNaN(a));
   const bMissing = b === null || b === undefined || (typeof b === 'number' && Number.isNaN(b));
   if (aMissing && bMissing) return 0;
   if (aMissing || bMissing) {
-    // missingLast=true 时缺失值排最后；false 时排最前。
+    // missingLast=true なら欠損値を末尾に、false なら先頭に置く。
     if (aMissing) return missingLast ? 1 : -1;
     return missingLast ? -1 : 1;
   }
-  // 数值与字符串混排时，统一转为字符串比较，避免 JS 的隐式转换差异。
+  // 数値と文字列が混在する場合、文字列に統一して比較し、JS の暗黙変換の差異を避ける。
   let cmp;
   if (typeof a === 'number' && typeof b === 'number') {
     cmp = a - b;
   } else if (typeof a === 'string' && typeof b === 'string') {
-    cmp = a.localeCompare(b, 'zh-CN');
+    cmp = a.localeCompare(b, 'ja');
   } else {
-    cmp = String(a).localeCompare(String(b), 'zh-CN');
+    cmp = String(a).localeCompare(String(b), 'ja');
   }
   if (cmp === 0) return 0;
   return (cmp > 0 ? 1 : -1) * (direction === 'asc' ? 1 : -1);
 }
 
 /**
- * 对模型列表排序。
+ * モデル一覧をソートする。
  * @param {Array<Object>} models
- * @param {string} key 排序字段，支持 'composite'、'benchmark:<key>'、'price:input'、'price:output'、'context_window'、'release_date'、'name'
+ * @param {string} key ソート項目。'composite'、'benchmark:<key>'、'price:input'、'price:output'、'context_window'、'release_date'、'name' をサポート
  * @param {'asc'|'desc'} direction
- * @param {{missingLast?: boolean}} options 升序时缺失值默认排最前，降序时排最后。
+ * @param {{missingLast?: boolean}} options 昇順では欠損値を先頭に、降順では末尾に配置する（デフォルト）。
  */
 export function sortModels(models, key, direction = 'desc', options = {}) {
   const effective = direction === 'asc' ? 'asc' : 'desc';
@@ -79,9 +79,10 @@ export function sortModels(models, key, direction = 'desc', options = {}) {
 }
 
 /**
- * 综合分：对模型所有非空基准做归一化后取均值。
- * 归一化在「当前列表内」进行，因此综合分仅用于本数据集内部的相对排序，
- * 不代表跨数据集的绝对能力。没有可用基准时返回 null。
+ * 総合スコア：モデルの全ての非 null ベンチマークを正規化して平均を取る。
+ * 正規化は「現在の一覧内」で行われるため、総合スコアはこのデータセット内での相対的な
+ * 順位付けにのみ用いられ、データセットをまたいだ絶対的な能力を示すものではない。
+ * 利用可能なベンチマークがない場合は null を返す。
  */
 export function compositeScore(model) {
   const values = Object.values(model.benchmarks ?? {}).filter(
@@ -89,12 +90,12 @@ export function compositeScore(model) {
   );
   if (values.length === 0) return null;
   const raw = values.reduce((sum, v) => sum + v, 0);
-  // 说明：不同基准量纲不同（index / elo / percent），直接求和只在
-  // 「同一批次内相对比较」的前提下有意义；因此同时返回均值供排序使用。
+  // 補足：ベンチマークごとに尺度が異なる（index / elo / percent）ため、単純な合計は
+  // 「同一バッチ内での相対比較」という前提でのみ意味を持つ。そのため平均値も返す。
   return raw / values.length;
 }
 
-/** 筛选：厂商、开源/闭源、关键词搜索。三者同时生效时取交集。 */
+/** フィルター：ベンダー、オープン／クローズド、キーワード検索。複数条件は同時に指定した場合に積集合を取る。 */
 export function filterModels(models, { vendor = null, license = null, query = '' } = {}) {
   const q = query.trim().toLowerCase();
   return models.filter((m) => {
@@ -119,7 +120,7 @@ export function filterModels(models, { vendor = null, license = null, query = ''
   });
 }
 
-/** 按 license 归为「开源 / 闭源 / 其他」三类，用于占比图。 */
+/** license を「オープン／クローズド／その他」の 3 分類に振り分ける。円グラフに用いる。 */
 export function licenseBucket(license) {
   if (license === 'proprietary') return 'closed';
   if (license === 'apache-2.0' || license === 'mit') return 'open';
@@ -128,12 +129,12 @@ export function licenseBucket(license) {
 }
 
 export function licenseBucketLabel(bucket) {
-  if (bucket === 'open') return '开放权重';
-  if (bucket === 'closed') return '专有闭源';
-  return '其他';
+  if (bucket === 'open') return 'オープンウェイト';
+  if (bucket === 'closed') return 'プロプライエタリ';
+  return 'その他';
 }
 
-/** 提取所有可用基准键（并集）。 */
+/** 利用可能なベンチマークキーをすべて抽出する（和集合）。 */
 export function availableBenchmarks(models) {
   const keys = new Set();
   for (const m of models) {
@@ -144,7 +145,7 @@ export function availableBenchmarks(models) {
   return [...keys];
 }
 
-/** 数据最后更新时间：取所有 last_updated 的最大值。 */
+/** データの最終更新日：全レコードの last_updated の最大値を取る。 */
 export function dataLastUpdated(models) {
   const dates = models.map((m) => m.last_updated).filter(Boolean).sort();
   return dates.length ? dates[dates.length - 1] : null;

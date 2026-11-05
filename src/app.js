@@ -1,6 +1,6 @@
 /**
- * 页面主逻辑。
- * 只读取 data/models.json 与 data/benchmarks.json，不在代码中写死任何模型信息。
+ * ページのメインロジック。
+ * data/models.json と data/benchmarks.json のみを読み込み、コード内にモデル情報を埋め込まない。
  */
 import {
   displayValue,
@@ -50,19 +50,19 @@ const state = {
   lastFocus: null,
 };
 
-/* ---------------- 数据加载 ---------------- */
+/* ---------------- データの読み込み ---------------- */
 async function loadData() {
   const [modelsRes, benchRes] = await Promise.all([
     fetch('./data/models.json', { cache: 'no-store' }),
     fetch('./data/benchmarks.json', { cache: 'no-store' }),
   ]);
-  if (!modelsRes.ok) throw new Error(`加载 data/models.json 失败：${modelsRes.status}`);
-  if (!benchRes.ok) throw new Error(`加载 data/benchmarks.json 失败：${benchRes.status}`);
+  if (!modelsRes.ok) throw new Error(`data/models.json の読み込みに失敗しました：${modelsRes.status}`);
+  if (!benchRes.ok) throw new Error(`data/benchmarks.json の読み込みに失敗しました：${benchRes.status}`);
 
   const modelsDoc = await modelsRes.json();
   const benchDoc = await benchRes.json();
 
-  // 基准定义以 models.json 内嵌的白名单为准；benchmarks.json 提供单位与说明。
+  // ベンチマーク定義は models.json 内のホワイトリストを正とする。benchmarks.json は単位と説明を提供する。
   const benchDefs = modelsDoc.benchmarks?.length
     ? modelsDoc.benchmarks
     : benchDoc.benchmarks ?? [];
@@ -70,7 +70,7 @@ async function loadData() {
   return { models: modelsDoc.models ?? [], benchmarkDefs: benchDefs };
 }
 
-/* ---------------- 渲染辅助 ---------------- */
+/* ---------------- 描画ヘルパー ---------------- */
 function el(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -100,14 +100,14 @@ function benchmarkName(key) {
   return def ? def.name : key;
 }
 
-/* ---------------- 头部信息 ---------------- */
+/* ---------------- ヘッダー情報 ---------------- */
 function renderHeader() {
   const last = dataLastUpdated(state.models);
-  setText(els.lastUpdated, last ? `${last}（采集日期）` : null);
-  els.modelCount.textContent = `共 ${state.models.length} 个模型`;
+  setText(els.lastUpdated, last ? `${last}（取得日）` : null);
+  els.modelCount.textContent = `全 ${state.models.length} モデル`;
 }
 
-/* ---------------- 总表 ---------------- */
+/* ---------------- 一覧テーブル ---------------- */
 function renderTable() {
   const { sortKey, sortDirection, filterVendor, filterLicense, search } = els;
   const filtered = filterModels(state.models, {
@@ -120,7 +120,7 @@ function renderTable() {
   els.tableBody.replaceChildren();
   els.emptyState.hidden = sorted.length > 0;
   els.tableHint.textContent = sorted.length
-    ? `当前显示 ${sorted.length} / ${state.models.length} 个模型`
+    ? `${sorted.length} / ${state.models.length} モデルを表示`
     : '';
 
   sorted.forEach((m, idx) => {
@@ -162,7 +162,7 @@ function renderTable() {
     setText(ctx, m.context_window === null ? null : formatContextWindow(m.context_window));
 
     const detailCell = el('td');
-    const btn = el('button', 'btn-detail', '查看详情');
+    const btn = el('button', 'btn-detail', '詳細を見る');
     btn.type = 'button';
     btn.setAttribute('aria-haspopup', 'dialog');
     btn.addEventListener('click', () => openDetail(m.id));
@@ -179,13 +179,13 @@ function renderTable() {
   });
 }
 
-/* ---------------- 厂商筛选选项 ---------------- */
+/* ---------------- ベンダーのフィルター項目 ---------------- */
 function renderVendorOptions() {
-  const vendors = [...new Set(state.models.map((m) => m.vendor))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
+  const vendors = [...new Set(state.models.map((m) => m.vendor))].sort((a, b) => a.localeCompare(b, 'ja'));
   const select = els.filterVendor;
   const current = select.value;
   select.replaceChildren();
-  const allOpt = el('option', null, '全部厂商');
+  const allOpt = el('option', null, 'すべてのベンダー');
   allOpt.value = 'all';
   select.append(allOpt);
   for (const v of vendors) {
@@ -196,13 +196,13 @@ function renderVendorOptions() {
   select.value = vendors.includes(current) ? current : 'all';
 }
 
-/* ---------------- 基准选择（条形图） ---------------- */
+/* ---------------- ベンチマーク選択（棒グラフ） ---------------- */
 function renderBenchmarkOptions() {
   const keys = availableBenchmarks(state.models);
   const select = els.barBenchmark;
   select.replaceChildren();
   if (keys.length === 0) {
-    const opt = el('option', null, '暂无可用基准');
+    const opt = el('option', null, '利用可能なベンチマークはありません');
     opt.value = '';
     select.append(opt);
     select.disabled = true;
@@ -214,15 +214,15 @@ function renderBenchmarkOptions() {
     opt.value = key;
     select.append(opt);
   }
-  // 默认选第一个基准
+  // デフォルトは先頭のベンチマークを選択する
   select.value = keys[0];
 }
 
-/* ---------------- 图表 ---------------- */
+/* ---------------- グラフ ---------------- */
 const CHART_COLORS = {
   open: '#0b5cad',
   closed: '#6a3d9a',
-  other: '#8a6d3b',
+  other: '#5c4319',
 };
 
 function renderBarChart() {
@@ -266,11 +266,11 @@ function renderBarChart() {
     }],
     graphic: hasData ? [] : [{
       type: 'text', left: 'center', top: 'middle',
-      style: { text: '暂无数据', fill: '#4a4a4a', fontSize: 14 },
+      style: { text: 'データなし', fill: '#4a4a4a', fontSize: 14 },
     }],
   }, true);
 
-  // 文字替代
+  // テキストによる代替表現
   els.barAltBody.replaceChildren();
   for (const r of rows) {
     const tr = document.createElement('tr');
@@ -294,14 +294,14 @@ function renderScatterChart() {
       vendor: m.vendor,
     }));
 
-  const vendors = [...new Set(points.map((p) => p.vendor))].sort((a, b) => a.localeCompare(b, 'zh-CN'));
+  const vendors = [...new Set(points.map((p) => p.vendor))].sort((a, b) => a.localeCompare(b, 'ja'));
   const palette = ['#0b5cad', '#6a3d9a', '#1a7f5a', '#b45309', '#a21caf', '#0e7490', '#9f1239', '#3f6212', '#7c2d12'];
   const series = vendors.map((v, i) => ({
     name: v,
     type: 'scatter',
     symbolSize: 14,
     itemStyle: { color: palette[i % palette.length], opacity: 0.85 },
-    // 用 label 承载模型名，保证键盘聚焦时也能通过 tooltip 读到
+    // モデル名は label に持たせ、キーボードフォーカス時にもツールチップで読めるようにする
     label: { show: false },
     emphasis: {
       label: { show: true, formatter: (p) => p.data.name, position: 'top', color: '#1a1a1a' },
@@ -316,11 +316,11 @@ function renderScatterChart() {
     grid: { left: 8, right: 24, top: 20, bottom: 60, containLabel: true },
     tooltip: {
       trigger: 'item',
-      formatter: (p) => `${p.data.name}<br>输入价格：$${p.data.value[0]} / 1M<br>智能指数：${p.data.value[1]}`,
+      formatter: (p) => `${p.data.name}<br>入力価格：$${p.data.value[0]} / 1M<br>インテリジェンス指数：${p.data.value[1]}`,
     },
     xAxis: {
       type: 'log',
-      name: '输入价格（USD / 1M tokens）',
+      name: '入力価格（USD / 1M トークン）',
       nameLocation: 'middle',
       nameGap: 28,
       min: 0.01,
@@ -329,7 +329,7 @@ function renderScatterChart() {
     },
     yAxis: {
       type: 'value',
-      name: '智能指数',
+      name: 'インテリジェンス指数',
       nameLocation: 'middle',
       nameGap: 40,
       axisLabel: { color: '#4a4a4a' },
@@ -338,7 +338,7 @@ function renderScatterChart() {
     series,
     graphic: points.length ? [] : [{
       type: 'text', left: 'center', top: 'middle',
-      style: { text: '暂无数据', fill: '#4a4a4a', fontSize: 14 },
+      style: { text: 'データなし', fill: '#4a4a4a', fontSize: 14 },
     }],
   }, true);
 
@@ -375,7 +375,7 @@ function renderPieChart() {
     animationDuration: 400,
     tooltip: {
       trigger: 'item',
-      formatter: (p) => `${p.name}：${p.value} 个（${p.percent}%）`,
+      formatter: (p) => `${p.name}：${p.value} 件（${p.percent}%）`,
     },
     legend: { bottom: 0, textStyle: { color: '#1a1a1a' } },
     series: [{
@@ -383,12 +383,12 @@ function renderPieChart() {
       radius: ['40%', '68%'],
       center: ['50%', '46%'],
       avoidLabelOverlap: true,
-      label: { formatter: '{b}\n{c} 个', color: '#1a1a1a' },
+      label: { formatter: '{b}\n{c} 件', color: '#1a1a1a' },
       data,
     }],
     graphic: data.length ? [] : [{
       type: 'text', left: 'center', top: 'middle',
-      style: { text: '暂无数据', fill: '#4a4a4a', fontSize: 14 },
+      style: { text: 'データなし', fill: '#4a4a4a', fontSize: 14 },
     }],
   }, true);
 
@@ -411,7 +411,7 @@ function renderAllCharts() {
   renderPieChart();
 }
 
-/* ---------------- 详情弹窗 ---------------- */
+/* ---------------- 詳細モーダル ---------------- */
 function renderDetail(m) {
   els.detailTitle.textContent = m.name;
   const body = els.detailBody;
@@ -426,26 +426,26 @@ function renderDetail(m) {
   const ddText = (text) => el('dd', null, text);
   const ddEmpty = () => el('dd', null, EMPTY);
 
-  addRow('模型 ID', ddText(m.id));
-  addRow('厂商', ddText(m.vendor));
-  addRow('发布日期', m.release_date ? ddText(m.release_date) : ddEmpty());
-  addRow('许可证', ddText(m.license_label ?? m.license));
-  addRow('上下文长度', m.context_window ? ddText(`${m.context_window.toLocaleString('zh-CN')} tokens（${formatContextWindow(m.context_window)}）`) : ddEmpty());
-  addRow('输入价格', m.pricing?.input_per_million != null ? ddText(`${formatPrice(m.pricing.input_per_million)} / 1M tokens`) : ddEmpty());
-  addRow('输出价格', m.pricing?.output_per_million != null ? ddText(`${formatPrice(m.pricing.output_per_million)} / 1M tokens`) : ddEmpty());
-  addRow('缓存输入价格', m.pricing?.cached_input_per_million != null ? ddText(`${formatPrice(m.pricing.cached_input_per_million)} / 1M tokens`) : ddEmpty());
-  addRow('数据最后更新', m.last_updated ? ddText(m.last_updated) : ddEmpty());
+  addRow('モデル ID', ddText(m.id));
+  addRow('ベンダー', ddText(m.vendor));
+  addRow('リリース日', m.release_date ? ddText(m.release_date) : ddEmpty());
+  addRow('ライセンス', ddText(m.license_label ?? m.license));
+  addRow('コンテキスト長', m.context_window ? ddText(`${m.context_window.toLocaleString('ja-JP')} トークン（${formatContextWindow(m.context_window)}）`) : ddEmpty());
+  addRow('入力価格', m.pricing?.input_per_million != null ? ddText(`${formatPrice(m.pricing.input_per_million)} / 1M トークン`) : ddEmpty());
+  addRow('出力価格', m.pricing?.output_per_million != null ? ddText(`${formatPrice(m.pricing.output_per_million)} / 1M トークン`) : ddEmpty());
+  addRow('キャッシュ入力価格', m.pricing?.cached_input_per_million != null ? ddText(`${formatPrice(m.pricing.cached_input_per_million)} / 1M トークン`) : ddEmpty());
+  addRow('データ最終更新', m.last_updated ? ddText(m.last_updated) : ddEmpty());
 
   body.append(grid);
 
-  // 基准
+  // ベンチマーク
   const benchSection = el('div', 'detail-section');
-  benchSection.append(el('h3', null, '基准分数'));
+  benchSection.append(el('h3', null, 'ベンチマークスコア'));
   const benchTable = document.createElement('table');
   benchTable.className = 'alt-table';
   const thead = document.createElement('thead');
   const headRow = document.createElement('tr');
-  headRow.append(el('th', null, '基准'), el('th', null, '分数'), el('th', null, '单位'));
+  headRow.append(el('th', null, 'ベンチマーク'), el('th', null, 'スコア'), el('th', null, '単位'));
   thead.append(headRow);
   const tbody = document.createElement('tbody');
   const keys = Object.keys(m.benchmarks ?? {}).sort();
@@ -473,7 +473,7 @@ function renderDetail(m) {
   // Arena
   if (m.arena_score) {
     const arenaSection = el('div', 'detail-section');
-    arenaSection.append(el('h3', null, 'Arena 分数'));
+    arenaSection.append(el('h3', null, 'Arena スコア'));
     const arenaTable = document.createElement('table');
     arenaTable.className = 'alt-table';
     const atbody = document.createElement('tbody');
@@ -481,7 +481,7 @@ function renderDetail(m) {
     row.append(
       el('td', null, m.arena_score.board_name),
       el('td', 'num', m.arena_score.score === null ? '—' : String(m.arena_score.score)),
-      el('td', null, `采集于 ${m.arena_score.collected_at}`)
+      el('td', null, `取得日：${m.arena_score.collected_at}`)
     );
     atbody.append(row);
     arenaTable.append(atbody);
@@ -490,9 +490,9 @@ function renderDetail(m) {
     body.append(arenaSection);
   }
 
-  // 来源
+  // 出典
   const srcSection = el('div', 'detail-section');
-  srcSection.append(el('h3', null, '数据来源'));
+  srcSection.append(el('h3', null, 'データ出典'));
   const list = el('ul', 'source-list');
   for (const s of m.sources ?? []) {
     const li = document.createElement('li');
@@ -502,18 +502,18 @@ function renderDetail(m) {
     a.rel = 'noopener noreferrer';
     a.textContent = s.name;
     li.append(a);
-    li.append(el('span', 'retrieved', `采集日期：${s.retrieved_at} · ${s.url}`));
+    li.append(el('span', 'retrieved', `取得日：${s.retrieved_at} · ${s.url}`));
     list.append(li);
   }
   srcSection.append(list);
   body.append(srcSection);
 
-  // 备注
+  // 備考
   if (m.notes) {
     const notesSection = el('div', 'detail-section');
-    notesSection.append(el('h3', null, '备注'));
+    notesSection.append(el('h3', null, '備考'));
     notesSection.append(el('p', 'notes-box', m.notes));
-    if (m.pricing?.notes) notesSection.append(el('p', 'notes-box', `价格说明：${m.pricing.notes}`));
+    if (m.pricing?.notes) notesSection.append(el('p', 'notes-box', `価格に関する注記：${m.pricing.notes}`));
     body.append(notesSection);
   }
 }
@@ -534,7 +534,7 @@ function closeDetail() {
   if (state.lastFocus && typeof state.lastFocus.focus === 'function') state.lastFocus.focus();
 }
 
-/* ---------------- 事件 ---------------- */
+/* ---------------- イベント ---------------- */
 function bindEvents() {
   const rerender = () => {
     renderTable();
@@ -571,7 +571,7 @@ function bindEvents() {
     }
   });
 
-  // 简单的焦点陷阱：Tab 在弹窗内循环
+  // シンプルなフォーカストラップ：Tab をモーダル内で循環させる
   els.overlay.addEventListener('keydown', (e) => {
     if (e.key !== 'Tab') return;
     const focusables = els.overlay.querySelectorAll('button, a[href], summary');
@@ -594,7 +594,7 @@ function bindEvents() {
   });
 }
 
-/* ---------------- 启动 ---------------- */
+/* ---------------- 起動 ---------------- */
 async function init() {
   try {
     const { models, benchmarkDefs } = await loadData();
@@ -603,7 +603,7 @@ async function init() {
   } catch (err) {
     els.tableBody.replaceChildren();
     const tr = document.createElement('tr');
-    const td = el('td', 'loading-cell', `数据加载失败：${err.message}`);
+    const td = el('td', 'loading-cell', `データの読み込みに失敗しました：${err.message}`);
     td.colSpan = 10;
     tr.append(td);
     els.tableBody.append(tr);
@@ -615,7 +615,7 @@ async function init() {
   renderBenchmarkOptions();
   renderTable();
 
-  // ECharts 为可选依赖：加载失败时表格仍可用
+  // ECharts は省略可能な依存：読み込みに失敗した場合もテーブルは利用できる
   if (window.echarts) {
     state.chartBar = window.echarts.init(els.chartBar);
     state.chartScatter = window.echarts.init(els.chartScatter);
@@ -623,7 +623,7 @@ async function init() {
     renderAllCharts();
   } else {
     for (const node of [els.chartBar, els.chartScatter, els.chartPie]) {
-      node.replaceChildren(el('p', 'empty-val', '图表库未加载，已改为文字表格展示。'));
+      node.replaceChildren(el('p', 'empty-val', 'グラフライブラリが読み込まれていないため、テキスト表で表示しています。'));
     }
     renderBarChart();
     renderScatterChart();

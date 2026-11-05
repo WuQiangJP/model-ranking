@@ -1,15 +1,15 @@
 /**
- * 数据校验脚本。
+ * データ検証スクリプト。
  *
- * 校验内容：
- *   1. data/models.json 与 data/benchmarks.json 符合 data/schema.json（JSON Schema 2020-12）。
- *   2. id 全局唯一且符合小写连字符规则。
- *   3. 基准键必须存在于 benchmarks 白名单；benchmarks 与 schema 中的定义一致。
- *   4. URL 为合法 http/https 绝对地址。
- *   5. 日期为 YYYY-MM-DD 且为真实存在的日期。
- *   6. 分数在合理范围内（0~10000），价格非负，上下文长度为正整数。
+ * 検証内容：
+ *   1. data/models.json と data/benchmarks.json が data/schema.json（JSON Schema 2020-12）に適合する。
+ *   2. id がグローバルに一意で、小文字ハイフン形式の規則に適合する。
+ *   3. ベンチマークキーが benchmarks ホワイトリストに存在し、benchmarks が schema 内の定義と一致する。
+ *   4. URL が正当な http/https の絶対アドレスである。
+ *   5. 日付が YYYY-MM-DD で、実際に存在する日付である。
+ *   6. スコアが妥当な範囲（0〜10000）内、価格が非負、コンテキスト長が正の整数である。
  *
- * 任一校验失败都以非零退出码退出。
+ * 検証が一つでも失敗した場合は、非ゼロの終了コードで終了する。
  */
 'use strict';
 
@@ -37,18 +37,18 @@ function warn(msg) {
 function readJson(rel) {
   const abs = path.join(ROOT, rel);
   if (!fs.existsSync(abs)) {
-    fail(`缺少文件：${rel}`);
+    fail(`ファイルがありません：${rel}`);
     return null;
   }
   try {
     return JSON.parse(fs.readFileSync(abs, 'utf8'));
   } catch (e) {
-    fail(`JSON 解析失败 ${rel}：${e.message}`);
+    fail(`JSON の解析に失敗しました ${rel}：${e.message}`);
     return null;
   }
 }
 
-/* ---------- 1. JSON Schema 校验 ---------- */
+/* ---------- 1. JSON Schema 検証 ---------- */
 const schema = readJson('data/schema.json');
 const modelsDoc = readJson('data/models.json');
 const benchmarksDoc = readJson('data/benchmarks.json');
@@ -61,62 +61,62 @@ if (schema && modelsDoc && benchmarksDoc) {
   if (!validate(modelsDoc)) {
     for (const e of validate.errors ?? []) {
       const where = e.instancePath || '(root)';
-      fail(`schema 校验失败 ${where}：${e.message}${e.params?.allowedValues ? `（允许值：${e.params.allowedValues.join(', ')}）` : ''}`);
+      fail(`schema 検証に失敗しました ${where}：${e.message}${e.params?.allowedValues ? `（許可値：${e.params.allowedValues.join(', ')}）` : ''}`);
     }
   } else {
-    console.log('✓ data/models.json 通过 JSON Schema 校验');
+    console.log('✓ data/models.json は JSON Schema 検証を通過しました');
   }
 
-  // benchmarks.json 的基准定义必须与 schema 中 model.benchmarks 允许的键一致。
+  // benchmarks.json のベンチマーク定義は、schema 内の model.benchmarks が許可するキーと一致しなければならない。
   const schemaKeys = new Set(schema.$defs.benchmark.properties.key.enum ?? []);
   const declaredKeys = new Set(benchmarksDoc.benchmarks?.map((b) => b.key) ?? []);
   for (const k of declaredKeys) {
     if (schemaKeys.size > 0 && !schemaKeys.has(k)) {
-      // schema 中 key 未枚举时跳过（本 schema 用 pattern 约束）
+      // schema がキーを列挙していない場合はスキップする（本 schema は pattern で制約している）
     }
   }
 
-  // 基准键唯一
+  // ベンチマークキーの一意性
   const benchKeys = benchmarksDoc.benchmarks?.map((b) => b.key) ?? [];
   const dupBench = benchKeys.filter((k, i) => benchKeys.indexOf(k) !== i);
   if (dupBench.length) {
-    fail(`benchmarks 键重复：${[...new Set(dupBench)].join(', ')}`);
+    fail(`benchmarks のキーが重複しています：${[...new Set(dupBench)].join(', ')}`);
   }
 
-  // 每个模型 benchmarks 的键必须存在于 benchmarks.json 白名单
+  // 各モデルの benchmarks のキーは、benchmarks.json のホワイトリストに存在しなければならない
   for (const m of modelsDoc.models ?? []) {
     for (const k of Object.keys(m.benchmarks ?? {})) {
       if (!declaredKeys.has(k)) {
-        fail(`${m.id} 的 benchmarks 含未定义键：${k}`);
+        fail(`${m.id} の benchmarks に未定義のキーが含まれています：${k}`);
       }
     }
   }
 
-  // benchmarks.json 与 models.json 的基准定义应保持一致
+  // benchmarks.json と models.json のベンチマーク定義は一致しているべき
   const modelBench = modelsDoc.benchmarks ?? [];
   if (JSON.stringify(modelBench) !== JSON.stringify(benchmarksDoc.benchmarks ?? [])) {
-    warn('data/models.json 与 data/benchmarks.json 的 benchmarks 定义不一致，建议保持一致');
+    warn('data/models.json と data/benchmarks.json の benchmarks 定義が一致していません。統一することを推奨します');
   }
 }
 
-/* ---------- 2. id 唯一性与格式 ---------- */
+/* ---------- 2. id の一意性と形式 ---------- */
 const models = modelsDoc?.models ?? [];
 const seen = new Map();
 for (const m of models) {
   if (seen.has(m.id)) {
-    fail(`id 重复：${m.id}（出现在第 ${seen.get(m.id)} 与当前记录）`);
+    fail(`id が重複しています：${m.id}（${seen.get(m.id)} 件目と現在のレコード）`);
   } else {
     seen.set(m.id, true);
   }
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(m.id)) {
-    fail(`id 格式非法（需小写连字符）：${m.id}`);
+    fail(`id の形式が不正です（小文字ハイフンが必要）：${m.id}`);
   }
   if (m.id !== m.id.toLowerCase()) {
-    fail(`id 必须全小写：${m.id}`);
+    fail(`id はすべて小文字でなければなりません：${m.id}`);
   }
 }
 
-/* ---------- 3. URL / 日期 / 数值 ---------- */
+/* ---------- 3. URL / 日付 / 数値 ---------- */
 const URL_RE = /^https?:\/\/[^\s/$.?#].[^\s]*$/i;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -128,13 +128,13 @@ function isRealDate(s) {
 }
 
 for (const m of models) {
-  const label = m.id ?? '(无 id)';
+  const label = m.id ?? '(id なし)';
 
-  if (!isRealDate(m.release_date)) fail(`${label} 的 release_date 非法：${m.release_date}`);
-  if (!isRealDate(m.last_updated)) fail(`${label} 的 last_updated 非法：${m.last_updated}`);
+  if (!isRealDate(m.release_date)) fail(`${label} の release_date が不正です：${m.release_date}`);
+  if (!isRealDate(m.last_updated)) fail(`${label} の last_updated が不正です：${m.last_updated}`);
 
   if (m.context_window !== null && (!Number.isInteger(m.context_window) || m.context_window <= 0)) {
-    fail(`${label} 的 context_window 必须为正整数或 null：${m.context_window}`);
+    fail(`${label} の context_window は正の整数または null でなければなりません：${m.context_window}`);
   }
 
   const p = m.pricing ?? {};
@@ -144,52 +144,52 @@ for (const m of models) {
     cached_input_per_million: p.cached_input_per_million,
   })) {
     if (val !== null && (typeof val !== 'number' || Number.isNaN(val) || val < 0)) {
-      fail(`${label} 的 pricing.${field} 必须为非负数或 null：${val}`);
+      fail(`${label} の pricing.${field} は非負の数または null でなければなりません：${val}`);
     }
   }
   if (p.currency !== null && !/^[A-Z]{3}$/.test(p.currency)) {
-    fail(`${label} 的 pricing.currency 必须为 ISO 4217 三字母大写或 null：${p.currency}`);
+    fail(`${label} の pricing.currency は ISO 4217 の 3 文字大文字または null でなければなりません：${p.currency}`);
   }
 
   for (const [k, v] of Object.entries(m.benchmarks ?? {})) {
     if (v === null) continue;
     if (typeof v !== 'number' || Number.isNaN(v)) {
-      fail(`${label} 的 benchmarks.${k} 必须为数字或 null：${v}`);
+      fail(`${label} の benchmarks.${k} は数値または null でなければなりません：${v}`);
     } else if (v < 0 || v > 10000) {
-      fail(`${label} 的 benchmarks.${k} 超出合理范围 [0, 10000]：${v}`);
+      fail(`${label} の benchmarks.${k} が妥当な範囲 [0, 10000] を超えています：${v}`);
     }
   }
 
   if (m.arena_score !== null) {
     if (!isRealDate(m.arena_score.collected_at)) {
-      fail(`${label} 的 arena_score.collected_at 非法：${m.arena_score.collected_at}`);
+      fail(`${label} の arena_score.collected_at が不正です：${m.arena_score.collected_at}`);
     }
     if (m.arena_score.score !== null && (typeof m.arena_score.score !== 'number' || m.arena_score.score < 0 || m.arena_score.score > 10000)) {
-      fail(`${label} 的 arena_score.score 超出合理范围：${m.arena_score.score}`);
+      fail(`${label} の arena_score.score が妥当な範囲を超えています：${m.arena_score.score}`);
     }
   }
 
   for (const [i, s] of (m.sources ?? []).entries()) {
-    if (!URL_RE.test(s.url)) fail(`${label} 的 sources[${i}].url 非法：${s.url}`);
-    if (!isRealDate(s.retrieved_at)) fail(`${label} 的 sources[${i}].retrieved_at 非法：${s.retrieved_at}`);
-    if (!s.name || !s.name.trim()) fail(`${label} 的 sources[${i}].name 为空`);
+    if (!URL_RE.test(s.url)) fail(`${label} の sources[${i}].url が不正です：${s.url}`);
+    if (!isRealDate(s.retrieved_at)) fail(`${label} の sources[${i}].retrieved_at が不正です：${s.retrieved_at}`);
+    if (!s.name || !s.name.trim()) fail(`${label} の sources[${i}].name が空です`);
   }
 
-  // 许可证枚举已由 schema 保证；此处补充语义检查
+  // ライセンスの列挙は schema が保証する。ここでは意味的な検査を補足する
   if (!m.license_label || !m.license_label.trim()) {
-    fail(`${label} 缺少 license_label`);
+    fail(`${label} に license_label がありません`);
   }
 }
 
-/* ---------- 4. 仓库内不得出现疑似密钥 ---------- */
+/* ---------- 4. リポジトリ内に疑似シークレットが存在しないことを確認 ---------- */
 const SECRET_PATTERNS = [
-  { re: /\b(sk-[A-Za-z0-9]{16,})\b/, label: 'OpenAI/通用 sk- 密钥' },
+  { re: /\b(sk-[A-Za-z0-9]{16,})\b/, label: 'OpenAI / 汎用の sk- キー' },
   { re: /\b(AKIA[0-9A-Z]{16})\b/, label: 'AWS Access Key ID' },
   { re: /\bghp_[A-Za-z0-9]{36}\b/, label: 'GitHub Personal Access Token' },
   { re: /\bgho_[A-Za-z0-9]{36}\b/, label: 'GitHub OAuth Token' },
   { re: /\bxox[baprs]-[A-Za-z0-9-]{10,}\b/, label: 'Slack Token' },
   { re: /\bAIza[0-9A-Za-z_-]{35}\b/, label: 'Google API Key' },
-  { re: /\b[pP][bB]kdf2[0-9A-Za-z+/=]{20,}\b/, label: 'PBKDF2 派生串' },
+  { re: /\b[pP][bB]kdf2[0-9A-Za-z+/=]{20,}\b/, label: 'PBKDF2 由来の文字列' },
 ];
 const SCAN_DIRS = ['data', 'src', 'scripts', 'test'];
 const SCAN_EXTS = new Set(['.js', '.json', '.md', '.html', '.css', '.yml', '.yaml', '.sh']);
@@ -208,7 +208,7 @@ function scanForSecrets() {
         } else if (SCAN_EXTS.has(path.extname(entry.name))) {
           const text = fs.readFileSync(full, 'utf8');
           for (const { re, label } of SECRET_PATTERNS) {
-            if (re.test(text)) findings.push(`${path.relative(ROOT, full)}：疑似${label}`);
+            if (re.test(text)) findings.push(`${path.relative(ROOT, full)}：${label} の可能性があります`);
           }
         }
       }
@@ -220,21 +220,21 @@ function scanForSecrets() {
 
 const secrets = scanForSecrets();
 if (secrets.length) {
-  for (const s of secrets) fail(`密钥扫描命中：${s}`);
+  for (const s of secrets) fail(`シークレットのスキャンにヒットしました：${s}`);
 } else {
-  console.log('✓ 密钥扫描未命中');
+  console.log('✓ シークレットのスキャンではヒットしませんでした');
 }
 
-/* ---------- 结果 ---------- */
+/* ---------- 結果 ---------- */
 for (const w of warnings) {
   console.warn(`⚠ ${w}`);
 }
 
 if (errors.length) {
-  console.error(`\n✗ 校验失败，共 ${errors.length} 个问题：`);
+  console.error(`\n✗ 検証に失敗しました。${errors.length} 件の問題があります：`);
   for (const e of errors) console.error(`  - ${e}`);
   process.exit(1);
 }
 
-console.log(`\n✓ 校验通过：${models.length} 个模型，${modelsDoc.benchmarks.length} 个基准`);
+console.log(`\n✓ 検証を通過しました：${models.length} モデル、${modelsDoc.benchmarks.length} ベンチマーク`);
 process.exit(0);

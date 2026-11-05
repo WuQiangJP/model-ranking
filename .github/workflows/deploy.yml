@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: GitHub Pages へのデプロイ
 
 on:
   push:
@@ -24,11 +24,11 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - name: 校验数据
+      - name: データを検証
         run: npm run validate
-      - name: 运行测试
+      - name: テストを実行
         run: npm test
-      - name: 构建站点
+      - name: サイトをビルド
         run: npm run build
 
   deploy:

@@ -1,6 +1,6 @@
 /**
- * 校验脚本测试：确保 validate.js 能拦截非法数据。
- * 这些用例会写入临时目录，不触碰真实数据文件。
+ * 検証スクリプトのテスト：validate.js が不正なデータを確実に弾くことを確認する。
+ * これらのケースは一時ディレクトリに書き込み、実際のデータファイルには触れない。
  */
 'use strict';
 
@@ -18,11 +18,13 @@ const SCRIPTS_DIR = path.join(ROOT, 'scripts');
 const VALIDATE = path.join(SCRIPTS_DIR, 'validate.js');
 
 /**
- * 在临时目录中运行校验脚本。
- * 校验脚本用 import.meta.url 定位自身目录，因此在沙箱中直接使用
- * 原始 scripts/validate.js 会读回真实仓库的 data/。这里把脚本复制进沙箱，
- * 使其 ROOT 指向沙箱，从而真正校验被篡改的数据。
- * 临时目录的清理由调用方负责，避免在子进程结束前被删除。
+ * 一時ディレクトリで検証スクリプトを実行する。
+ * 検証スクリプトは import.meta.url で自身の場所を特定するため、そのまま使うと
+ * 実際のリポジトリの data/ を読み戻してしまう。ここではスクリプトをサンドボックスに
+ * コピーし、ROOT がサンドボックスを指すようにすることで、改ざんされたデータを
+ * 真正に検証する。
+ * 一時ディレクトリのクリーンアップは呼び出し側が担当する。子プロセス終了前に
+ * 削除されないようにするため。
  * @returns {Promise<{code: number, stdout: string, stderr: string, cleanup: () => void}>}
  */
 function runValidateInSandbox(mutate) {
@@ -30,7 +32,7 @@ function runValidateInSandbox(mutate) {
   fs.cpSync(path.join(ROOT, 'data'), path.join(tmp, 'data'), { recursive: true });
   fs.mkdirSync(path.join(tmp, 'scripts'), { recursive: true });
   fs.copyFileSync(VALIDATE, path.join(tmp, 'scripts', 'validate.js'));
-  // 链接 node_modules，避免重复安装
+  // node_modules をリンクし、再インストールを避ける
   fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(tmp, 'node_modules'), 'dir');
   mutate(path.join(tmp, 'data'));
   const cleanup = () => fs.rmSync(tmp, { recursive: true, force: true });
@@ -51,12 +53,12 @@ function runValidateInSandbox(mutate) {
   });
 }
 
-test('validate.js：真实数据通过校验', () => {
+test('validate.js：実際のデータは検証を通過する', () => {
   const out = execFileSync(process.execPath, [VALIDATE], { cwd: ROOT, encoding: 'utf8' });
-  assert.match(out, /校验通过/);
+  assert.match(out, /検証を通過しました/);
 });
 
-test('validate.js：合法数据在沙箱中通过', async () => {
+test('validate.js：正常なデータはサンドボックス内で通過する', async () => {
   const res = await runValidateInSandbox(() => {});
   try {
     assert.equal(res.code, 0, res.stderr);
@@ -65,7 +67,7 @@ test('validate.js：合法数据在沙箱中通过', async () => {
   }
 });
 
-test('validate.js：id 重复时以非零退出', async () => {
+test('validate.js：id が重複した場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     const p = path.join(dataDir, 'models.json');
     const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -74,13 +76,13 @@ test('validate.js：id 重复时以非零退出', async () => {
   });
   try {
     assert.notEqual(res.code, 0);
-    assert.match(res.stderr, /id 重复/);
+    assert.match(res.stderr, /id が重複しています/);
   } finally {
     res.cleanup();
   }
 });
 
-test('validate.js：非法日期时以非零退出', async () => {
+test('validate.js：日付が不正な場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     const p = path.join(dataDir, 'models.json');
     const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -89,13 +91,13 @@ test('validate.js：非法日期时以非零退出', async () => {
   });
   try {
     assert.notEqual(res.code, 0);
-    assert.match(res.stderr, /release_date 非法/);
+    assert.match(res.stderr, /release_date が不正です/);
   } finally {
     res.cleanup();
   }
 });
 
-test('validate.js：URL 格式非法时以非零退出', async () => {
+test('validate.js：URL の形式が不正な場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     const p = path.join(dataDir, 'models.json');
     const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -104,13 +106,13 @@ test('validate.js：URL 格式非法时以非零退出', async () => {
   });
   try {
     assert.notEqual(res.code, 0);
-    assert.match(res.stderr, /url 非法/);
+    assert.match(res.stderr, /url が不正です/);
   } finally {
     res.cleanup();
   }
 });
 
-test('validate.js：分数超范围时以非零退出', async () => {
+test('validate.js：スコアが範囲を超える場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     const p = path.join(dataDir, 'models.json');
     const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -119,13 +121,13 @@ test('validate.js：分数超范围时以非零退出', async () => {
   });
   try {
     assert.notEqual(res.code, 0);
-    assert.match(res.stderr, /超出合理范围/);
+    assert.match(res.stderr, /妥当な範囲/);
   } finally {
     res.cleanup();
   }
 });
 
-test('validate.js：负价格时以非零退出', async () => {
+test('validate.js：価格が負の場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     const p = path.join(dataDir, 'models.json');
     const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -140,7 +142,7 @@ test('validate.js：负价格时以非零退出', async () => {
   }
 });
 
-test('validate.js：未知基准键时以非零退出', async () => {
+test('validate.js：未定義のベンチマークキーの場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     const p = path.join(dataDir, 'models.json');
     const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -149,13 +151,13 @@ test('validate.js：未知基准键时以非零退出', async () => {
   });
   try {
     assert.notEqual(res.code, 0);
-    assert.match(res.stderr, /未定义键/);
+    assert.match(res.stderr, /未定義のキー/);
   } finally {
     res.cleanup();
   }
 });
 
-test('validate.js：非法许可证枚举时以非零退出', async () => {
+test('validate.js：ライセンスの列挙が不正な場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     const p = path.join(dataDir, 'models.json');
     const doc = JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -164,19 +166,19 @@ test('validate.js：非法许可证枚举时以非零退出', async () => {
   });
   try {
     assert.notEqual(res.code, 0);
-    assert.match(res.stderr, /schema 校验失败/);
+    assert.match(res.stderr, /schema 検証に失敗しました/);
   } finally {
     res.cleanup();
   }
 });
 
-test('validate.js：缺少文件时以非零退出', async () => {
+test('validate.js：ファイルが存在しない場合は非ゼロで終了する', async () => {
   const res = await runValidateInSandbox((dataDir) => {
     fs.rmSync(path.join(dataDir, 'models.json'));
   });
   try {
     assert.notEqual(res.code, 0);
-    assert.match(res.stderr, /缺少文件/);
+    assert.match(res.stderr, /ファイルがありません/);
   } finally {
     res.cleanup();
   }

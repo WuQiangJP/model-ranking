@@ -1,7 +1,7 @@
 /**
- * 构建脚本：把 src/ 与 data/ 组装为可部署的纯静态站点产物 dist/。
+ * ビルドスクリプト：src/ と data/ を組み合わせて、デプロイ可能な完全な静的サイト成果物 dist/ を生成する。
  *
- * 产物结构：
+ * 成果物の構成：
  *   dist/index.html
  *   dist/styles.css
  *   dist/app.js
@@ -11,8 +11,8 @@
  *   dist/data/benchmarks.json
  *   dist/data/schema.json
  *
- * 不引入打包器：源码本身已是浏览器可直接运行的 ES Module，
- * 复制即可部署，长期维护成本最低。
+ * バンドラーを導入しない：ソース自体がブラウザで直接実行可能な ES Module であるため、
+ * コピーすればデプロイでき、長期的なメンテナンスコストが最も低い。
  */
 'use strict';
 
@@ -47,7 +47,7 @@ function copyFile(from, to) {
 }
 
 function build() {
-  // 构建前先校验，避免把非法数据发布出去
+  // ビルド前に検証し、不正なデータが公開されないようにする
   execFileSync(process.execPath, [path.join(ROOT, 'scripts', 'validate.js')], {
     cwd: ROOT,
     stdio: 'inherit',
@@ -55,19 +55,19 @@ function build() {
 
   rmrf(DIST);
 
-  // 站点资源
+  // サイトのリソース
   copyFile(path.join(SRC, 'index.html'), path.join(DIST, 'index.html'));
   copyFile(path.join(SRC, 'styles.css'), path.join(DIST, 'styles.css'));
   copyFile(path.join(SRC, 'app.js'), path.join(DIST, 'app.js'));
   copyFile(path.join(SRC, 'core.js'), path.join(DIST, 'core.js'));
   copyFile(path.join(SRC, 'vendor', 'echarts.min.js'), path.join(DIST, 'vendor', 'echarts.min.js'));
 
-  // 数据：唯一数据源，原样复制
+  // データ：唯一のデータソース。そのままコピーする
   copyFile(path.join(DATA, 'models.json'), path.join(DIST, 'data', 'models.json'));
   copyFile(path.join(DATA, 'benchmarks.json'), path.join(DIST, 'data', 'benchmarks.json'));
   copyFile(path.join(DATA, 'schema.json'), path.join(DIST, 'data', 'schema.json'));
 
-  // 产物清单
+  // 成果物の一覧
   const files = [];
   const walk = (d, base = d) => {
     for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
@@ -83,10 +83,10 @@ function build() {
     return sum + fs.statSync(p).size;
   }, 0);
 
-  console.log(`✓ 构建完成：${DIST}`);
-  console.log(`  文件数：${files.length}`);
-  console.log(`  总大小：${(totalBytes / 1024).toFixed(1)} KB`);
-  console.log('  入口：dist/index.html');
+  console.log(`✓ ビルドが完了しました：${DIST}`);
+  console.log(`  ファイル数：${files.length}`);
+  console.log(`  合計サイズ：${(totalBytes / 1024).toFixed(1)} KB`);
+  console.log('  エントリーポイント：dist/index.html');
 }
 
 build();
