@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="大模型排行榜：按综合分、基准、价格与上下文长度对比主流大模型，数据全部来自可核实的公开来源。">
+  <title>大模型排行榜 | Model Ranking</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <h1>大模型排行榜</h1>
+      <p class="tagline">按综合智能指数、单项基准、价格与上下文长度对比主流大模型</p>
+      <p class="meta-line">
+        <span>数据最后更新时间：<strong id="last-updated">加载中…</strong></span>
+        <span class="sep" aria-hidden="true">·</span>
+        <span id="model-count">加载中…</span>
+      </p>
+      <p class="disclaimer">
+        数据来源为各厂商官方页面与公开榜单（详见页面底部「数据来源说明」）。数据可能存在延迟，
+        所有字段以采集时页面显示为准；未核实的字段一律显示「暂无数据」，不做估算。
+      </p>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <!-- 控制区 -->
+    <section class="controls" aria-label="筛选与排序控制">
+      <div class="control-row">
+        <div class="field">
+          <label for="sort-key">排序依据</label>
+          <select id="sort-key">
+            <option value="composite">综合分</option>
+            <option value="benchmark:aa_intelligence">Artificial Analysis 智能指数</option>
+            <option value="price:input">输入价格</option>
+            <option value="price:output">输出价格</option>
+            <option value="context_window">上下文长度</option>
+            <option value="release_date">发布日期</option>
+            <option value="name">名称</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="sort-direction">排序方向</label>
+          <select id="sort-direction">
+            <option value="desc">从高到低</option>
+            <option value="asc">从低到高</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="filter-vendor">厂商</label>
+          <select id="filter-vendor">
+            <option value="all">全部厂商</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="filter-license">开源 / 闭源</label>
+          <select id="filter-license">
+            <option value="all">全部</option>
+            <option value="open">开放权重</option>
+            <option value="closed">专有闭源</option>
+          </select>
+        </div>
+        <div class="field field-grow">
+          <label for="search">关键词搜索</label>
+          <input type="search" id="search" placeholder="搜索模型名、厂商或许可证…" autocomplete="off">
+        </div>
+        <div class="field">
+          <button id="reset" type="button" class="btn-secondary">重置</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 总表 -->
+    <section aria-labelledby="table-heading">
+      <h2 id="table-heading">排行榜总表</h2>
+      <p class="hint" id="table-hint" role="status" aria-live="polite"></p>
+      <div class="table-scroll">
+        <table id="ranking-table">
+          <caption class="sr-only">大模型排行榜总表，可排序</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="col-rank">排名</th>
+              <th scope="col">模型</th>
+              <th scope="col">厂商</th>
+              <th scope="col">许可证</th>
+              <th scope="col" class="num">综合分</th>
+              <th scope="col" class="num">智能指数</th>
+              <th scope="col" class="num">输入价格<br><span class="unit">USD / 1M tokens</span></th>
+              <th scope="col" class="num">输出价格<br><span class="unit">USD / 1M tokens</span></th>
+              <th scope="col" class="num">上下文<br><span class="unit">tokens</span></th>
+              <th scope="col">详情</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr><td colspan="10" class="loading-cell">正在加载数据…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="empty-state" id="empty-state" hidden>没有符合当前筛选条件的模型，请调整筛选或搜索关键词。</p>
+    </section>
+
+    <!-- 图表区 -->
+    <section aria-labelledby="charts-heading">
+      <h2 id="charts-heading">可视化对比</h2>
+
+      <div class="chart-grid">
+        <figure class="chart-card">
+          <figcaption>
+            <h3>基准分数横向条形图</h3>
+            <div class="chart-controls">
+              <label for="bar-benchmark">选择基准</label>
+              <select id="bar-benchmark"></select>
+            </div>
+          </figcaption>
+          <div id="chart-bar" class="chart" role="img" aria-label="基准分数横向条形图，具体数值见下方文字表格"></div>
+          <details class="chart-alt">
+            <summary>查看文字替代说明</summary>
+            <table class="alt-table" id="bar-alt-table">
+              <thead><tr><th scope="col">模型</th><th scope="col">分数</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </details>
+        </figure>
+
+        <figure class="chart-card">
+          <figcaption>
+            <h3>价格与性能散点图</h3>
+            <p class="hint">横轴为输入价格（USD / 1M tokens），纵轴为智能指数；悬停或聚焦可查看模型名。</p>
+          </figcaption>
+          <div id="chart-scatter" class="chart" role="img" aria-label="价格与性能散点图，具体数值见下方文字表格"></div>
+          <details class="chart-alt">
+            <summary>查看文字替代说明</summary>
+            <table class="alt-table" id="scatter-alt-table">
+              <thead><tr><th scope="col">模型</th><th scope="col">输入价格</th><th scope="col">智能指数</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </details>
+        </figure>
+
+        <figure class="chart-card">
+          <figcaption>
+            <h3>开源 / 闭源占比</h3>
+            <p class="hint">按许可证类型统计当前数据集内的模型数量。</p>
+          </figcaption>
+          <div id="chart-pie" class="chart" role="img" aria-label="开源与闭源占比饼图，具体数值见下方文字表格"></div>
+          <details class="chart-alt">
+            <summary>查看文字替代说明</summary>
+            <table class="alt-table" id="pie-alt-table">
+              <thead><tr><th scope="col">类别</th><th scope="col">数量</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </details>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <!-- 详情弹窗 -->
+  <div id="detail-overlay" class="overlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="detail-title" id="detail-modal">
+      <div class="modal-header">
+        <h2 id="detail-title">模型详情</h2>
+        <button id="detail-close" type="button" class="btn-close" aria-label="关闭详情">×</button>
+      </div>
+      <div class="modal-body" id="detail-body"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <h2>数据来源说明</h2>
+      <p>
+        本页面所有数据均来自公开可访问的来源，包括各模型厂商的官方发布页、官方 API 定价页与官方文档，
+        以及 Artificial Analysis、LMArena 等公开榜单的原始页面。每条记录在详情弹窗中列出其来源链接与采集日期。
+      </p>
+      <p>
+        未找到可靠来源的字段一律填 <code>null</code> 并在页面上显示为「暂无数据」，不做估算，也不引用未经核实的二手数据。
+        页面显示的数值为采集时点的快照，可能与当前实际值存在差异。
+      </p>
+      <p>
+        <a href="./data/models.json">下载原始数据（data/models.json）</a>
+        <span class="sep" aria-hidden="true">·</span>
+        <a href="./data/schema.json">查看数据校验规则（data/schema.json）</a>
+        <span class="sep" aria-hidden="true">·</span>
+        <a href="./data/benchmarks.json">查看基准定义（data/benchmarks.json）</a>
+      </p>
+      <p class="fine">本站为纯静态站点，不收集访问者信息，不设置 Cookie。</p>
+    </div>
+  </footer>
+
+  <script src="./vendor/echarts.min.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

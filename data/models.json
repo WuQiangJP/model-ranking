@@ -1,0 +1,1061 @@
+{
+  "schema_version": "1.0.0",
+  "benchmarks": [
+    {
+      "key": "aa_intelligence",
+      "name": "Artificial Analysis Intelligence Index",
+      "unit": "index",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "Artificial Analysis 综合智能指数 v5.0.1，由 AA-Briefcase v1.1、AutomationBench-AA、Terminal-Bench 4.0、FrontierCode 2.0、AA-Omniscience v1.1、GDP.pdf、HLE-Diamond、CritPt v2 (Hard Subset)、Terminal-Bench-Science 0.1 共 9 项评测加权得到。分数为指数化分值，非百分比。",
+      "source_name": "Artificial Analysis",
+      "source_url": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"
+    },
+    {
+      "key": "aa_briefcase_elo",
+      "name": "AA-Briefcase v1.1 Elo",
+      "unit": "elo",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "Artificial Analysis 的 agentic 知识工作基准，聚合 rubric 通过率、分析质量 Elo 与呈现质量 Elo。为私有评测，仅公开聚合 Elo。",
+      "source_name": "Artificial Analysis",
+      "source_url": "https://artificialanalysis.ai/evaluations/aa-briefcase"
+    },
+    {
+      "key": "mmlu_pro",
+      "name": "MMLU-Pro",
+      "unit": "percent",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "多任务语言理解基准的高难度版本，值为准确率百分比。仅采用模型厂商官方发布的结果。",
+      "source_name": "厂商官方技术报告",
+      "source_url": "https://www.llama.com/models/llama-4/"
+    },
+    {
+      "key": "livecodebench",
+      "name": "LiveCodeBench (2024-10-01 ~ 2025-02-01)",
+      "unit": "percent",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "代码生成基准，取该时间窗内的题目集。值为准确率百分比。",
+      "source_name": "厂商官方技术报告",
+      "source_url": "https://www.llama.com/models/llama-4/"
+    }
+  ],
+  "models": [
+    {
+      "id": "gpt-6-astra",
+      "name": "GPT-6 Astra",
+      "vendor": "OpenAI",
+      "release_date": "2026-09-15",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 10,
+        "output_per_million": 50,
+        "currency": "USD",
+        "cached_input_per_million": 1,
+        "notes": "短上下文（≤272K）标准价；超过 272K 的长上下文价格为输入 $20 / 输出 $75。来源为 OpenAI 官方定价页。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 57,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 14.7,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 页面显示的为「胜率/份额百分比」而非 Elo，口径与 Artificial Analysis 指数不同，不可直接比较。"
+      },
+      "sources": [
+        {
+          "name": "OpenAI API 文档 - Models",
+          "url": "https://developers.openai.com/api/docs/models",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "OpenAI API 文档 - Pricing",
+          "url": "https://developers.openai.com/api/docs/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - GPT-6 Astra",
+          "url": "https://artificialanalysis.ai/models/gpt-6-astra",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "发布日期为 Artificial Analysis 标注的 2026 年 9 月；OpenAI 官方文档未给出精确到日的发布日期，故采用榜单标注的月份首日。benchmarks 中仅 aa_intelligence 有公开数值。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "gpt-6-1-sol",
+      "name": "GPT-6.1 Sol",
+      "vendor": "OpenAI",
+      "release_date": "2026-09-29",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 2,
+        "output_per_million": 10,
+        "currency": "USD",
+        "cached_input_per_million": 0.1,
+        "notes": "短上下文标准价；长上下文输入 $4 / 输出 $15。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 55,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 12.51,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径，非 Elo。"
+      },
+      "sources": [
+        {
+          "name": "OpenAI API 文档 - Models",
+          "url": "https://developers.openai.com/api/docs/models",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "OpenAI API 文档 - Pricing",
+          "url": "https://developers.openai.com/api/docs/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - GPT-6.1 Sol",
+          "url": "https://artificialanalysis.ai/models/gpt-6-1-sol",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "aa_briefcase_elo 未在该模型公开页面给出可读数值，填 null。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "gpt-6-luna",
+      "name": "GPT-6 Luna",
+      "vendor": "OpenAI",
+      "release_date": "2026-09-22",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 0.1,
+        "output_per_million": 0.5,
+        "currency": "USD",
+        "cached_input_per_million": 0.01,
+        "notes": "短上下文标准价；长上下文输入 $0.2 / 输出 $0.75。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 28,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 1.89,
+        "collected_at": "2026-11-05",
+        "notes": "取自 Arena「Max」档位；Arena 百分比口径。"
+      },
+      "sources": [
+        {
+          "name": "OpenAI API 文档 - Models",
+          "url": "https://developers.openai.com/api/docs/models",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "OpenAI API 文档 - Pricing",
+          "url": "https://developers.openai.com/api/docs/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - GPT-6 Luna",
+          "url": "https://artificialanalysis.ai/models/gpt-6-luna",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "Arena 页面存在多个推理档位（Low/Medium/Max），此处统一记录 Max 档并在 arena_score.notes 说明。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "claude-opus-5-5",
+      "name": "Claude Opus 5.5",
+      "vendor": "Anthropic",
+      "release_date": "2026-09-29",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 4,
+        "output_per_million": 20,
+        "currency": "USD",
+        "cached_input_per_million": 0.4,
+        "notes": "Anthropic 官方模型页列出的标准价；缓存输入价格未在该页给出，此处不填。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 59,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 20.14,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+      },
+      "sources": [
+        {
+          "name": "Anthropic 文档 - Models overview",
+          "url": "https://platform.claude.com/docs/en/models/overview",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Anthropic 文档 - Pricing",
+          "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Claude Opus 5.5",
+          "url": "https://artificialanalysis.ai/models/claude-opus-5-5",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "缓存输入价格未在 Anthropic 官方模型总览页明确列出，按规则填 null 而不是估算。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "claude-sonnet-5-5",
+      "name": "Claude Sonnet 5.5",
+      "vendor": "Anthropic",
+      "release_date": "2026-09-29",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 2,
+        "output_per_million": 10,
+        "currency": "USD",
+        "cached_input_per_million": 0.2,
+        "notes": "Anthropic 官方模型页标准价；缓存输入价格取自同页 pricing 表。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 55,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 15.42,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+      },
+      "sources": [
+        {
+          "name": "Anthropic 文档 - Models overview",
+          "url": "https://platform.claude.com/docs/en/models/overview",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Anthropic 文档 - Pricing",
+          "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Claude Sonnet 5.5",
+          "url": "https://artificialanalysis.ai/models/claude-sonnet-5-5",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "部分缓存价格以「From」表述，此处取官方表格中列出的下限值，并在 pricing.notes 记录。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "claude-fable-5-1",
+      "name": "Claude Fable 5.1",
+      "vendor": "Anthropic",
+      "release_date": "2026-09-01",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 10,
+        "output_per_million": 50,
+        "currency": "USD",
+        "cached_input_per_million": 1,
+        "notes": "Anthropic 官方模型页标准价；缓存输入按官方 pricing 表。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 49,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 13.86,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+      },
+      "sources": [
+        {
+          "name": "Anthropic 文档 - Models overview",
+          "url": "https://platform.claude.com/docs/en/models/overview",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Anthropic 文档 - Pricing",
+          "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Claude Fable 5.1",
+          "url": "https://artificialanalysis.ai/models/claude-fable-5-1",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "定位为高推理成本档；Arena 分数低于同代 Opus，属口径差异而非质量结论。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "claude-haiku-5-5",
+      "name": "Claude Haiku 5.5",
+      "vendor": "Anthropic",
+      "release_date": "2026-09-29",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 0.1,
+        "output_per_million": 0.5,
+        "currency": "USD",
+        "cached_input_per_million": null,
+        "notes": "官方页以「From $0.10 / input MTok, From $0.50 / output MTok」表述，此处取下限量级；缓存价未列出。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 0.62,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径；对应 High 档位。"
+      },
+      "sources": [
+        {
+          "name": "Anthropic 文档 - Models overview",
+          "url": "https://platform.claude.com/docs/en/models/overview",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Anthropic 文档 - Pricing",
+          "url": "https://platform.claude.com/docs/en/about-claude/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Claude Haiku 5.5",
+          "url": "https://artificialanalysis.ai/models/claude-haiku-5-5",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "该模型在 Artificial Analysis 公开榜单上暂无可读的 Intelligence Index 数值，按规则填 null 而非估算。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "gemini-4-carbon",
+      "name": "Gemini 4 Carbon",
+      "vendor": "Google",
+      "release_date": "2026-10-01",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 4,
+        "output_per_million": 20,
+        "currency": "USD",
+        "cached_input_per_million": 0.2,
+        "notes": "Google 官方定价页：输入 $4 / 输出 $20（2026-12-01 起调整为输入 $2 / 输出 $10，见 pricing.notes 之外的备注）。缓存输入 $0.2。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 60,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 16.72,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径；对应 High 档位。"
+      },
+      "sources": [
+        {
+          "name": "Google AI - Gemini API Models",
+          "url": "https://ai.google.dev/gemini-api/docs/models",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Google AI - Gemini API Pricing",
+          "url": "https://ai.google.dev/gemini-api/docs/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Gemini 4 Carbon",
+          "url": "https://artificialanalysis.ai/models/gemini-4-carbon",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "Google 官方定价页注明 2026-12-01 起输入降至 $2、输出降至 $10；本记录按采集日有效的 $4 / $20 填写。发布日期按 Artificial Analysis 标注的 2026 年 10 月首日。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "gemini-4-argon",
+      "name": "Gemini 4 Argon",
+      "vendor": "Google",
+      "release_date": "2026-09-30",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 2,
+        "output_per_million": 10,
+        "currency": "USD",
+        "cached_input_per_million": 0.1,
+        "notes": "Google 官方定价页：2026-11-30 前输入 $2 / 输出 $10，之后调整为输入 $4 / 输出 $20。缓存输入 $0.1。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 50,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 10.53,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径；对应 High 档位。"
+      },
+      "sources": [
+        {
+          "name": "Google AI - Gemini 4 Argon",
+          "url": "https://ai.google.dev/gemini-api/docs/models/gemini-4-argon",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Google AI - Gemini API Pricing",
+          "url": "https://ai.google.dev/gemini-api/docs/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Gemini 4 Argon",
+          "url": "https://artificialanalysis.ai/models/gemini-4-argon",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "价格按采集日有效的促销价填写，官方页明确标注了后续调价日期。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "gemini-3-8-flash",
+      "name": "Gemini 3.8 Flash",
+      "vendor": "Google",
+      "release_date": "2026-09-15",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 0.75,
+        "output_per_million": 3.75,
+        "currency": "USD",
+        "cached_input_per_million": 0.075,
+        "notes": "Google 官方定价页：2026-12-31 前输入 $0.75 / 输出 $3.75，之后调整为输入 $1.5 / 输出 $7.5。缓存输入 $0.075。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 31,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Google AI - Gemini API Models",
+          "url": "https://ai.google.dev/gemini-api/docs/models",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Google AI - Gemini API Pricing",
+          "url": "https://ai.google.dev/gemini-api/docs/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Gemini 3.8 Flash",
+          "url": "https://artificialanalysis.ai/models/gemini-3-8-flash",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "Arena 榜单上未见该模型的独立条目，arena_score 填 null。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "llama-4-scout",
+      "name": "Llama 4 Scout",
+      "vendor": "Meta",
+      "release_date": "2025-04-05",
+      "license": "open-weights-commercial-restricted",
+      "license_label": "Llama 4 Community License（开放权重，商用受限）",
+      "context_window": 10000000,
+      "pricing": {
+        "input_per_million": 0.18,
+        "output_per_million": 0.66,
+        "currency": "USD",
+        "cached_input_per_million": null,
+        "notes": "该价格为 Artificial Analysis 汇总的第三方托管均价（USD/1M tokens），非 Meta 官方 API 报价；Meta 未公布 Llama 4 的官方 API 单价，故不填官方价。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": 74.3,
+        "livecodebench": 32.8
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Meta Llama - Llama 4",
+          "url": "https://www.llama.com/models/llama-4/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Hugging Face - Llama 4 Scout 模型卡",
+          "url": "https://huggingface.co/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Llama 4 Scout",
+          "url": "https://artificialanalysis.ai/models/llama-4-scout",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "官方模型卡未给出 Intelligence Index 分数，故 aa_intelligence 为 null；MMLU-Pro 与 LiveCodeBench 取自 Meta 官方 Llama 4 页面。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "llama-4-maverick",
+      "name": "Llama 4 Maverick",
+      "vendor": "Meta",
+      "release_date": "2025-04-05",
+      "license": "open-weights-commercial-restricted",
+      "license_label": "Llama 4 Community License（开放权重，商用受限）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 0.25,
+        "output_per_million": 0.92,
+        "currency": "USD",
+        "cached_input_per_million": null,
+        "notes": "第三方托管均价，非 Meta 官方 API 报价；缓存价格未披露。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": 80.5,
+        "livecodebench": 43.4
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Meta Llama - Llama 4",
+          "url": "https://www.llama.com/models/llama-4/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Hugging Face - Llama 4 Maverick 模型卡",
+          "url": "https://huggingface.co/meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Llama 4 Maverick",
+          "url": "https://artificialanalysis.ai/models/llama-4-maverick",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "Artificial Analysis 页面标注该模型 Intelligence Index 为 N/A（未评测），故填 null。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "muse-wonder",
+      "name": "Muse Wonder",
+      "vendor": "Meta",
+      "release_date": "2026-10-01",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 4,
+        "output_per_million": 20,
+        "currency": "USD",
+        "cached_input_per_million": null,
+        "notes": "Artificial Analysis 汇总的托管均价；Meta 未公布该模型的官方 API 单价，缓存价未知。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 44,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（Agent 榜）",
+        "score": 9.42,
+        "collected_at": "2026-11-05",
+        "notes": "Arena 显示的百分比口径；对应 Max 档位。"
+      },
+      "sources": [
+        {
+          "name": "Artificial Analysis - Muse Wonder",
+          "url": "https://artificialanalysis.ai/models/muse-wonder",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "该模型缺少官方定价页与官方技术报告，价格仅来自 Artificial Analysis 汇总，缓存价与官方许可证文本均未核实。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "mistral-large-4",
+      "name": "Mistral Large 4",
+      "vendor": "Mistral AI",
+      "release_date": "2026-10-29",
+      "license": "open-weights-commercial-restricted",
+      "license_label": "Mistral Ecosystem Open-Weight License（开放权重，商用受限）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 0.7,
+        "output_per_million": 2.1,
+        "currency": "USD",
+        "cached_input_per_million": 0.07,
+        "notes": "Mistral 官方 API 定价页标准价；Batch 价为标准价 5 折。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 26,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Mistral 文档 - API pricing",
+          "url": "https://docs.mistral.ai/inference/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Mistral 文档 - Models Overview",
+          "url": "https://docs.mistral.ai/models/overview/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Mistral Large 4",
+          "url": "https://artificialanalysis.ai/models/mistral-large-4",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "许可证为带商用限制的开放权重许可，Artificial Analysis 明确标注 Commercial use is allowed with restrictions。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "mistral-large-3",
+      "name": "Mistral Large 3",
+      "vendor": "Mistral AI",
+      "release_date": "2025-12-01",
+      "license": "apache-2.0",
+      "license_label": "Apache 2.0",
+      "context_window": 256000,
+      "pricing": {
+        "input_per_million": 0.5,
+        "output_per_million": 1.5,
+        "currency": "USD",
+        "cached_input_per_million": 0.05,
+        "notes": "Mistral 官方 API 定价页标准价；Batch 价为标准价 5 折。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Mistral 文档 - API pricing",
+          "url": "https://docs.mistral.ai/inference/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Hugging Face - Mistral Large 3 模型卡",
+          "url": "https://huggingface.co/mistralai/Mistral-Large-3-675B-Instruct-2512",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Mistral Large 3",
+          "url": "https://artificialanalysis.ai/models/mistral-large-3",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "Artificial Analysis 页面未公开该模型的 Intelligence Index 数值，填 null。上下文 256K 由 Artificial Analysis 与第三方汇总确认，官方 API 文档仅写 256k。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "mistral-small-4",
+      "name": "Mistral Small 4",
+      "vendor": "Mistral AI",
+      "release_date": "2026-03-26",
+      "license": "apache-2.0",
+      "license_label": "Apache 2.0",
+      "context_window": 256000,
+      "pricing": {
+        "input_per_million": 0.15,
+        "output_per_million": 0.6,
+        "currency": "USD",
+        "cached_input_per_million": 0.015,
+        "notes": "Mistral 官方 API 定价页标准价。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 4,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Mistral 文档 - API pricing",
+          "url": "https://docs.mistral.ai/inference/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Mistral 文档 - Models Overview",
+          "url": "https://docs.mistral.ai/models/overview/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Mistral Small 4",
+          "url": "https://artificialanalysis.ai/models/mistral-small-4",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "该模型在 Artificial Analysis 开放权重同类中评测样本极少（仅 3 个模型），分数偏低但可比性有限，阅读时需结合 notes 判断。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "deepseek-v4-1-flash-1017",
+      "name": "DeepSeek V4.1 Flash 1017",
+      "vendor": "DeepSeek",
+      "release_date": "2026-10-17",
+      "license": "mit",
+      "license_label": "MIT",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 0.3,
+        "output_per_million": 1.2,
+        "currency": "USD",
+        "cached_input_per_million": 0.006,
+        "notes": "DeepSeek 官方定价页：非高峰时段输入 $0.15 / 输出 $0.6，高峰时段输入 $0.3 / 输出 $1.2；缓存命中非高峰 $0.003、高峰 $0.006。此处取高峰价（更保守）。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 33,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "DeepSeek 官方文档 - Models & Pricing",
+          "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Hugging Face - DeepSeek V4.1 Flash 模型卡",
+          "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - DeepSeek V4.1 Flash 1017",
+          "url": "https://artificialanalysis.ai/models/deepseek-v4-1-flash-1017",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis 模型榜",
+          "url": "https://artificialanalysis.ai/leaderboards/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "发布日期取自模型名中的 1017 日期戳与官方文档的 MODEL VERSION 字段。价格按高峰时段填写，非高峰时段更低，已在 pricing.notes 说明。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "deepseek-v4-pro-0813",
+      "name": "DeepSeek V4 Pro 0813",
+      "vendor": "DeepSeek",
+      "release_date": "2026-08-13",
+      "license": "mit",
+      "license_label": "MIT",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 1.32,
+        "output_per_million": 3.96,
+        "currency": "USD",
+        "cached_input_per_million": 0.044,
+        "notes": "DeepSeek 官方定价页：高峰时段输入 $1.32 / 输出 $3.96；非高峰输入 $0.66 / 输出 $1.98。缓存命中高峰 $0.044。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 23,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "DeepSeek 官方文档 - Models & Pricing",
+          "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - DeepSeek V4 Pro",
+          "url": "https://artificialanalysis.ai/models/deepseek-v4-pro",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "Artificial Analysis 页面以 DeepSeek V4 Pro 0813 标识该版本；价格取高峰时段。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "glm-5-3",
+      "name": "GLM-5.3",
+      "vendor": "Z AI",
+      "release_date": "2026-08-18",
+      "license": "open-weights-commercial-restricted",
+      "license_label": "GLM-5.3 License（开放权重，商用受限）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 1.4,
+        "output_per_million": 4.4,
+        "currency": "USD",
+        "cached_input_per_million": 0.14,
+        "notes": "Mistral 平台代售 Z.ai GLM 5.3 的标准价；Z.ai 自有渠道价格未在本次核实范围内。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 32,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Mistral 文档 - API pricing（Z.ai GLM 5.3）",
+          "url": "https://docs.mistral.ai/inference/pricing",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Hugging Face - GLM-5.3 模型卡",
+          "url": "https://huggingface.co/zai-org/GLM-5.3",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - GLM-5.3",
+          "url": "https://artificialanalysis.ai/models/glm-5-3",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "价格来自 Mistral 平台代售报价，非 Z.ai 官方直营定价；许可证为带商用限制的开放权重许可。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "grok-4-7",
+      "name": "Grok 4.7",
+      "vendor": "SpaceXAI",
+      "release_date": "2026-09-21",
+      "license": "proprietary",
+      "license_label": "专有（闭源）",
+      "context_window": 500000,
+      "pricing": {
+        "input_per_million": 2,
+        "output_per_million": 6,
+        "currency": "USD",
+        "cached_input_per_million": 0.5,
+        "notes": "官方文档页标准价；超过 200K 上下文的部分按更高费率计费，未计入此处。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 35,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "SpaceXAI 文档 - Grok Models & Pricing",
+          "url": "https://docs.x.ai/developers/models",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "SpaceXAI 文档 - Grok 4.7",
+          "url": "https://docs.x.ai/developers/models/grok-4.7",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "Artificial Analysis - Grok 4.7",
+          "url": "https://artificialanalysis.ai/models/grok-4-7",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "官方文档页 Last updated 为 2026-09-21，据此作为发布日期；知识截止 2026 年 5 月。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "qwen3-235b-a22b",
+      "name": "Qwen3-235B-A22B",
+      "vendor": "Alibaba Cloud",
+      "release_date": "2025-04-28",
+      "license": "apache-2.0",
+      "license_label": "Apache 2.0",
+      "context_window": 131072,
+      "pricing": {
+        "input_per_million": null,
+        "output_per_million": null,
+        "currency": "USD",
+        "cached_input_per_million": null,
+        "notes": "阿里云 Model Studio 官方页面未在本次核实中给出该模型的可读单价；第三方托管价格不采用。按规则填 null，禁止估算。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Qwen 官方博客 - Qwen3: Think Deeper, Act Faster",
+          "url": "https://qwenlm.github.io/blog/qwen3/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "QwenLM/Qwen3 GitHub 仓库",
+          "url": "https://github.com/QwenLM/Qwen3",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "阿里云 Model Studio - Recommended models",
+          "url": "https://www.alibabacloud.com/help/en/model-studio/models",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "官方博客给出 128K 上下文与 Apache 2.0；Qwen3-2507 更新版将长上下文扩展到 1M，但本记录对应初始 Qwen3 发布版本。价格与基准分未找到官方可读来源，填 null。",
+      "last_updated": "2026-11-05"
+    },
+    {
+      "id": "qwen3-30b-a3b",
+      "name": "Qwen3-30B-A3B",
+      "vendor": "Alibaba Cloud",
+      "release_date": "2025-04-28",
+      "license": "apache-2.0",
+      "license_label": "Apache 2.0",
+      "context_window": 131072,
+      "pricing": {
+        "input_per_million": null,
+        "output_per_million": null,
+        "currency": "USD",
+        "cached_input_per_million": null,
+        "notes": "官方未在本次核实中给出可读单价，填 null。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Qwen 官方博客 - Qwen3: Think Deeper, Act Faster",
+          "url": "https://qwenlm.github.io/blog/qwen3/",
+          "retrieved_at": "2026-11-05"
+        },
+        {
+          "name": "QwenLM/Qwen3 GitHub 仓库",
+          "url": "https://github.com/QwenLM/Qwen3",
+          "retrieved_at": "2026-11-05"
+        }
+      ],
+      "notes": "官方博客列出 128K 上下文与 Apache 2.0；无公开 Intelligence Index 数值。",
+      "last_updated": "2026-11-05"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0.0",
+  "benchmarks": [
+    {
+      "key": "aa_intelligence",
+      "name": "Artificial Analysis Intelligence Index",
+      "unit": "index",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "Artificial Analysis 综合智能指数 v5.0.1，由 AA-Briefcase v1.1、AutomationBench-AA、Terminal-Bench 4.0、FrontierCode 2.0、AA-Omniscience v1.1、GDP.pdf、HLE-Diamond、CritPt v2 (Hard Subset)、Terminal-Bench-Science 0.1 共 9 项评测加权得到。分数为指数化分值，非百分比。",
+      "source_name": "Artificial Analysis",
+      "source_url": "https://artificialanalysis.ai/evaluations/artificial-analysis-intelligence-index"
+    },
+    {
+      "key": "aa_briefcase_elo",
+      "name": "AA-Briefcase v1.1 Elo",
+      "unit": "elo",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "Artificial Analysis 的 agentic 知识工作基准，聚合 rubric 通过率、分析质量 Elo 与呈现质量 Elo。为私有评测，仅公开聚合 Elo。",
+      "source_name": "Artificial Analysis",
+      "source_url": "https://artificialanalysis.ai/evaluations/aa-briefcase"
+    },
+    {
+      "key": "mmlu_pro",
+      "name": "MMLU-Pro",
+      "unit": "percent",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "多任务语言理解基准的高难度版本，值为准确率百分比。仅采用模型厂商官方发布的结果。",
+      "source_name": "厂商官方技术报告",
+      "source_url": "https://www.llama.com/models/llama-4/"
+    },
+    {
+      "key": "livecodebench",
+      "name": "LiveCodeBench (2024-10-01 ~ 2025-02-01)",
+      "unit": "percent",
+      "direction": "higher",
+      "higher_is_better": true,
+      "description": "代码生成基准，取该时间窗内的题目集。值为准确率百分比。",
+      "source_name": "厂商官方技术报告",
+      "source_url": "https://www.llama.com/models/llama-4/"
+    }
+  ],
+  "models": []
+}

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/model-ranking/schema.json",
+  "title": "ModelRankingData",
+  "description": "大模型排行榜数据集的 JSON Schema。data/models.json 与 data/benchmarks.json 必须通过本 schema 校验。",
+  "type": "object",
+  "required": ["schema_version", "benchmarks", "models"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "benchmarks": {
+      "type": "array",
+      "description": "基准定义列表，作为页面渲染与模型记录中 benchmarks 键的白名单。",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/benchmark" }
+    },
+    "models": {
+      "type": "array",
+      "description": "模型记录列表，是站点的唯一数据源。",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/model" }
+    }
+  },
+  "$defs": {
+    "benchmark": {
+      "type": "object",
+      "description": "单个基准的定义：单位、方向与来源。",
+      "required": ["key", "name", "unit", "direction", "higher_is_better", "description", "source_name", "source_url"],
+      "additionalProperties": false,
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$", "description": "基准键，与模型 benchmarks 对象的键一致。" },
+        "name": { "type": "string", "minLength": 1, "description": "展示名称。" },
+        "unit": { "type": "string", "enum": ["index", "elo", "percent", "score"] },
+        "direction": { "type": "string", "enum": ["higher", "lower"] },
+        "higher_is_better": { "type": "boolean" },
+        "description": { "type": "string", "minLength": 1 },
+        "source_name": { "type": "string", "minLength": 1 },
+        "source_url": { "type": "string", "format": "uri" }
+      }
+    },
+    "license": {
+      "type": "string",
+      "enum": [
+        "proprietary",
+        "open-weights",
+        "open-weights-commercial-restricted",
+        "open-weights-non-commercial",
+        "apache-2.0",
+        "mit"
+      ]
+    },
+    "pricing": {
+      "type": "object",
+      "required": ["input_per_million", "output_per_million", "currency", "cached_input_per_million", "notes"],
+      "additionalProperties": false,
+      "properties": {
+        "input_per_million": { "type": ["number", "null"], "minimum": 0, "description": "输入每百万 token 价格；未知为 null，禁止估算。" },
+        "output_per_million": { "type": ["number", "null"], "minimum": 0, "description": "输出每百万 token 价格；未知为 null。" },
+        "currency": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$", "description": "ISO 4217 币种代码，如 USD；未知为 null。" },
+        "cached_input_per_million": { "type": ["number", "null"], "minimum": 0, "description": "缓存命中输入每百万 token 价格；未知为 null。" },
+        "notes": { "type": "string", "description": "价格口径说明，例如是否为促销价、是否分峰谷时段。" }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": ["name", "url", "retrieved_at"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "retrieved_at": { "type": "string", "format": "date" }
+      }
+    },
+    "arena_score": {
+      "type": "object",
+      "required": ["board_name", "score", "collected_at", "notes"],
+      "additionalProperties": false,
+      "properties": {
+        "board_name": { "type": "string", "minLength": 1 },
+        "score": { "type": ["number", "null"] },
+        "collected_at": { "type": "string", "format": "date" },
+        "notes": { "type": "string" }
+      }
+    },
+    "model": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "vendor",
+        "release_date",
+        "license",
+        "context_window",
+        "pricing",
+        "benchmarks",
+        "arena_score",
+        "sources",
+        "notes",
+        "last_updated"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "全局唯一、小写连字符。"
+        },
+        "name": { "type": "string", "minLength": 1 },
+        "vendor": { "type": "string", "minLength": 1 },
+        "release_date": { "type": "string", "format": "date" },
+        "license": { "$ref": "#/$defs/license" },
+        "license_label": { "type": "string", "minLength": 1, "description": "许可证的可读名称，例如 Apache 2.0。" },
+        "context_window": { "type": ["integer", "null"], "minimum": 1, "description": "上下文长度，单位 token；未知为 null。" },
+        "pricing": { "$ref": "#/$defs/pricing" },
+        "benchmarks": {
+          "type": "object",
+          "description": "键必须在 benchmarks 白名单内；值未知为 null。",
+          "propertyNames": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+          "additionalProperties": { "type": ["number", "null"] }
+        },
+        "arena_score": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/arena_score" }
+          ]
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source" }
+        },
+        "notes": { "type": "string", "description": "字段缺失或存疑时的说明。" },
+        "last_updated": { "type": "string", "format": "date" }
+      }
+    }
+  }
+}

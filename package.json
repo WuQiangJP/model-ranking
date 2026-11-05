@@ -1,0 +1,24 @@
+{
+  "name": "model-ranking",
+  "version": "1.0.0",
+  "private": true,
+  "description": "大模型排行榜静态站点：数据驱动、可公开访问、可由 Agent 定期更新。",
+  "type": "module",
+  "scripts": {
+    "build-data": "node scripts/build-data.js",
+    "validate": "node scripts/validate.js",
+    "build": "node scripts/build.js",
+    "test": "node --test \"test/*.test.js\"",
+    "check": "npm run validate && npm run test && npm run build",
+    "serve": "node scripts/serve.js",
+    "add-model": "node scripts/add-model.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "eslint": "10.14.0"
+  }
+}
