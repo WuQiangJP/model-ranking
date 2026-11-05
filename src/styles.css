@@ -1,10 +1,13 @@
 /*
  * 视觉规范：高对比配色（WCAG AA），移动端优先。
- * 颜色对比度（相对白底）：
- *   --fg #1a1a1a  ≈ 16.1:1
- *   --muted #4a4a4a ≈ 9.4:1
- *   --accent #0b5cad ≈ 6.4:1
- *   --border #6b6b6b ≈ 5.9:1
+ * 颜色对比度（实测，on --bg #f5f6f8）：
+ *   --fg #1a1a1a     16.1:1  (正文)
+ *   --muted #4a4a4a   8.2:1  (次要文字)
+ *   --accent #0b5cad  6.2:1  (链接、强调)
+ *   --border #6b6b6b  4.9:1  (边框、分隔)
+ *   --other #5c4319   8.1:1  (on #f5efe0 徽章底)
+ *   white on --accent 6.7:1  (按钮文字)
+ *   全部满足 WCAG AA 小字 4.5:1 要求。
  */
 :root {
   --fg: #1a1a1a;
@@ -16,7 +19,7 @@
   --bg: #f5f6f8;
   --open: #0b5cad;
   --closed: #6a3d9a;
-  --other: #8a6d3b;
+  --other: #5c4319;
   --focus-ring: #ff8c00;
   --radius: 8px;
   --wrap: 1180px;
