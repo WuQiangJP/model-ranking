@@ -31,9 +31,11 @@ const server = http.createServer((req, res) => {
   let pathname = decodeURIComponent(url.pathname);
   if (pathname === '/') pathname = '/index.html';
 
-  // パストラバーサルを防ぐ
+  // パストラバーサルを防ぐ。startsWith は /dist-evil のような同前缀ディレクトリを通すため、
+  // path.relative で DIST からの相対パスを求め、先頭が .. でないことを確認する。
   const filePath = path.normalize(path.join(DIST, pathname));
-  if (!filePath.startsWith(DIST)) {
+  const relative = path.relative(DIST, filePath);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) {
     res.writeHead(403);
     res.end('Forbidden');
     return;

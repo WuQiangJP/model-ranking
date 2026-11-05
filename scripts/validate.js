@@ -2,9 +2,11 @@
  * データ検証スクリプト。
  *
  * 検証内容：
- *   1. data/models.json と data/benchmarks.json が data/schema.json（JSON Schema 2020-12）に適合する。
+ *   1. data/models.json が data/schema.json（JSON Schema 2020-12）に適合する。
+ *      （data/benchmarks.json はベンチマーク定義の参考資料であり、schema の検証対象ではない。
+ *       モデルの benchmarks キーとの整合性は下記 3 で検証する。）
  *   2. id がグローバルに一意で、小文字ハイフン形式の規則に適合する。
- *   3. ベンチマークキーが benchmarks ホワイトリストに存在し、benchmarks が schema 内の定義と一致する。
+ *   3. ベンチマークキーが benchmarks.json のホワイトリストに存在し、models.json 内嵌の定義と一致する。
  *   4. URL が正当な http/https の絶対アドレスである。
  *   5. 日付が YYYY-MM-DD で、実際に存在する日付である。
  *   6. スコアが妥当な範囲（0〜10000）内、価格が非負、コンテキスト長が正の整数である。
@@ -67,23 +69,29 @@ if (schema && modelsDoc && benchmarksDoc) {
     console.log('✓ data/models.json は JSON Schema 検証を通過しました');
   }
 
-  // benchmarks.json のベンチマーク定義は、schema 内の model.benchmarks が許可するキーと一致しなければならない。
-  const schemaKeys = new Set(schema.$defs.benchmark.properties.key.enum ?? []);
-  const declaredKeys = new Set(benchmarksDoc.benchmarks?.map((b) => b.key) ?? []);
-  for (const k of declaredKeys) {
-    if (schemaKeys.size > 0 && !schemaKeys.has(k)) {
-      // schema がキーを列挙していない場合はスキップする（本 schema は pattern で制約している）
+  // benchmarks.json はベンチマーク定義の参考資料。独自の構造ルールを検証する。
+  const benchList = benchmarksDoc.benchmarks;
+  let benchKeys = [];
+  if (!Array.isArray(benchList) || benchList.length === 0) {
+    fail('data/benchmarks.json の benchmarks は空でない配列でなければなりません');
+  } else {
+    benchKeys = benchList.map((b) => b.key);
+    const dupBench = benchKeys.filter((k, i) => benchKeys.indexOf(k) !== i);
+    if (dupBench.length) {
+      fail(`benchmarks のキーが重複しています：${[...new Set(dupBench)].join(', ')}`);
     }
-  }
-
-  // ベンチマークキーの一意性
-  const benchKeys = benchmarksDoc.benchmarks?.map((b) => b.key) ?? [];
-  const dupBench = benchKeys.filter((k, i) => benchKeys.indexOf(k) !== i);
-  if (dupBench.length) {
-    fail(`benchmarks のキーが重複しています：${[...new Set(dupBench)].join(', ')}`);
+    for (const b of benchList) {
+      if (!/^[a-z0-9_]+$/.test(b.key ?? '')) fail(`benchmarks のキー形式が不正です：${b.key}`);
+      if (!b.name || !b.unit || !b.direction) fail(`benchmarks の ${b.key} に name/unit/direction が不足しています`);
+      if (!['higher', 'lower'].includes(b.direction)) fail(`benchmarks の ${b.key} の direction は higher か lower でなければなりません：${b.direction}`);
+      if (typeof b.higher_is_better !== 'boolean') fail(`benchmarks の ${b.key} の higher_is_better は boolean でなければなりません`);
+      if (b.source_url && !/^https?:\/\//.test(b.source_url)) fail(`benchmarks の ${b.key} の source_url が不正です：${b.source_url}`);
+    }
+    console.log(`✓ data/benchmarks.json の構造を検証しました：${benchList.length} ベンチマーク`);
   }
 
   // 各モデルの benchmarks のキーは、benchmarks.json のホワイトリストに存在しなければならない
+  const declaredKeys = new Set(benchKeys);
   for (const m of modelsDoc.models ?? []) {
     for (const k of Object.keys(m.benchmarks ?? {})) {
       if (!declaredKeys.has(k)) {
@@ -181,7 +189,7 @@ for (const m of models) {
   }
 }
 
-/* ---------- 4. リポジトリ内に疑似シークレットが存在しないことを確認 ---------- */
+/* ---------- 4. リポジトリ内に疑似シークレットや個人情報が存在しないことを確認 ---------- */
 const SECRET_PATTERNS = [
   { re: /\b(sk-[A-Za-z0-9]{16,})\b/, label: 'OpenAI / 汎用の sk- キー' },
   { re: /\b(AKIA[0-9A-Z]{16})\b/, label: 'AWS Access Key ID' },
@@ -191,8 +199,32 @@ const SECRET_PATTERNS = [
   { re: /\bAIza[0-9A-Za-z_-]{35}\b/, label: 'Google API Key' },
   { re: /\b[pP][bB]kdf2[0-9A-Za-z+/=]{20,}\b/, label: 'PBKDF2 由来の文字列' },
 ];
-const SCAN_DIRS = ['data', 'src', 'scripts', 'test'];
+// 個人情報・環境情報の漏洩パターン（公開リポジトリに push してはいけない）
+const PRIVACY_PATTERNS = [
+  { re: /\/home\/[^\s"'`]+\//, label: '本機の絶対パス（/home/...）' },
+  { re: /\/Users\/[^\s"'`]+\//, label: '本機の絶対パス（/Users/...）' },
+  // .hermes/ はスキャナ自身の説明文中にも現れるため、ファイル名が scripts/validate.js の場合は除外する
+  { re: /\.hermes\//, label: 'AI ツールの本機ディレクトリ（.hermes/）', skip: (rel) => rel === 'scripts/validate.js' },
+  { re: /\b[A-Za-z0-9._%+-]+@(?!github\.com\b)[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/, label: 'メールアドレス' },
+  { re: /\b\d{10,11}\b/, label: '電話番号（10〜11 桁の数字連続）' },
+  // 内部ミラー／非公式レジストリ。registry.npmjs.org は公式なので除外する。
+  { re: /\b(?:mirrors|registry)\.(?!npmjs\.org\b)[a-z0-9.-]+\.(?:com|cn|net|org|io)\b/, label: '内部ミラー / レジストリホスト名' },
+];
+// スキャン対象：data/src/scripts/test に加え、リポジトリルートの文書と .github/ を含む
+const SCAN_DIRS = ['data', 'src', 'scripts', 'test', '.github'];
 const SCAN_EXTS = new Set(['.js', '.json', '.md', '.html', '.css', '.yml', '.yaml', '.sh']);
+const ROOT_FILES = new Set(['package.json', 'package-lock.json', 'eslint.config.json', '.gitignore',
+  'README.md', 'AGENTS.md', 'CHANGELOG.md', 'ROADMAP.md']);
+
+function scanText(text, relPath, findings) {
+  for (const { re, label } of SECRET_PATTERNS) {
+    if (re.test(text)) findings.push(`${relPath}：${label} の可能性があります`);
+  }
+  for (const { re, label, skip } of PRIVACY_PATTERNS) {
+    if (skip && skip(relPath)) continue;
+    if (re.test(text)) findings.push(`${relPath}：${label}`);
+  }
+}
 
 function scanForSecrets() {
   const findings = [];
@@ -207,13 +239,18 @@ function scanForSecrets() {
           walk(full);
         } else if (SCAN_EXTS.has(path.extname(entry.name))) {
           const text = fs.readFileSync(full, 'utf8');
-          for (const { re, label } of SECRET_PATTERNS) {
-            if (re.test(text)) findings.push(`${path.relative(ROOT, full)}：${label} の可能性があります`);
-          }
+          scanText(text, path.relative(ROOT, full), findings);
         }
       }
     };
     walk(absDir);
+  }
+  // ルート直下の文書ファイルもスキャンする
+  for (const name of ROOT_FILES) {
+    const full = path.join(ROOT, name);
+    if (fs.existsSync(full)) {
+      scanText(fs.readFileSync(full, 'utf8'), name, findings);
+    }
   }
   return findings;
 }

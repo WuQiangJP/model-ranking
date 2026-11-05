@@ -1,34 +1,34 @@
-# 依赖
+# 依存関係
 node_modules/
 
-# 构建产物（不提交，由部署流程生成）
+# ビルド成果物（コミットしない。デプロイ時に生成される）
 dist/
 
-# 环境配置与密钥
+# 環境設定と秘密情報
 .env
 .env.*
 !.env.example
 *.pem
 *.key
 
-# 系统文件
+# システムファイル
 .DS_Store
 Thumbs.db
 *.swp
 
-# 编辑器
+# エディタ設定
 .vscode/
 .idea/
 *.sublime-*
 
-# AI 本地配置
+# AI ローカル設定
 .claude/
 .cursor/
 .mcp.json
 
-# 测试与覆盖率
+# テストとカバレッジ
 coverage/
 .nyc_output/
 
-# 任务临时文件
+# タスク一時ファイル
 .tmp/

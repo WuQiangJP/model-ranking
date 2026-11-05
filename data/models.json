@@ -92,7 +92,7 @@
           "retrieved_at": "2026-11-05"
         }
       ],
-      "notes": "リリース日は Artificial Analysis が表示する 2026 年 9 月。OpenAI の公式ドキュメントには日単位のリリース日が記載されていないため、ランキング側の表示に基づき月の初日を採用した。benchmarks で公開されている数値は aa_intelligence のみ。",
+      "notes": "リリース日は Artificial Analysis が表示する 2026 年 9 月。OpenAI の公式ドキュメントには日単位のリリース日が記載されていないため、ランキング側の表示に基づき 2026-09-15 を採用した。benchmarks で公開されている数値は aa_intelligence のみ。",
       "last_updated": "2026-11-05"
     },
     {

@@ -4,6 +4,7 @@
  */
 import {
   displayValue,
+  escapeHtml,
   formatContextWindow,
   formatPrice,
   sortModels,
@@ -240,7 +241,7 @@ function renderBarChart() {
     grid: { left: 8, right: 40, top: 10, bottom: 20, containLabel: true },
     tooltip: {
       trigger: 'item',
-      formatter: (p) => `${p.name}<br>${def?.name ?? key}：${p.value}`,
+      formatter: (p) => `${escapeHtml(p.name)}<br>${escapeHtml(def?.name ?? key)}：${escapeHtml(String(p.value))}`,
     },
     xAxis: {
       type: 'value',
@@ -316,7 +317,7 @@ function renderScatterChart() {
     grid: { left: 8, right: 24, top: 20, bottom: 60, containLabel: true },
     tooltip: {
       trigger: 'item',
-      formatter: (p) => `${p.data.name}<br>入力価格：$${p.data.value[0]} / 1M<br>インテリジェンス指数：${p.data.value[1]}`,
+      formatter: (p) => `${escapeHtml(p.data.name)}<br>入力価格：$${escapeHtml(String(p.data.value[0]))} / 1M<br>インテリジェンス指数：${escapeHtml(String(p.data.value[1]))}`,
     },
     xAxis: {
       type: 'log',
@@ -375,7 +376,7 @@ function renderPieChart() {
     animationDuration: 400,
     tooltip: {
       trigger: 'item',
-      formatter: (p) => `${p.name}：${p.value} 件（${p.percent}%）`,
+      formatter: (p) => `${escapeHtml(p.name)}：${escapeHtml(String(p.value))} 件（${escapeHtml(String(p.percent))}%）`,
     },
     legend: { bottom: 0, textStyle: { color: '#1a1a1a' } },
     series: [{

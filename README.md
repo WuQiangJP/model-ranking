@@ -86,9 +86,8 @@ node scripts/add-model.js --id my-model --name "My Model" \
 1. **リポジトリを作成して push**
 
    ```bash
-   cd /home/agentuser/.hermes/my_project/model_ranking
-   git remote add origin git@github.com:<ユーザー名>/<リポジトリ名>.git
-   git push -u origin main
+   git clone git@github.com:<your-username>/<repo-name>.git
+   cd <repo-name>
    ```
 
 2. **Pages のソースを GitHub Actions に設定**

@@ -6,6 +6,17 @@
 
 export const EMPTY = 'データなし';
 
+/** 文字列中の HTML 特殊文字をエスケープする。ECharts tooltip は HTML として描画するため、
+ *  データ由来の文字列をそのまま埋め込むと注入面になる。表示前に必ず通す。 */
+export function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 /** 任意の値を表示用テキストに変換する。null / undefined / 空文字列 / NaN はすべて「データなし」を返す。 */
 export function displayValue(value, formatter = (v) => String(v)) {
   if (value === null || value === undefined) return EMPTY;

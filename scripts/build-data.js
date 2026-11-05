@@ -15,9 +15,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ROOT = path.resolve(__dirname, '..');
-const RETRIEVED_AT = process.env.RETRIEVED_AT || new Date().toISOString().slice(0, 10);
+// 取得日は日本時間（Asia/Tokyo, UTC+9）を基準にする。toISOString() は UTC のため、
+// JST の 00:00〜09:00 に実行すると前日の日付になり、日本ユーザーの取得日と一致しない。
+function todayJST() {
+  if (process.env.RETRIEVED_AT) return process.env.RETRIEVED_AT;
+  const now = new Date();
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return jst.toISOString().slice(0, 10);
+}
+const RETRIEVED_AT = todayJST();
 
-// 取得日を統一する：環境変数を優先し、なければ実行時のシステム日付（UTC 当日）を用いる。
+// 取得日を統一する：環境変数を優先し、なければ実行時のシステム日付（Asia/Tokyo 当日）を用いる。
 const TODAY = RETRIEVED_AT;
 
 const AA = 'https://artificialanalysis.ai';
