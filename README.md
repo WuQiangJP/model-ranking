@@ -100,7 +100,7 @@ npm run build && npm run serve
 
 所有数据的来源链接都记录在每条模型记录的 `sources` 字段中，可在页面详情弹窗查看。主要来源包括：
 
-- 各厂商官方模型页与 API 定价页（OpenAI、Anthropic、Google、Meta、Mistral AI、DeepSeek、Alibaba Cloud、SpaceXAI、Z AI）；
+- 各厂商官方模型页与 API 定价页（OpenAI、Anthropic、Google、Meta、Mistral AI、DeepSeek、Alibaba Cloud、xAI、Z AI）；
 - Artificial Analysis 的 Intelligence Index 与模型页面；
 - LMArena 公开榜单；
 - 开源权重模型的官方 Hugging Face 模型卡。

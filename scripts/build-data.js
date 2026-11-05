@@ -7,10 +7,12 @@
  *
  * 运行：node scripts/build-data.js
  */
-'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const fs = require('fs');
-const path = require('path');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const ROOT = path.resolve(__dirname, '..');
 const RETRIEVED_AT = process.env.RETRIEVED_AT || new Date().toISOString().slice(0, 10);
@@ -581,11 +583,11 @@ models.push(model({
   notes: '价格来自 Mistral 平台代售报价，非 Z.ai 官方直营定价；许可证为带商用限制的开放权重许可。',
 }));
 
-/* ---------------------------- SpaceXAI (Grok) ---------------------------- */
+/* ---------------------------- xAI (Grok) ---------------------------- */
 models.push(model({
   id: 'grok-4-7',
   name: 'Grok 4.7',
-  vendor: 'SpaceXAI',
+  vendor: 'xAI',
   release_date: '2026-09-21',
   license: 'proprietary',
   license_label: '专有（闭源）',
@@ -599,8 +601,8 @@ models.push(model({
   benchmarks: { aa_intelligence: 35, aa_briefcase_elo: null, mmlu_pro: null, livecodebench: null },
   arena_score: null,
   sources: [
-    official('https://docs.x.ai/developers/models', 'SpaceXAI 文档 - Grok Models & Pricing'),
-    official('https://docs.x.ai/developers/models/grok-4.7', 'SpaceXAI 文档 - Grok 4.7'),
+    official('https://docs.x.ai/developers/models', 'xAI 文档 - Grok Models & Pricing'),
+    official('https://docs.x.ai/developers/models/grok-4.7', 'xAI 文档 - Grok 4.7'),
     aaSource('/models/grok-4-7', 'Artificial Analysis - Grok 4.7'),
   ],
   notes: '官方文档页 Last updated 为 2026-09-21，据此作为发布日期；知识截止 2026 年 5 月。',

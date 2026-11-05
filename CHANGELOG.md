@@ -31,7 +31,7 @@
 | DeepSeek V4.1 Flash 1017 | DeepSeek | DeepSeek 官方定价页、Artificial Analysis |
 | DeepSeek V4 Pro 0813 | DeepSeek | DeepSeek 官方定价页、Artificial Analysis |
 | GLM-5.3 | Z AI | Mistral 平台代售页、Hugging Face 模型卡 |
-| Grok 4.7 | SpaceXAI | SpaceXAI 文档、Artificial Analysis |
+| Grok 4.7 | xAI | xAI 文档、Artificial Analysis |
 | Qwen3-235B-A22B | Alibaba Cloud | Qwen 官方博客、GitHub 仓库 |
 | Qwen3-30B-A3B | Alibaba Cloud | Qwen 官方博客、GitHub 仓库 |
 
