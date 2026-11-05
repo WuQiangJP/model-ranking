@@ -4,23 +4,26 @@
 
 ## 当前状态
 
-**阶段：初始版本已完成，待部署。**
+**阶段：已上线。**
 
-站点已在本地完整构建并通过全部校验、测试与浏览器验收。尚未配置远程仓库与部署账号，因此未发布上线。
+站点已通过 GitHub Pages 部署至 `https://darkdragon.me/model-ranking/`（自定义域名，HTTPS 可用）。GitHub Actions 在 `main` 分支推送时自动执行校验、测试、构建与发布。
 
 ## 最近完成
 
+- `2026-11-05 18:05` 完成生产部署：GitHub Actions run #3 成功，站点可通过自定义域名访问，22 个模型、3 个图表、相对路径资源全部正常。
+- `2026-11-05 18:02` 完成生产环境验收：排序、筛选、搜索、详情弹窗、焦点管理在部署站点上复测通过。
+- `2026-11-05 17:45` 修复 CI 失败：`package-lock.json` 的 `resolved` 由本机镜像 `mirrors.tencentyun.com` 改为 `registry.npmjs.org`。
+- `2026-11-05 17:40` 完成仓库初始化与首次推送：SSH 密钥认证，24 个文件推送到 `WuQiangJP/model-ranking`。
 - `2026-11-05 16:49` 完成初始数据集：22 个模型、9 个厂商，全部字段经官方页面或公开榜单核实，未核实字段填 null 并在 notes 说明。
 - `2026-11-05 16:49` 完成 `npm run validate`：schema、id 唯一性、URL、日期、数值范围、密钥扫描全部通过。
 - `2026-11-05 16:49` 完成 `npm test`：39 个测试全部通过（核心逻辑 29 项、校验脚本 10 项）。
 - `2026-11-05 16:49` 完成 `npm run build`：生成 dist/ 共 8 个文件、约 1.16 MB。
 - `2026-11-05 16:49` 完成无头浏览器验收：排序、筛选、搜索、图表切换、详情弹窗、键盘操作、移动端布局、WCAG AA 对比度均通过。
 - `2026-11-05 16:49` 完成新增模型流程演示：追加测试记录后页面无需改代码即可显示，验收后已撤回。
-- `2026-11-05 16:49` 完成仓库初始化：git init（main 分支），24 个文件首次提交，dist/ 与 node_modules/ 已排除。
 
 ## 待确认 / 未完成
 
-- **部署配置未启用**：`.github/workflows/deploy.yml` 已就绪，但需要先在 GitHub 创建仓库并配置 Pages 来源为 GitHub Actions。
+- **自定义域名配置来源不明**：站点通过 `https://darkdragon.me/model-ranking/` 访问，但 workflow 中未配置 `domain`，需确认该域名是由仓库 Settings → Pages → Custom domain 设置，还是 DNS 层面的转发。
 - **数据延迟**：初始数据采集于 2026-11-05，Google 与 DeepSeek 等厂商的定价页已标注后续调价日期，需要在调价日之后重新采集。
 - **部分字段仍为空**：Qwen 系列价格与基准分、Claude Haiku 5.5 智能指数、AA-Briefcase Elo 全量缺失，需等待公开来源。
 
