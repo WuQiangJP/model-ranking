@@ -35,10 +35,11 @@ export function formatContextWindow(tokens) {
   return String(tokens);
 }
 
-/** 価格の表示：小数第 2 位まで。null は「データなし」。 */
+/** 価格の表示：通常は小数第 2 位、0.1 未満は小数第 3 位（安価なキャッシュ／入力価格が同一表示に潰れないようにする）。null は「データなし」。 */
 export function formatPrice(value) {
   if (value === null || value === undefined) return EMPTY;
-  return `$${Number(value).toFixed(2)}`;
+  const n = Number(value);
+  return `$${n < 0.1 ? n.toFixed(3) : n.toFixed(2)}`;
 }
 
 /**
@@ -90,9 +91,11 @@ export function sortModels(models, key, direction = 'desc', options = {}) {
 }
 
 /**
- * 総合スコア：モデルの全ての非 null ベンチマークを正規化して平均を取る。
- * 正規化は「現在の一覧内」で行われるため、総合スコアはこのデータセット内での相対的な
- * 順位付けにのみ用いられ、データセットをまたいだ絶対的な能力を示すものではない。
+ * 総合スコア：モデルの全ての非 null ベンチマークの算術平均（正規化は行わない）。
+ * ベンチマークごとに尺度が異なる（index / elo / percent）ため、複数の異種軸を
+ * 平均すると意味が崩れる（例：百分率の MMLU-Pro と Elo の平均）。そのためこの値は
+ * 「同一モデル内で軸が単一、または尺度が近い場合」にのみ参照値として用い、
+ * モデル間の順位付けにはインテリジェンス指数（benchmark:aa_intelligence）を優先すること。
  * 利用可能なベンチマークがない場合は null を返す。
  */
 export function compositeScore(model) {
@@ -101,8 +104,6 @@ export function compositeScore(model) {
   );
   if (values.length === 0) return null;
   const raw = values.reduce((sum, v) => sum + v, 0);
-  // 補足：ベンチマークごとに尺度が異なる（index / elo / percent）ため、単純な合計は
-  // 「同一バッチ内での相対比較」という前提でのみ意味を持つ。そのため平均値も返す。
   return raw / values.length;
 }
 

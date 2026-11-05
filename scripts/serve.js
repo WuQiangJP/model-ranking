@@ -31,7 +31,7 @@ const server = http.createServer((req, res) => {
   let pathname = decodeURIComponent(url.pathname);
   if (pathname === '/') pathname = '/index.html';
 
-  // パストラバーサルを防ぐ。startsWith は /dist-evil のような同前缀ディレクトリを通すため、
+  // パストラバーサルを防ぐ。startsWith は /dist-evil のような同じ接頭辞を持つディレクトリを通すため、
   // path.relative で DIST からの相対パスを求め、先頭が .. でないことを確認する。
   const filePath = path.normalize(path.join(DIST, pathname));
   const relative = path.relative(DIST, filePath);

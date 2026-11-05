@@ -108,7 +108,7 @@ const record = {
   pricing: {
     input_per_million: null,
     output_per_million: null,
-    currency: null,
+    currency: 'USD',
     cached_input_per_million: null,
     notes: '要確認：価格はベンダーの公式価格ページに基づく必要があり、確認まで null のままとします。',
   },

@@ -97,7 +97,7 @@ models.push(model({
     aaSource('/models/gpt-6-astra', 'Artificial Analysis - GPT-6 Astra'),
     aaSource('/leaderboards/models', 'Artificial Analysis モデルランキング'),
   ],
-  notes: 'リリース日は Artificial Analysis が表示する 2026 年 9 月。OpenAI の公式ドキュメントには日単位のリリース日が記載されていないため、ランキング側の表示に基づき月の初日を採用した。benchmarks で公開されている数値は aa_intelligence のみ。',
+  notes: 'リリース日は Artificial Analysis が表示する 2026 年 9 月。OpenAI の公式ドキュメントには日単位のリリース日が記載されていないため、ランキング側の表示に基づき 2026-09-15 を採用した。benchmarks で公開されている数値は aa_intelligence のみ。',
 }));
 
 models.push(model({

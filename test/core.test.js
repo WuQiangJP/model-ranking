@@ -135,10 +135,14 @@ test('formatContextWindow：整数の結果には小数点を付けない', () =
   assert.equal(formatContextWindow(2500000), '2.5M');
 });
 
-test('formatPrice：小数第 2 位まで表示し、null は「データなし」', () => {
+test('formatPrice：通常は小数第 2 位、0.1 未満は小数第 3 位、null は「データなし」', () => {
   assert.equal(formatPrice(2), '$2.00');
   assert.equal(formatPrice(0.1), '$0.10');
-  assert.equal(formatPrice(0.003), '$0.00');
+  assert.equal(formatPrice(0.5), '$0.50');
+  assert.equal(formatPrice(0.003), '$0.003');
+  assert.equal(formatPrice(0.006), '$0.006');
+  assert.equal(formatPrice(0.015), '$0.015');
+  assert.equal(formatPrice(0.01), '$0.010');
   assert.equal(formatPrice(null), EMPTY);
   assert.equal(formatPrice(undefined), EMPTY);
 });

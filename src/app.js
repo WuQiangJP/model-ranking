@@ -551,7 +551,7 @@ function bindEvents() {
   els.barBenchmark.addEventListener('change', () => renderBarChart());
 
   els.reset.addEventListener('click', () => {
-    els.sortKey.value = 'composite';
+    els.sortKey.value = 'benchmark:aa_intelligence';
     els.sortDirection.value = 'desc';
     els.filterVendor.value = 'all';
     els.filterLicense.value = 'all';
