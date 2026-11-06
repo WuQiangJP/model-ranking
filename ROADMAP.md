@@ -10,6 +10,8 @@ GitHub Pages 経由でカスタムドメインからアクセス可（`deploy.ym
 
 ## 最近の完了
 
+- `2026-11-07 01:19` — Kimi 3 レコードの追加を `main` へマージし本番デプロイを完了。`db02f49` を `main` へ fast-forward で反映し、Actions run #14（`db02f49`）が success。本番 `https://darkdragon.me/model-ranking/` を実測し、`data/models.json` の sha256 がローカルと一致（`d0fac71c…`）して 25 モデル・末尾 3 件が `kimi-k2-6` / `kimi-k3` / `kimi-k3-1-pro`、`app.js` / `core.js` / `styles.css` / `index.html` が `src/` と逐バイト一致（美化版の回帰なし）、テーブル 25 行・グラフ canvas 3 個・検索「Kimi」で 3 行・詳細モーダルの出典 7 件・コンソールエラー 0・横方向のはみ出し 0（1270/1270）を確認。反映は push 後およそ 6.5 分（run #14 の起動 01:00:55 → 01:07:35 に 25 モデルを確認）。検証は curl とヘッドレスブラウザによるローカル実測で、リポジトリには留痕なし。
+
 - `2026-11-06 23:38` — ユーザーの指示により `AGENTS.md` に「尺度の混在に注意」を規範として明文化した。出典から確認できた値でもベンチマーク軸の尺度が全レコードで揃っていない場合はフィールドに入れず `notes` に記載し、軸を正規化するか総合スコアの並べ替えを廃止するかは本ファイルの「今後の検討事項」で管理する、という唯一の例外を「欠損値の扱い」と相互参照した。`data/models.json` とページコードは無変更。
 
 - `2026-11-06 19:18` — Kimi K2.6 / Kimi K3 / Kimi K3.1 Pro の 3 レコードを `data/models.json` に追記し、25 モデル・10 ベンダー・95 出典に拡張。既存 22 レコードの値・出典・並び順、`src/`、`data/schema.json`、`data/benchmarks.json` は無変更（ページのコード変更なしで表示・並べ替え・絞り込み・検索・グラフに反映されることをローカル実測で確認）。価格とコンテキスト長は Kimi API Platform の公式価格ページ、リリース日は Moonshot AI 公式ブログ一覧、ライセンスは各 Hugging Face モデルカードの LICENSE 本文、AA Intelligence Index は Artificial Analysis、Agent Arena の数値は LMArena で確認。AA-Briefcase v1.1 Elo（820 / 1497 / 1675）も Artificial Analysis で確認したが、`compositeScore` が非 null 軸の単純平均であり Elo 尺度だけを追加 3 件に入れると総合スコアが他レコードと比較不能になるため、値は `notes` に記載してフィールドは `null` とした。`npm run check` は validate（25 モデル / 4 ベンチマーク）、43 テスト、build（8 ファイル）すべて成功。
@@ -36,12 +38,14 @@ GitHub Pages 経由でカスタムドメインからアクセス可（`deploy.ym
 - **Kimi K2.6 / Kimi K3 の AA Intelligence Index が N/A**：Artificial Analysis のモデルページで数値が公開されていないため `null`。公開されたら追加する。
 - **LiveCodeBench 軸と公表値のバージョン差**：`livecodebench` 軸は 2024-10-01〜2025-02-01 の問題セットに固定されている。Kimi K2.6 の公式モデルカードは LiveCodeBench (v6) 89.6 を掲載するが、軸の定義と一致しないため入力していない。軸の定義を見直す場合は `data/benchmarks.json`、`data/models.json` 内の定義、各レコードの 3 箇所を同期する必要がある。
 - **`scripts/build-data.js` が初期 22 モデルをハードコード**：`npm run check` には含まれないが、実行すると `data/models.json` を 22 モデルで上書きする。今後このスクリプトを使う場合は、追記した 3 レコードを含めて同期するか、生成スクリプト自体を廃止する判断が必要。
+- **`data/add-kimi-k3-1-pro` ブランチがリモートに残存**：`db02f49` は `main` へ fast-forward 済みで内容は `main` と同一。削除はユーザー承認後に行う（未承認のため現存）。
 
 ## 既知の制限
 
 - **出典 URL の到達性はビルド期に検証していない**：`npm run validate` は URL の形式（http/https 絶対アドレス）のみを検査し、HTTP ステータスは確認しない。95 条の出典 URL の到達性は CI やデプロイ環境で別途再検証する必要がある。本機のネットワーク環境では外部サイトへの到達が不安定なため、ビルド期に全件 HTTP チェックを組み込むと CI が flaky になるのを避けている。
 - **CSP は meta タグで適用**：`src/index.html` に `default-src 'self'` 系の CSP meta を設定済み。GitHub Pages はカスタム HTTP レスポンスヘッダーを設定できないため、meta タグでの適用にとどまる。厳格 CSP（`unsafe-inline` なし）下でのブラウザ実測では 3 グラフとも canvas が生成され、22 行のテーブルも正常に描画された（ローカルのスクラッチディレクトリで実施、リポジトリには留痕なし）。ECharts が `<style>` 要素ではなく `style.cssText` を用いる点は、同実測で `<style>` 生成 0 回・`cssText` 呼び出し 3 回を確認して裏付けている（この仕組みの説明は実測データによる裏付けであり、ECharts のソースコード解析によるものではない）。
 - **ECharts の JA ロケール未登録**：`src/app.js` は `echarts.init(el)` を呼ぶ際に `locale` を指定していない。バンドル済み `echarts.min.js` は EN と ZH のみ含み、JA は含まない。現状のグラフに日付軸がなくツールチップも日時を格式化しないため実害はないが、将来日付軸を追加する場合は `echarts.registerLocale('JA', {...})` と `locale: 'JA'` オプションの追加を検討する。
+- **Cloudflare が注入する統計スクリプトが CSP で阻止される（2026-11-07 ユーザー判断で現状維持）**：Cloudflare はブラウザ相当のナビゲーション要求（`User-Agent` と `Accept: text/html` を伴う要求）に対して HTML を返す際、`https://static.cloudflareinsights.com/beacon.min.js/...` の `<script>` と `data-cf-beacon` 設定を本文に追加して返す。実測では当該ヘッダ付きの 5 回すべてが 10,954 バイトで beacon を含み、ヘッダなしの 8 回すべてが 10,587 バイトで beacon を含まなかった（差は 367 バイト、`cf-cache-status: DYNAMIC`）。`src/index.html` の CSP は `script-src 'self'` のためこのドメインを許可せず、実際のページ読み込みごとに `script-src-elem` の違反が 1 件コンソールに記録される。CSP 行は導入コミット `c81c249`（2026-11-05 21:17）から `HEAD` まで一字も変わっておらず、全履歴で `cloudflareinsights` の出現は 0 件、リポジトリ内に該当タグは存在しない（注入はすべて Cloudflare 側で、こちらのコード変更では制御できない）。影響は Cloudflare Web Analytics に訪問数が記録されないことと、開発者コンソールの警告のみで、表示・並べ替え・絞り込み・検索・グラフ・データには影響しない（本番実測で 25 行・canvas 3 個・コンソールエラー 0）。2026-11-07 にユーザー判断で現状維持（CSP も Cloudflare 側設定も変更しない）。将来変更する場合は、CSP に当該ドメインを追加してデプロイするか、Cloudflare 側で自動注入を停止するかのいずれかを選ぶ。
 
 ## 今後の検討事項
 
