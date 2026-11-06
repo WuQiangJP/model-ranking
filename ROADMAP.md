@@ -10,6 +10,10 @@ GitHub Pages 経由でカスタムドメインからアクセス可（`deploy.ym
 
 ## 最近の完了
 
+- `2026-11-06 23:38` — ユーザーの指示により `AGENTS.md` に「尺度の混在に注意」を規範として明文化した。出典から確認できた値でもベンチマーク軸の尺度が全レコードで揃っていない場合はフィールドに入れず `notes` に記載し、軸を正規化するか総合スコアの並べ替えを廃止するかは本ファイルの「今後の検討事項」で管理する、という唯一の例外を「欠損値の扱い」と相互参照した。`data/models.json` とページコードは無変更。
+
+- `2026-11-06 19:18` — Kimi K2.6 / Kimi K3 / Kimi K3.1 Pro の 3 レコードを `data/models.json` に追記し、25 モデル・10 ベンダー・95 出典に拡張。既存 22 レコードの値・出典・並び順、`src/`、`data/schema.json`、`data/benchmarks.json` は無変更（ページのコード変更なしで表示・並べ替え・絞り込み・検索・グラフに反映されることをローカル実測で確認）。価格とコンテキスト長は Kimi API Platform の公式価格ページ、リリース日は Moonshot AI 公式ブログ一覧、ライセンスは各 Hugging Face モデルカードの LICENSE 本文、AA Intelligence Index は Artificial Analysis、Agent Arena の数値は LMArena で確認。AA-Briefcase v1.1 Elo（820 / 1497 / 1675）も Artificial Analysis で確認したが、`compositeScore` が非 null 軸の単純平均であり Elo 尺度だけを追加 3 件に入れると総合スコアが他レコードと比較不能になるため、値は `notes` に記載してフィールドは `null` とした。`npm run check` は validate（25 モデル / 4 ベンチマーク）、43 テスト、build（8 ファイル）すべて成功。
+
 - `2026-11-06 04:20` — 美化版を `main` へマージし本番デプロイ完了。fast-forward で `261ec86` を `main` に反映後、run #11 は verify／成果物アップロードまで成功したが `actions/deploy-pages@v4` が約 10 分でタイムアウト failure となり本番は旧版のままだった（公開 API ではログが 403 で取得できず原因は外部から未確認）。ユーザー承認の再実行として空コミット `217115d`（内容変更なし）を push して run #12 を起動し `deploy-pages` まで success。本番 `https://darkdragon.me/model-ranking/` を実測し、HTML／CSS／app.js が美化版（`hero-stats`／`rank-badge`／`CHART_FG`／`#dbeafe`）、22 モデル・3 グラフ canvas・横方向のはみ出し 0 を確認。カスタムドメインは `darkdragon.me` で `github.io` から 301 リダイレクトされることを確認（設定元は依然としてリポジトリ Settings または DNS 層のいずれかで要確認）。
 
 - `2026-11-05 18:20` — サイトの日本語化を完了し本番へデプロイ（run #5 成功）。`src/`、`data/`、`scripts/`、`test/` の表示文・説明文・コメントをすべて日本語に翻訳。専門用語は業界標準の訳語を採用。フォントスタックを日本語フォント優先に変更。`data/models.json` の再生成で翻訳が上書きされないよう `scripts/build-data.js` も同期。43 テストがすべて通過。本番サイトの描画確認はローカルのブラウザ実測によるもので、リポジトリには自動化スクリプトや成果物を残していない。
@@ -28,16 +32,20 @@ GitHub Pages 経由でカスタムドメインからアクセス可（`deploy.ym
 
 - **カスタムドメインの設定元が不明**：サイトはカスタムドメイン経由でアクセスできるが、workflow に `domain` の設定がない。リポジトリ Settings → Pages → Custom domain で設定したものか、DNS 層の転送かを確認する必要がある。
 - **データの遅延**：初期データは 2026-11-05 に取得。Google や DeepSeek などの価格ページには今後の価格改定日が記載されており、価格改定日を過ぎたら再取得が必要。
-- **一部項目が依然として空**：Qwen シリーズの価格とベンチマークスコア、Claude Haiku 5.5 のインテリジェンス指数、AA-Briefcase Elo の全量が未取得。公開出典の出現を待つ必要がある。
+- **一部項目が依然として空**：Qwen シリーズの価格とベンチマークスコア、Claude Haiku 5.5 のインテリジェンス指数、既存 22 レコードの AA-Briefcase Elo が未取得。AA-Briefcase Elo については 2026-11-06 の Kimi 追加時に Artificial Analysis の評価ページで可読な数値を確認できたが、既存レコードの変更は今回の作業範囲外のため `null` のまま維持している。
+- **Kimi K2.6 / Kimi K3 の AA Intelligence Index が N/A**：Artificial Analysis のモデルページで数値が公開されていないため `null`。公開されたら追加する。
+- **LiveCodeBench 軸と公表値のバージョン差**：`livecodebench` 軸は 2024-10-01〜2025-02-01 の問題セットに固定されている。Kimi K2.6 の公式モデルカードは LiveCodeBench (v6) 89.6 を掲載するが、軸の定義と一致しないため入力していない。軸の定義を見直す場合は `data/benchmarks.json`、`data/models.json` 内の定義、各レコードの 3 箇所を同期する必要がある。
+- **`scripts/build-data.js` が初期 22 モデルをハードコード**：`npm run check` には含まれないが、実行すると `data/models.json` を 22 モデルで上書きする。今後このスクリプトを使う場合は、追記した 3 レコードを含めて同期するか、生成スクリプト自体を廃止する判断が必要。
 
 ## 既知の制限
 
-- **出典 URL の到達性はビルド期に検証していない**：`npm run validate` は URL の形式（http/https 絶対アドレス）のみを検査し、HTTP ステータスは確認しない。74 条の出典 URL の到達性は CI やデプロイ環境で別途再検証する必要がある。本機のネットワーク環境では外部サイトへの到達が不安定なため、ビルド期に全件 HTTP チェックを組み込むと CI が flaky になるのを避けている。
+- **出典 URL の到達性はビルド期に検証していない**：`npm run validate` は URL の形式（http/https 絶対アドレス）のみを検査し、HTTP ステータスは確認しない。95 条の出典 URL の到達性は CI やデプロイ環境で別途再検証する必要がある。本機のネットワーク環境では外部サイトへの到達が不安定なため、ビルド期に全件 HTTP チェックを組み込むと CI が flaky になるのを避けている。
 - **CSP は meta タグで適用**：`src/index.html` に `default-src 'self'` 系の CSP meta を設定済み。GitHub Pages はカスタム HTTP レスポンスヘッダーを設定できないため、meta タグでの適用にとどまる。厳格 CSP（`unsafe-inline` なし）下でのブラウザ実測では 3 グラフとも canvas が生成され、22 行のテーブルも正常に描画された（ローカルのスクラッチディレクトリで実施、リポジトリには留痕なし）。ECharts が `<style>` 要素ではなく `style.cssText` を用いる点は、同実測で `<style>` 生成 0 回・`cssText` 呼び出し 3 回を確認して裏付けている（この仕組みの説明は実測データによる裏付けであり、ECharts のソースコード解析によるものではない）。
 - **ECharts の JA ロケール未登録**：`src/app.js` は `echarts.init(el)` を呼ぶ際に `locale` を指定していない。バンドル済み `echarts.min.js` は EN と ZH のみ含み、JA は含まない。現状のグラフに日付軸がなくツールチップも日時を格式化しないため実害はないが、将来日付軸を追加する場合は `echarts.registerLocale('JA', {...})` と `locale: 'JA'` オプションの追加を検討する。
 
 ## 今後の検討事項
 
 - 定期的な再取得フローの構築（月 1 回を推奨）。価格改定日が設定されているベンダーを重点的に確認。
-- AA-Briefcase Elo に可読な数値が公開された場合、`aa_briefcase_elo` フィールドへ追加。
+- `compositeScore`（非 null ベンチマークの単純平均）の尺度混在対策。index / elo / percent を正規化するか、総合スコアの並べ替えを廃止するかを判断する。変更する場合は `src/core.js` とテストの更新が必要で、データ側だけでは対応できない（この例外の扱いは `AGENTS.md`「尺度の混在に注意」で規範化済み）。
+- AA-Briefcase Elo は 2026-11-06 時点で公開値を確認済み（Kimi 3 件は `notes` に記載）。総合スコアの尺度混在対策が決まった段階で、追加 3 件と既存 22 件への `aa_briefcase_elo` 投入をまとめて判断する。
 - ベンチマーク軸の追加評価（コーディング、多言語など）。追加時は benchmarks ホワイトリストを同期更新する必要あり。

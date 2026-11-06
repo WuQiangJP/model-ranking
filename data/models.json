@@ -1056,6 +1056,202 @@
       ],
       "notes": "公式ブログでは 128K のコンテキスト長と Apache 2.0 が示されている。Intelligence Index の公開数値は存在しない。",
       "last_updated": "2026-11-05"
+    },
+    {
+      "id": "kimi-k2-6",
+      "name": "Kimi K2.6",
+      "vendor": "Moonshot AI",
+      "release_date": "2026-04-20",
+      "license": "open-weights-commercial-restricted",
+      "license_label": "Modified MIT License（大規模商用時に「Kimi K2.6」の帰属表示義務）",
+      "context_window": 262144,
+      "pricing": {
+        "input_per_million": 0.95,
+        "output_per_million": 4,
+        "currency": "USD",
+        "cached_input_per_million": 0.16,
+        "notes": "Kimi API Platform の公式価格（1 MTok あたり、税抜）。キャッシュ命中時の入力単価は $0.16/MTok。K2 シリーズは 2026-10-31 以降、新規登録ユーザーには提供されておらず、2026 年 12 月末で全モデルが廃止予定。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": null,
+      "sources": [
+        {
+          "name": "Kimi API Platform - Model Inference Pricing",
+          "url": "https://platform.kimi.ai/docs/pricing/chat",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Kimi API Platform - Kimi K2.6 クイックスタート",
+          "url": "https://platform.kimi.ai/docs/guide/kimi-k2-6-quickstart",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Moonshot AI 公式ブログ - Kimi K2.6: Advancing Open-Source Coding",
+          "url": "https://www.kimi.com/blog/kimi-k2-6",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Hugging Face - moonshotai/Kimi-K2.6 モデルカード",
+          "url": "https://huggingface.co/moonshotai/Kimi-K2.6",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Artificial Analysis - Kimi K2.6",
+          "url": "https://artificialanalysis.ai/models/kimi-k2-6",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Artificial Analysis - AA-Briefcase v1.1（Elo 一覧）",
+          "url": "https://artificialanalysis.ai/evaluations/aa-briefcase",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "LMArena Agent Arena",
+          "url": "https://arena.ai/leaderboard/agent",
+          "retrieved_at": "2026-11-06"
+        }
+      ],
+      "notes": "リリース日は Moonshot AI 公式ブログの一覧に記載された 2026-04-20（Artificial Analysis も 2026 年 4 月と表示）。Artificial Analysis の Intelligence Index は本モデルについて N/A（数値非公開）のため aa_intelligence は null とした。公式モデルカードには LiveCodeBench (v6) 89.6 が掲載されているが、本サイトの livecodebench 軸は 2024-10-01〜2025-02-01 の問題セットを前提とするため、異なるバージョンの値を入力せず null とした。MMLU-Pro の公式値は確認できなかった。LMArena Agent Arena に本モデルの項目がないため arena_score は null。AA-Briefcase v1.1 の Elo は 820（Artificial Analysis、Kimi K2.6 (Reasoning) 名義）と公開されているが、本サイトの総合スコアは非 null ベンチマークの単純平均であり、Elo 尺度の値をこの 3 件だけに入れると他の 22 件（同軸はすべて null、指数・百分率尺度のみ）と比較できなくなる。そのため aa_briefcase_elo は null とし、確認した値をここに記録する。",
+      "last_updated": "2026-11-06"
+    },
+    {
+      "id": "kimi-k3",
+      "name": "Kimi K3",
+      "vendor": "Moonshot AI",
+      "release_date": "2026-07-16",
+      "license": "open-weights-commercial-restricted",
+      "license_label": "Kimi K3 License（大規模商用時に「Kimi K3」の帰属表示義務）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 3,
+        "output_per_million": 15,
+        "currency": "USD",
+        "cached_input_per_million": 0.3,
+        "notes": "Kimi API Platform の公式価格（1 MTok あたり、税抜）。K3 シリーズはキャッシュ書き込みが TTL 別に課金され、5 分が $3.00/MTok、1 時間が $6.00/MTok。Batch API は標準価格の 60%。"
+      },
+      "benchmarks": {
+        "aa_intelligence": null,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（エージェント部門）",
+        "score": 0.84,
+        "collected_at": "2026-11-06",
+        "notes": "Kimi K3 (Max) の値。Arena のページに表示されるのは Elo ではなく「成功率／シェアのパーセンテージ」であり、Artificial Analysis の指数とは測定方法が異なるため、直接比較はできない。"
+      },
+      "sources": [
+        {
+          "name": "Kimi API Platform - Model Inference Pricing",
+          "url": "https://platform.kimi.ai/docs/pricing/chat",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Kimi API Platform - Kimi K3 クイックスタート",
+          "url": "https://platform.kimi.ai/docs/guide/kimi-k3-quickstart",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Moonshot AI 公式ブログ - Kimi K3: Open Frontier Intelligence",
+          "url": "https://www.kimi.com/blog/kimi-k3",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Hugging Face - moonshotai/Kimi-K3 モデルカード",
+          "url": "https://huggingface.co/moonshotai/Kimi-K3",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Artificial Analysis - Kimi K3",
+          "url": "https://artificialanalysis.ai/models/kimi-k3",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Artificial Analysis - AA-Briefcase v1.1（Elo 一覧）",
+          "url": "https://artificialanalysis.ai/evaluations/aa-briefcase",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "LMArena Agent Arena",
+          "url": "https://arena.ai/leaderboard/agent",
+          "retrieved_at": "2026-11-06"
+        }
+      ],
+      "notes": "リリース日は Moonshot AI 公式ブログの一覧に記載された 2026-07-16（Artificial Analysis も 2026 年 7 月と表示）。ブログではモデルウェイトを 2026-07-27 までに公開するとされ、現在は公開済み。Artificial Analysis の Intelligence Index は本モデルについて N/A（数値非公開）のため aa_intelligence は null とした。MMLU-Pro と LiveCodeBench の公式値は確認できなかった。arena_score の 0.84 は LMArena Agent Arena の Kimi K3 (Max) の値。AA-Briefcase v1.1 の Elo は 1497（Artificial Analysis、Kimi K3 (Max) 名義）と公開されているが、本サイトの総合スコアは非 null ベンチマークの単純平均であり、Elo 尺度の値をこの 3 件だけに入れると他の 22 件（同軸はすべて null、指数・百分率尺度のみ）と比較できなくなる。そのため aa_briefcase_elo は null とし、確認した値をここに記録する。",
+      "last_updated": "2026-11-06"
+    },
+    {
+      "id": "kimi-k3-1-pro",
+      "name": "Kimi K3.1 Pro",
+      "vendor": "Moonshot AI",
+      "release_date": "2026-10-24",
+      "license": "open-weights-commercial-restricted",
+      "license_label": "Kimi K3.1-Pro License（大規模商用時に「Kimi K3.1-Pro」の帰属表示義務）",
+      "context_window": 1048576,
+      "pricing": {
+        "input_per_million": 2,
+        "output_per_million": 10,
+        "currency": "USD",
+        "cached_input_per_million": 0.2,
+        "notes": "Kimi API Platform の公式価格（1 MTok あたり、税抜）。Highspeed 版は入力 $4.00 / 出力 $20.00 / キャッシュ命中 $0.20。キャッシュ書き込みは 5 分が $2.00/MTok、1 時間が $4.00/MTok。Batch API は標準価格の 60%。"
+      },
+      "benchmarks": {
+        "aa_intelligence": 46,
+        "aa_briefcase_elo": null,
+        "mmlu_pro": null,
+        "livecodebench": null
+      },
+      "arena_score": {
+        "board_name": "LMArena Arena（エージェント部門）",
+        "score": 5.29,
+        "collected_at": "2026-11-06",
+        "notes": "Kimi K3.1 Pro (Max) の値。Arena のページに表示されるのは Elo ではなく「成功率／シェアのパーセンテージ」であり、Artificial Analysis の指数とは測定方法が異なるため、直接比較はできない。"
+      },
+      "sources": [
+        {
+          "name": "Kimi API Platform - Model Inference Pricing",
+          "url": "https://platform.kimi.ai/docs/pricing/chat",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Kimi API Platform - Kimi K3.1 Pro クイックスタート",
+          "url": "https://platform.kimi.ai/docs/guide/kimi-k3-1-pro-quickstart",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Moonshot AI 公式ブログ - Introducing Kimi K3.1 Pro",
+          "url": "https://www.kimi.com/blog/kimi-k3-1-pro",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Hugging Face - moonshotai/Kimi-K3.1-Pro モデルカード",
+          "url": "https://huggingface.co/moonshotai/Kimi-K3.1-Pro",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Artificial Analysis - Kimi K3.1 Pro",
+          "url": "https://artificialanalysis.ai/models/kimi-k3-1-pro",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "Artificial Analysis - AA-Briefcase v1.1（Elo 一覧）",
+          "url": "https://artificialanalysis.ai/evaluations/aa-briefcase",
+          "retrieved_at": "2026-11-06"
+        },
+        {
+          "name": "LMArena Agent Arena",
+          "url": "https://arena.ai/leaderboard/agent",
+          "retrieved_at": "2026-11-06"
+        }
+      ],
+      "notes": "リリース日は Moonshot AI 公式ブログの一覧に記載された 2026-10-24（Artificial Analysis も 2026 年 10 月と表示）。ブログではモデルウェイトを 2026-11-04 までに公開するとしている。aa_intelligence の 46 は Artificial Analysis の取得時点の値（Intelligence Index v5.0.1）。MMLU-Pro と LiveCodeBench の公式値は確認できなかったため null。arena_score の 5.29 は LMArena Agent Arena の Kimi K3.1 Pro (Max) の値。AA-Briefcase v1.1 の Elo は 1675（Artificial Analysis、Kimi K3.1 Pro 名義）と公開されているが、本サイトの総合スコアは非 null ベンチマークの単純平均であり、Elo 尺度の値をこの 3 件だけに入れると他の 22 件（同軸はすべて null、指数・百分率尺度のみ）と比較できなくなる。そのため aa_briefcase_elo は null とし、確認した値をここに記録する。",
+      "last_updated": "2026-11-06"
     }
   ]
 }
