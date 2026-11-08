@@ -1,3 +1,5 @@
+<img width="1253" height="703" alt="image" src="https://github.com/user-attachments/assets/3369e48b-e14c-4def-ae8f-666b2ba550bb" />
+
 # 大規模言語モデルランキング
 
 データ駆動の完全な静的 LLM 比較サイト。公開可能で、Agent による定期更新に対応。
